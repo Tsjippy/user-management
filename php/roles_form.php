@@ -60,7 +60,7 @@ function displayRoles($userId=''){
 	<div class="role-info">
 		<?php
 		if(wp_is_mobile()){
-			foreach($userRoles as $key=>$roleName){
+			foreach($userRoles as $key => $roleName){
 				$checked = '';
 				if(
 					in_array($key, (array)$roles) ||
