@@ -3,7 +3,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 // Only load when option is activated
-if(!SETTINGS['tempuser'] ?? false){
+if(!(SETTINGS['tempuser'] ?? false)){
     return;
 }
 
