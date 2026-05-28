@@ -41,7 +41,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
 
         addElement('br', $parent);
 
-        $this->recurrenceSelector("check-details-mail-freq", $this->settings['check-details-mail-freq'], 'How often should people asked to check their details for changes?', $parent);
+        $this->recurrenceSelector("check-details-mail-freq", $this->settings['check-details-mail-freq'] ?? '', 'How often should people asked to check their details for changes?', $parent);
 
         addElement('br', $parent);
 
