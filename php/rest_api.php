@@ -224,7 +224,7 @@ function disableUserAccount(){
  */
 function addMinistry(){
     //Get the post data
-    $name = sanitize_text_field($_POST["location-name"]);
+    $name = sanitize_text_field( wp_unslash( $_POST["location-name"]));
 
 	$status	= 'pending';
 	if(wp_get_current_user()->has_cap( 'publish_post' )){
@@ -306,7 +306,7 @@ function extendValidity(){
         $date       = 'unlimited';
         $message    = "Marked the useraccount for ".get_userdata($userId)->first_name." to never expire.";
     }else{
-        $date       = sanitize_text_field($_POST['new-expiry-date']);
+        $date       = sanitize_text_field( wp_unslash( $_POST['new-expiry-date']));
         $dateStr   = gmdate(DATEFORMAT, strtotime($date));
         $message    = "Extended valitidy for ".get_userdata($userId)->first_name." till $dateStr";
     }

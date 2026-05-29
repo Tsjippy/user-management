@@ -32,7 +32,7 @@ function beforeSavingFormData($submission, $object){
 	$family = new TSJIPPY\FAMILY\Family();
 
 	// Family Picture
-	$newPicture	= sanitize_text_field($_POST['family_picture']);
+	$newPicture	= sanitize_text_field( wp_unslash( $_POST['family_picture']));
 	$oldPicture	= $family->getFamilyMeta($userId, 'family_picture');
 	if($newPicture != $oldPicture){
 		// Do not show in picture gallery

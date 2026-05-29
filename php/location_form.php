@@ -29,7 +29,7 @@ function beforeSavingLocationFormData($submission, $object){
 			FILTER_FLAG_ALLOW_FRACTION
 		);
 		
-		$location['address'] = sanitize_text_field($location['address']);
+		$location['address'] = sanitize_text_field( wp_unslash( $location['address']));
 		
 		$family	= new TSJIPPY\FAMILY\Family();
 		$family->updateFamilyMeta($object->userId, "location", $location);
