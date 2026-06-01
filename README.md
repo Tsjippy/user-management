@@ -1,3 +1,4 @@
+== Description ==
 <p>
     This module depends on the forms module. The forms module will be automatically activated upon activation.<br>
     <br>
@@ -23,3 +24,21 @@
     This shortcode displays a form for users to reset their password.<br>
     Use like this: <code>[change_password]</code>
 </p>
+
+== Hooks ==
+# FILTERS
+- apply_filters('sim_user_page_dropdown', $genericInfoRoles);
+- apply_filters('sim_role_description', '', $key)
+- apply_filters('sim_role_description', '', $key);
+- apply_filters('sim_user_page_dropdown', $genericInfoRoles);
+- apply_filters('sim_user_info_page', ['tabs'=>$tabs, 'html'=>$html], $showCurrentUserData, $user, $userAge);
+- sim-should-show-family-form
+- sim-should-show-location-form
+- sim-should-show-picture-form
+- sim-should-show-security-form
+- sim-should-show-vaccination-form
+- sim-generics-form
+
+# Actions
+- sim-after-login-settings
+- sim-login-settings-save
