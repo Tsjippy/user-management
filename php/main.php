@@ -6,13 +6,13 @@ add_filter('display_post_states', __NAMESPACE__.'\postStates', 10, 2);
 function postStates( $states, $post ) {
 
 	if ( $post->ID == (SETTINGS['account_page'] ?? '')) {
-		$states[] = __('Account page');
+		$states[] = __('Account page', 'tsjippy');
 	}elseif($post->ID == (SETTINGS['user-edit-page'] ?? ''))  {
-		$states[] = __('User edit page');
+		$states[] = __('User edit page', 'tsjippy');
 	}elseif($post->ID == (SETTINGS['account-create-page'] ?? '')) {
-		$states[] = __('Account create page');
+		$states[] = __('Account create page', 'tsjippy');
 	}elseif($post->ID == (SETTINGS['pending-users-page'] ?? '')) {
-		$states[] = __('Pending users page');
+		$states[] = __('Pending users page', 'tsjippy');
 	}
 
 	return $states;
