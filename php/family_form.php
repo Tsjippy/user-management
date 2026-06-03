@@ -73,7 +73,7 @@ function beforeForm($html, $formSlug){
 				
 				<label>
 					<h4>Last name</h4>
-					<input type="text" name="last-name"  class='wide' value="<?php echo $lastname;?>">
+					<input type="text" name="last-name"  class='wide' value="<?php echo esc_attr($lastname);?>">
 				</label>
 				
 				<label>

@@ -73,9 +73,9 @@ function displayRoles($userId=''){
 				}
 				?>
 				<label>
-					<input type='checkbox' name='roles[<?php echo $key;?>]' value='<?php echo $roleName;?>' <?php echo $checked;?>>
+					<input type='checkbox' name='roles[<?php echo esc_attr($key);?>]' value='<?php echo esc_attr($roleName);?>' <?php echo $checked;?>>
 					<?php
-					echo $roleName;
+					echo esc_attr($roleName);
 					?>
 					<div class="infobox">
 						<div class="info-icon-wrapper">
@@ -112,7 +112,7 @@ function displayRoles($userId=''){
 					<tr style='border: none;'>
 						<td style='border: none;'>
 							<label>
-								<input type='checkbox' name='roles[<?php echo $key;?>]' value='<?php echo $roleName;?>' <?php echo $checked;?>>
+								<input type='checkbox' name='roles[<?php echo esc_attr($key);?>]' value='<?php echo esc_attr($roleName);?>' <?php echo $checked;?>>
 								<?php
 								echo $roleName;
 								?>

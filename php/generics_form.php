@@ -182,7 +182,7 @@ function displayMinistryPositions($userId){
 			foreach (getMinistries() as $url=>$ministries) {
 				?>
 				<li style="list-style-type: none" class="page_item page-item-204 page_item_has_children">
-					<?php echo $url;?>
+					<?php echo esc_url($url);?>
 					<button class="button small expand-children" type='button' style='font-size: 8px;'>▼</button>
 					<ul class='children'>
 						<?php
@@ -201,12 +201,12 @@ function displayMinistryPositions($userId){
 							?>
 							<li style="list-style-type: none">
 								<label>
-									<input type='checkbox' class='ministry-option-checkbox' name='ministries[]' value='<?php echo $pageId;?>' <?php echo $checked;?>>
+									<input type='checkbox' class='ministry-option-checkbox' name='ministries[]' value='<?php echo esc_attr($pageId);?>' <?php echo $checked;?>>
 									<span class='option-label'><?php echo $ministry;?></span>
 								</label>
-								<label class='ministryposition <?php echo $class;?>' style='display:block;'>
+								<label class='ministryposition <?php echo esc_attr($class);?>' style='display:block;'>
 									<h4 class='label-text'>Position at <?php echo $ministry;?>:</h4>
-									<input type='text' name='jobs[<?php echo $pageId;?>]' value='<?php echo $position;?>'>
+									<input type='text' name='jobs[<?php echo esc_attr($pageId);?>]' value='<?php echo $position;?>'>
 									<?php
 									if ($ministry == "Other"){
 										?>

@@ -255,7 +255,7 @@ function userInfoPage($atts){
 				If you want to disable a user go to the login info tab.
 			</p>
 			<form>
-				<input type='hidden' class='no-reset' name='user-id' value='<?php echo $userId;?>'>
+				<input type='hidden' class='no-reset' name='user-id' value='<?php echo esc_attr($userId);?>'>
 				<?php
 				echo displayRoles($userId);
 				

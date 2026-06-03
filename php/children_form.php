@@ -22,7 +22,7 @@ function showChildrenFields($childId){
 	
 	if(in_array('generic', $availableForms)){
 		?>
-		<div id='generic-child-info-<?php echo $childId;?>' class='tabcontent'>
+		<div id='generic-child-info-<?php echo esc_attr($childId);?>' class='tabcontent'>
 			<?php echo do_shortcode("[formbuilder slug=child_generic user-id=$childId]"); ?>
 		</div>
 		<?php

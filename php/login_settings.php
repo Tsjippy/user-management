@@ -66,11 +66,11 @@ function changePasswordForm($userId = null){
 			?>
 			<form data-reset=1 class='tsjippy-form'>
 				<input type="hidden" class="no-reset" name="disable-user-account"		value="<?php echo wp_create_nonce("disable-user-account");?>">
-				<input type="hidden" class="no-reset" name="user-id"					value="<?php echo $userId; ?>">
-				<input type="hidden" class="no-reset" name="action"					value="<?php echo $actionText;?>_useraccount">
+				<input type="hidden" class="no-reset" name="user-id"					value="<?php echo esc_attr($userId); ?>">
+				<input type="hidden" class="no-reset" name="action"					value="<?php echo esc_attr($actionText);?>_useraccount">
 
 				<p style="margin:30px 0px 0px;">
-					Click the button below if you want to <?php echo $actionText;?> the useraccount for <?php echo $name;?>.
+					Click the button below if you want to <?php echo esc_attr($actionText);?> the useraccount for <?php echo esc_attr($name);?>.
 				</p>
 
 				<?php echo TSJIPPY\addSaveButton('disable-user-account', ucfirst($actionText)." useraccount for $name");?>
@@ -92,10 +92,10 @@ function changePasswordForm($userId = null){
 				if(!in_array('email', $methods)){
 					?>
 					<form method='post'>
-						<input type='hidden' class='no-reset' name='user-id' value='<?php echo $userId;?>'>
-						<input type='hidden' class='no-reset' name='wp-2fa-nonce' value='<?php echo $nonce;?>'>
+						<input type='hidden' class='no-reset' name='user-id' value='<?php echo esc_attr($userId);?>'>
+						<input type='hidden' class='no-reset' name='wp-2fa-nonce' value='<?php echo esc_attr($nonce);?>'>
 
-						Use the button below to change the 2fa factor for <?php echo $name;?> to e-mail<br>
+						Use the button below to change the 2fa factor for <?php echo esc_attr($name);?> to e-mail<br>
 						<input type='submit' name='action' value='Change to e-mail' class='button small'>
 					</form>
 					<br>
@@ -105,10 +105,10 @@ function changePasswordForm($userId = null){
 				?>
 				<br>
 				<form method='post'>
-					<input type='hidden' class='no-reset' name='user-id' value='<?php echo $userId;?>'>
-					<input type='hidden' class='no-reset' name='wp-2fa-nonce' value='<?php echo $nonce;?>'>
+					<input type='hidden' class='no-reset' name='user-id' value='<?php echo esc_attr($userId);?>'>
+					<input type='hidden' class='no-reset' name='wp-2fa-nonce' value='<?php echo esc_attr($nonce);?>'>
 
-					Use the button below to turn off Two Factor Authentication for <?php echo $name;?><br>
+					Use the button below to turn off Two Factor Authentication for <?php echo esc_attr($name);?><br>
 					<input type='submit' name='action' value='Reset 2FA' class='button small'>
 				</form>
 			</div>
