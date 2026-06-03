@@ -45,7 +45,7 @@ function createUserAccountForm(){
 				<?php
 				do_action('tsjippy_after_user_create_form');
 				
-				echo TSJIPPY\addSaveButton('adduseraccount', 'Add user account');
+				TSJIPPY\addSaveButton('adduseraccount', 'Add user account');
 				?>
 			</form>
 		</div>

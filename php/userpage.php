@@ -93,7 +93,7 @@ function userInfoPage($atts){
 
 		$userBirthday = get_user_meta($userId, "birthday", true);
 		if(!empty($userBirthday)){
-			$userAge = date_diff(date_create(date("Y-m-d")), date_create($userBirthday))->y;
+			$userAge = date_diff(date_create(gmdate("Y-m-d")), date_create($userBirthday))->y;
 		}
 	}else{
 		return "<div class='error'>You do not have permission to see this, sorry.</div>";
@@ -259,7 +259,7 @@ function userInfoPage($atts){
 				<?php
 				echo displayRoles($userId);
 				
-				echo TSJIPPY\addSaveButton('updateroles', 'Update roles');
+				TSJIPPY\addSaveButton('updateroles', 'Update roles');
 				?>
 			</form>
 		</div>
@@ -374,7 +374,7 @@ function getGenericsTab($userId){
 					$html	.= "<input type='checkbox' name='unlimited' value='unlimited' style='width:auto; display: initial; padding:0px; margin:0px;'>";
 					$html	.= "<label for='unlimited'> Check if the useraccount should never expire.</label>";
 					$html	.= "<br>";
-					$html	.= TSJIPPY\addSaveButton('extend_validity', 'Change validity');
+					$html	.= TSJIPPY\addSaveButton('extend_validity', 'Change validity', '', false);
 				$html	.= "</form>";
 			}else{
 				$html	.= "<p>";

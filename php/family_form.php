@@ -81,7 +81,7 @@ function beforeForm($html, $formSlug){
 					<input type="email"  class='wide' name="email">
 				</label>
 				
-				<?php echo TSJIPPY\addSaveButton('adduseraccount', 'Add family member');?>
+				<?php TSJIPPY\addSaveButton('adduseraccount', 'Add family member');?>
 			</form>
 		</div>
 	</div>

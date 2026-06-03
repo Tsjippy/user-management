@@ -73,7 +73,7 @@ function changePasswordForm($userId = null){
 					Click the button below if you want to <?php echo esc_attr($actionText);?> the useraccount for <?php echo esc_attr($name);?>.
 				</p>
 
-				<?php echo TSJIPPY\addSaveButton('disable-user-account', ucfirst($actionText)." useraccount for $name");?>
+				<?php TSJIPPY\addSaveButton('disable-user-account', ucfirst($actionText)." useraccount for $name");?>
 			</form>
 			<?php
 		}

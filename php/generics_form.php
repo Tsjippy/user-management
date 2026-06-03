@@ -109,7 +109,7 @@ function beforeGenericsForm($html, $formSlug){
 					<input type="text" class="longitude wide" name="location[longitude]">
 				</label>
 				
-				<?php echo TSJIPPY\addSaveButton('add_ministry','Add ministry page'); ?>
+				<?php TSJIPPY\addSaveButton('add_ministry','Add ministry page'); ?>
 			</form>
 		</div>
 	</div>
