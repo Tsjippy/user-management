@@ -19,7 +19,7 @@ class AccountCreatedMail extends ADMIN\MailSetting{
      */
     public function __construct($user, $loginUrl='', $validTill='') {
         // call parent constructor
-		parent::__construct('account_created', PLUGINSLUG);
+        parent::__construct('account_created', PLUGINSLUG);
 
         $this->addUser($user);
 
@@ -30,10 +30,10 @@ class AccountCreatedMail extends ADMIN\MailSetting{
         $this->defaultSubject    = 'We have created an account for you on %site_name%';
 
         $this->defaultMessage    = 'Hi %first_name%,<br><br>';
-		$this->defaultMessage 	.= "We have created an account for you on  %site_name%.<br>";
-		$this->defaultMessage 	.= "Please set a password using this <a href='%login_url%'>link</a>.<br>";
+        $this->defaultMessage     .= "We have created an account for you on  %site_name%.<br>";
+        $this->defaultMessage     .= "Please set a password using this <a href='%login_url%'>link</a>.<br>";
         $this->defaultMessage   .= "This link is valid till %valid_till%<br>";
-        $this->defaultMessage 	.= 'Your username is: %user_name%.<br>';
-        $this->defaultMessage 	.= 'If you have any problems, please contact us by replying to this e-mail.';
+        $this->defaultMessage     .= 'Your username is: %user_name%.<br>';
+        $this->defaultMessage     .= 'If you have any problems, please contact us by replying to this e-mail. ';
     }
 }

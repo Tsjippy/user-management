@@ -14,17 +14,17 @@ class PotentialFamilyMembers{
     public $potentialChildren;
     public $users;
 
-    public function __construct($userId){
+    public function __construct($userId) {
         $this->userId               = $userId;
-        $this->birthday	            = get_user_meta( $userId, 'birthday', true );
-        $this->gender		        = get_user_meta( $userId, 'gender', true );
+        $this->birthday                = get_user_meta($userId, 'birthday', true);
+        $this->gender                = get_user_meta($userId, 'gender', true);
         $family                     = new TSJIPPY\FAMILY\Family();
         $this->partner              = $family->getPartner($userId);
-        $this->family		        = $family->getFamily($userId, true);
-        $this->potentialSpouses	    = [];
-        $this->potentialFathers	    = [];
-        $this->potentialMothers	    = [];
-        $this->potentialChildren	= [];
+        $this->family                = $family->getFamily($userId, true);
+        $this->potentialSpouses        = [];
+        $this->potentialFathers        = [];
+        $this->potentialMothers        = [];
+        $this->potentialChildren    = [];
 
         $this->getUsers();
     }
@@ -33,62 +33,62 @@ class PotentialFamilyMembers{
      * Gets all the users and makes sure the names are unique
      * Also get some meta data for them
      */
-    public function getUsers(){
+    public function getUsers() {
         //Get the id and the displayname of all users
-        $this->users 					= get_users(
+        $this->users                     = get_users(
             array(
-                'fields' 	=> array( 'ID', 'display_name' ) ,
-                'orderby'	=> 'meta_value',
-                'meta_key'	=> 'last_name',
+                'fields'     => array('ID', 'display_name') ,
+                'orderby'    => 'meta_value',
+                'meta_key'    => 'last_name',
                 'exclude'   =>  [$this->userId]
-            )
-        );
+           )
+       );
 
         $existsArray = array();
 
         //Loop over all users to find dublicate displaynames
-        foreach($this->users as $key=>&$user){
+        foreach ($this->users as $key=>&$user) {
             //Get the displayname
             $displayName = strtolower($user->display_name);
-            
+
             //If the display name is already found
-            if (isset($existsArray[$displayName])){
+            if (isset($existsArray[$displayName])) {
                 //Change current users displayname
-                $user->display_name = $user->display_name." (".get_userdata($user->ID)->data->user_email.")";
+                $user->display_name = $user->display_name. " (" .get_userdata($user->ID)->data->user_email. ")";
                 //Change previous found users displayname
-                $this->users[$existsArray[$displayName]]->display_name = $this->users[$existsArray[$displayName]]->display_name." (".get_userdata($user->ID)->data->user_email.")";
+                $this->users[$existsArray[$displayName]]->display_name = $this->users[$existsArray[$displayName]]->display_name. " (" .get_userdata($user->ID)->data->user_email. ")";
             }else{
                 //User has a so far unique displayname, add to array
                 $existsArray[$displayName] = $key;
             }
 
             //Get the current gender
-			$user->gender		= get_user_meta( $user->ID, 'gender', true );
-			$user->birthday	= get_user_meta($user->ID, "birthday", true);
-			$user->ageDifference 		= null;
-			$user->age 		= null;
-			if(!empty($user->birthday)){
-				$user->age = date_diff( date_create( gmdate("Y-m-d")), date_create($user->birthday))->y;
-				if (!empty($this->birthday)){
-					$user->ageDifference = gmdate("Y", strtotime($user->birthday)) - gmdate("Y", strtotime($this->birthday));
-				}
-			}
+            $user->gender        = get_user_meta($user->ID, 'gender', true);
+            $user->birthday    = get_user_meta($user->ID, "birthday", true);
+            $user->ageDifference         = null;
+            $user->age         = null;
+            if (!empty($user->birthday)) {
+                $user->age = date_diff(date_create(gmdate("Y-m-d")), date_create($user->birthday))->y;
+                if (!empty($this->birthday)) {
+                    $user->ageDifference = gmdate("Y", strtotime($user->birthday)) - gmdate("Y", strtotime($this->birthday));
+                }
+            }
         }
     }
 
     /**
      * Get potential fathers
      */
-	public function potentialParents(){
-        foreach($this->users as $user){
+    public function potentialParents() {
+        foreach ($this->users as $user) {
             //Add the displayname as potential father if not younger then 18 and not part of the family
-            if(($user->age == null || $user->age > 18) && !in_array($user->ID, $this->family)) {
-                if (empty($user->gender) || $user->gender == 'male'){
+            if (($user->age == null || $user->age > 18) && !in_array($user->ID, $this->family)) {
+                if (empty($user->gender) || $user->gender == 'male') {
                     $this->potentialFathers[$user->ID] = $user->display_name;
                 }
 
-                if (empty($user->gender) || $user->gender == 'female'){
-                    $this->potentialMothers[$user->ID]	= $user->display_name;
+                if (empty($user->gender) || $user->gender == 'female') {
+                    $this->potentialMothers[$user->ID]    = $user->display_name;
                 }
             }
         }
@@ -97,32 +97,32 @@ class PotentialFamilyMembers{
     /**
      * Get potential spouses
      */
-	public function potentialSpouses(){
+    public function potentialSpouses() {
         $family = new TSJIPPY\FAMILY\Family();
 
-        foreach($this->users as $user){
+        foreach ($this->users as $user) {
             //Check if current processing user already has a spouse
-			$spouse = $family->getPartner($user->ID);
+            $spouse = $family->getPartner($user->ID);
 
-			if(
-				$spouse == $this->userId				    ||	// This is our spouse
-				(
-					!is_numeric($spouse)				    &&	// this user does not have a spouse
-					!in_array($user->ID, $this->family) 	&& 	// We are no family
+            if (
+                $spouse == $this->userId                    ||    // This is our spouse
+                (
+                    !is_numeric($spouse)                    &&    // this user does not have a spouse
+                    !in_array($user->ID, $this->family)     &&     // We are no family
                     (
-						empty($user->gender) 		        || 	// Current user has no gender filled in
-						empty($this->gender) 			    || 	// Or the gender is not filled in
-						$user->gender != $this->gender		    // Or the genders differ
-					)									    &&
-					(
-						!is_numeric($user->age) 	        ||	// The age is not filled in
-						$user->age > 18				            // Older than 18
-					)
-				)
-			){
-				//Add the displayname as potential spouse
-				$this->potentialSpouses[$user->ID] = $user->display_name;
-			}
+                        empty($user->gender)                 ||     // Current user has no gender filled in
+                        empty($this->gender)                 ||     // Or the gender is not filled in
+                        $user->gender != $this->gender            // Or the genders differ
+                   )                                        &&
+                    (
+                        !is_numeric($user->age)             ||    // The age is not filled in
+                        $user->age > 18                            // Older than 18
+                   )
+               )
+           ) {
+                //Add the displayname as potential spouse
+                $this->potentialSpouses[$user->ID] = $user->display_name;
+            }
         }
 
         return $this->potentialSpouses;
@@ -131,26 +131,26 @@ class PotentialFamilyMembers{
     /**
      * Get potential children
      */
-	public function potentialChildren(){
+    public function potentialChildren() {
         $family                     = new TSJIPPY\FAMILY\Family();
 
-        foreach($this->users as $user){
-			$parents 		= $family->getParents($user->ID, true);
-			
-			if(
-				in_array($this->userId, $parents)       || // is the current users child
+        foreach ($this->users as $user) {
+            $parents         = $family->getParents($user->ID, true);
+
+            if (
+                in_array($this->userId, $parents)       || // is the current users child
                 in_array($this->partner, $parents)       || // is the current user partner child
-				(
-                    empty($parents)				        &&  // is not a child
+                (
+                    empty($parents)                        &&  // is not a child
                     !in_array($user->ID, $this->family) &&  // is not family already
-				    (
+                    (
                         $user->ageDifference == null    ||  // there is no age diff
-				        $user->ageDifference > 16           // the age diff is at least 16 years
-                    )
-                )
-			){
-				$this->potentialChildren[$user->ID]	= $user->display_name;
-			}
+                        $user->ageDifference > 16           // the age diff is at least 16 years
+                   )
+               )
+           ) {
+                $this->potentialChildren[$user->ID]    = $user->display_name;
+            }
         }
 
         return $this->potentialChildren;

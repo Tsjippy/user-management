@@ -5,37 +5,37 @@ use TSJIPPY;
 use function TSJIPPY\addElement;
 use function TSJIPPY\addRawHtml;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if ( ! defined('ABSPATH')) {
+    exit;
 }
 
 class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
 
     /**
      * AdminMenu constructor.
-     * 
+     *
      * @param array $settings The settings for the plugin
      * @param string $name The name of the plugin
      */
-    public function __construct($settings, $name){
+    public function __construct($settings, $name) {
         parent::__construct($settings, $name);
     }
 
-    public function settings($parent){
+    public function settings($parent) {
         $label  = addElement('label', $parent, [], 'Enable temporary user accounts');
 
         addElement(
-            'input', 
-            $label, 
+            'input',
+            $label,
             [
                 'type'    => 'checkbox',
                 'name'    => 'tempuser',
                 'value'   => '1',
                 'checked' => isset($this->settings['tempuser']) ? 'checked' : ''
-            ], 
-            '', 
+            ],
+            '',
             'afterBegin'
-        );
+       );
 
         addElement('br', $parent);
 
@@ -48,7 +48,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
         addElement('label', $parent, [], 'Select any forms you want to be available on the account page');
         addElement('br', $parent);
 
-        foreach(['family', 'generic', 'location', 'profile picture', 'security'] as $form){
+        foreach (['family', 'generic', 'location', 'profile picture', 'security'] as $form) {
             $label  = addElement('label', $parent, [], ucfirst($form));
 
             addElement('br', $parent);
@@ -59,25 +59,25 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
                 'value'   => $form
             ];
 
-            if(in_array($form, $this->settings['enabled-forms'] ?? [] )){
+            if (in_array($form, $this->settings['enabled-forms'] ?? [])) {
                 $attributes['checked'] = 'checked';
             }
 
             addElement(
-                'input', 
-                $label, 
-                $attributes, 
-                '', 
+                'input',
+                $label,
+                $attributes,
+                '',
                 'afterBegin'
-            );
+           );
         }
         return true;
     }
 
-    public function emails($parent){
+    public function emails($parent) {
         $tab      = 'account-approved-email';
-        if(isset($_GET['second-tab'])){
-            $tab  = sanitize_key( wp_unslash( $_GET['second-tab']));
+        if (isset($_GET['second-tab'])) {
+            $tab  = sanitize_key(wp_unslash($_GET['second-tab']));
         }
 
         $tablinkWrapper = addElement('div', $parent, ['class' => 'tablink-wrapper']);
@@ -90,7 +90,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             'not-seen-email'                => 'No Activity'
         ];
 
-        foreach($buttons as $id => $text){
+        foreach ($buttons as $id => $text) {
             $attributes = [
                 'class'       => 'tablink' . ($tab == $id ? ' active' : ''),
                 'id'          => "show-$id",
@@ -158,12 +158,12 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
         return true;
     }
 
-    public function data($parent=''){
+    public function data($parent='') {
 
         return false;
     }
 
-    public function functions($parent){
+    public function functions($parent) {
 
         return false;
     }
@@ -171,7 +171,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
     /**
      * Function to do extra actions from $_POST data. Overwrite if needed
      */
-    public function postActions(){
+    public function postActions() {
         return '';
     }
 
@@ -179,7 +179,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
      * Schedules the tasks for this plugin
      *
     */
-    public function postSettingsSave(){
+    public function postSettingsSave() {
         scheduleTasks();
     }
 }

@@ -5,36 +5,36 @@ use TSJIPPY;
 /**
  * Displays the forms for children
  */
-function showChildrenFields($childId){
-	$availableForms		= (array)SETTINGS['enabled-forms'] ?? [];
+function showChildrenFields($childId) {
+    $availableForms        = (array)SETTINGS['enabled-forms'] ?? [];
 
-	ob_start();
-	$active	= 'active';
-	$hidden	= '';
-	if(in_array('generic', $availableForms)){
-		echo "<button class=' button tablink $active' id='show-generic-child-info-$childId' data-target='generic-child-info-$childId'>Generic info</button>";
-		$active= '';
-	}
+    ob_start();
+    $active    = 'active';
+    $hidden    = '';
+    if (in_array('generic', $availableForms)) {
+        echo "<button class=' button tablink $active' id='show-generic-child-info-$childId' data-target='generic-child-info-$childId'>Generic info</button>";
+        $active= '';
+    }
 
-	if(in_array('profile picture', $availableForms)){
-		echo "<button class='button tablink $active' id='show-profile-picture-child-info-$childId' data-target='profile-picture-child-info-$childId'>Profile picture</button>";
-	}
-	
-	if(in_array('generic', $availableForms)){
-		?>
-		<div id='generic-child-info-<?php echo esc_attr($childId);?>' class='tabcontent'>
-			<?php echo do_shortcode("[formbuilder slug=child_generic user-id=$childId]"); ?>
-		</div>
-		<?php
+    if (in_array('profile picture', $availableForms)) {
+        echo "<button class='button tablink $active' id='show-profile-picture-child-info-$childId' data-target='profile-picture-child-info-$childId'>Profile picture</button>";
+    }
 
-		$hidden	= 'hidden';
-	}
+    if (in_array('generic', $availableForms)) {
+        ?>
+        <div id='generic-child-info-<?php echo esc_attr($childId);?>' class='tabcontent'>
+            <?php echo do_shortcode("[formbuilder slug=child_generic user-id=$childId]"); ?>
+        </div>
+        <?php
 
-	if(in_array('profile picture', $availableForms)){
-		echo	"<div id='profile-picture-child-info-$childId' class='tabcontent $hidden'>";
-			echo do_shortcode("[formbuilder slug=profile_picture user-id='$childId']");
-		echo	"</div>";
-	}
+        $hidden    = 'hidden';
+    }
 
-	return ob_get_clean();
+    if (in_array('profile picture', $availableForms)) {
+        echo    "<div id='profile-picture-child-info-$childId' class='tabcontent $hidden'>";
+            echo do_shortcode("[formbuilder slug=profile_picture user-id='$childId']");
+        echo    "</div>";
+    }
+
+    return ob_get_clean();
 }

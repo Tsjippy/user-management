@@ -10,16 +10,16 @@ class AccountApproveddMail extends ADMIN\MailSetting{
 
     /**
      * Constructor
-     * 
+     *
      * @param \WP_User $user The user to send the email to
      * @param string $loginUrl The url to the login page
      * @param string $validTill The date till the login link is valid
-     * 
+     *
      * @return void
      */
     public function __construct($user, $loginUrl='', $validTill='') {
         // call parent constructor
-		parent::__construct('account_approved', PLUGINSLUG);
+        parent::__construct('account_approved', PLUGINSLUG);
 
         $this->addUser($user);
 
@@ -30,11 +30,11 @@ class AccountApproveddMail extends ADMIN\MailSetting{
         $this->defaultSubject    = 'We have approved your account on %site_name%';
 
         $this->defaultMessage    = 'Hi %first_name%,<br><br>';
-		$this->defaultMessage 	.= "We have approved your account on  %site_name%.<br>";
-        $this->defaultMessage 	.= "You can now login on %site_url%.<br>";
-        $this->defaultMessage 	.= 'Your username is: %user_name%.<br>';
-		$this->defaultMessage 	.= "If you have not yet setup a password you can do so using this <a href='%login_url%'>link</a>.<br>";
+        $this->defaultMessage     .= "We have approved your account on  %site_name%.<br>";
+        $this->defaultMessage     .= "You can now login on %site_url%.<br>";
+        $this->defaultMessage     .= 'Your username is: %user_name%.<br>';
+        $this->defaultMessage     .= "If you have not yet setup a password you can do so using this <a href='%login_url%'>link</a>.<br>";
         $this->defaultMessage   .= "This link is valid till %valid_till%<br>";
-        $this->defaultMessage 	.= 'If you have any problems, please contact us by replying to this e-mail.';
+        $this->defaultMessage     .= 'If you have any problems, please contact us by replying to this e-mail. ';
     }
 }

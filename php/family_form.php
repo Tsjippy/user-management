@@ -3,89 +3,89 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 //Add availbale partners as default
-add_filter( 'tsjippy_add_form_multi_defaults', __NAMESPACE__.'\addMultiDefault', 10, 3);
-function addMultiDefault($defaultArrayValues, $userId, $formSlug){
-	if($formSlug != 'user_family'){
-		return $defaultArrayValues;
-	}
-	
-	$potentials	= new PotentialFamilyMembers($userId);
+add_filter('tsjippy_add_form_multi_defaults', __NAMESPACE__ . '\addMultiDefault', 10, 3);
+function addMultiDefault($defaultArrayValues, $userId, $formSlug) {
+    if ($formSlug != 'user_family') {
+        return $defaultArrayValues;
+    }
 
-	$potentials->potentialParents();
-	$defaultArrayValues['Potential fathers'] 	= $potentials->potentialFathers;
-	$defaultArrayValues['Potential mothers'] 	= $potentials->potentialMothers;
-	$defaultArrayValues['Potential spouses']	= $potentials->potentialSpouses();
-	$defaultArrayValues['Potential children']	= $potentials->potentialChildren();
-	
-	return $defaultArrayValues;
+    $potentials    = new PotentialFamilyMembers($userId);
+
+    $potentials->potentialParents();
+    $defaultArrayValues['Potential fathers']     = $potentials->potentialFathers;
+    $defaultArrayValues['Potential mothers']     = $potentials->potentialMothers;
+    $defaultArrayValues['Potential spouses']    = $potentials->potentialSpouses();
+    $defaultArrayValues['Potential children']    = $potentials->potentialChildren();
+
+    return $defaultArrayValues;
 }
 
 //Save family picture
-add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__.'\beforeSavingFormData', 10, 2);
-function beforeSavingFormData($submission, $object){
-	if($object->formData->slug != 'user_family'){
-		return $submission;
-	}
+add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingFormData', 10, 2);
+function beforeSavingFormData($submission, $object) {
+    if ($object->formData->slug != 'user_family') {
+        return $submission;
+    }
 
-	$userId	= $object->userId;
+    $userId    = $object->userId;
 
-	$family = new TSJIPPY\FAMILY\Family();
+    $family = new TSJIPPY\FAMILY\Family();
 
-	// Family Picture
-	$newPicture	= sanitize_text_field( wp_unslash( $_POST['family_picture']));
-	$oldPicture	= $family->getFamilyMeta($userId, 'family_picture');
-	if($newPicture != $oldPicture){
-		// Do not show in picture gallery
-		update_post_meta($newPicture, 'gallery_visibility', 'hide' );
+    // Family Picture
+    $newPicture    = sanitize_text_field(wp_unslash($_POST['family_picture']));
+    $oldPicture    = $family->getFamilyMeta($userId, 'family_picture');
+    if ($newPicture != $oldPicture) {
+        // Do not show in picture gallery
+        update_post_meta($newPicture, 'gallery_visibility', 'hide');
 
-		do_action('tsjippy_update_family_picture', $userId, $newPicture);
-	}
+        do_action('tsjippy_update_family_picture', $userId, $newPicture);
+    }
 
-	return $submission;
+    return $submission;
 }
 
 // add a family member modal
-add_filter('tsjippy_before_form', __NAMESPACE__.'\beforeForm', 10, 2);
-function beforeForm($html, $formSlug){
-	if($formSlug != 'user_family'){
-		return $html;
-	}
-	
-	if(isset($_GET['user-id'])){
-		$lastname = get_userdata($_GET['user-id'])->last_name;
-	}else{
-		$lastname = wp_get_current_user()->last_name;
-	}
+add_filter('tsjippy_before_form', __NAMESPACE__ . '\beforeForm', 10, 2);
+function beforeForm($html, $formSlug) {
+    if ($formSlug != 'user_family') {
+        return $html;
+    }
 
-	ob_start();
-		
-	?>
-	<div id='add-account-modal' class="modal hidden">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<form action="" method="post" id="add-member-form">
-				<p>Please fill in the form to create a user profile for a family member</p>
-								
-				<label>
-					<h4>First name</h4>
-					<input type="text"  class='wide' name="first-name">
-				</label>
-				
-				<label>
-					<h4>Last name</h4>
-					<input type="text" name="last-name"  class='wide' value="<?php echo esc_attr($lastname);?>">
-				</label>
-				
-				<label>
-					<h4>E-mail</h4>
-					<input type="email"  class='wide' name="email">
-				</label>
-				
-				<?php TSJIPPY\addSaveButton('adduseraccount', 'Add family member');?>
-			</form>
-		</div>
-	</div>
-	<?php
+    if (isset($_GET['user-id'])) {
+        $lastname = get_userdata($_GET['user-id'])->last_name;
+    }else{
+        $lastname = wp_get_current_user()->last_name;
+    }
 
-	return $html.ob_get_clean();
+    ob_start();
+
+    ?>
+    <div id='add-account-modal' class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form action="" method="post" id="add-member-form">
+                <p>Please fill in the form to create a user profile for a family member</p>
+
+                <label>
+                    <h4>First name</h4>
+                    <input type="text"  class='wide' name="first-name">
+                </label>
+
+                <label>
+                    <h4>Last name</h4>
+                    <input type="text" name="last-name"  class='wide' value="<?php echo esc_attr($lastname);?>">
+                </label>
+
+                <label>
+                    <h4>E-mail</h4>
+                    <input type="email"  class='wide' name="email">
+                </label>
+
+                <?php TSJIPPY\addSaveButton('adduseraccount', 'Add family member');?>
+            </form>
+        </div>
+    </div>
+    <?php
+
+    return $html.ob_get_clean();
 }

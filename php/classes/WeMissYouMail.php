@@ -19,7 +19,7 @@ class WeMissYouMail extends ADMIN\MailSetting{
      */
     public function __construct($user, $lastLogin='') {
         // call parent constructor
-		parent::__construct('miss_you', PLUGINSLUG);
+        parent::__construct('miss_you', PLUGINSLUG);
 
         $this->addUser($user);
 
@@ -29,6 +29,6 @@ class WeMissYouMail extends ADMIN\MailSetting{
 
         $this->defaultMessage    = 'Hi %first_name%,<br><br>';
         $this->defaultMessage    = "We miss you! We haven't seen you since %lastlogin%<br>";
-        $this->defaultMessage 	.= 'Please pay us a visit on <a href="%site_url%">%site_name%</a><br>';
+        $this->defaultMessage     .= 'Please pay us a visit on <a href="%site_url%">%site_name%</a><br>';
     }
 }

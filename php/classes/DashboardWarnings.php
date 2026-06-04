@@ -7,7 +7,7 @@ class DashboardWarnings{
     public $reminderHtml;
     public $userId;
 
-    public function __construct($userId){
+    public function __construct($userId) {
         $this->reminderCount    = 0;
         $this->reminderHtml     = '';
         $this->userId           = $userId;
