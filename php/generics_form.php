@@ -1,11 +1,14 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 
 // Adds userdata to the user metadata
 add_filter('tsjippy_forms_load_userdata', __NAMESPACE__ . '\loadUserData', 10, 2);
-function loadUserData($usermeta,$userId) {
+function loadUserData($usermeta, $userId)
+{
     $userdata    = (array)get_userdata($userId)->data;
 
     //Change ID to user-id because its a confusing name
@@ -17,7 +20,8 @@ function loadUserData($usermeta,$userId) {
 
 // phonenumbers and more
 add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingData', 10, 2);
-function beforeSavingData($submission, $object) {
+function beforeSavingData($submission, $object)
+{
     if ($object->formData->slug != 'user_generics') {
         return $submission;
     }
@@ -41,7 +45,7 @@ function beforeSavingData($submission, $object) {
     $oldPhonenumbers    = (array)get_user_meta($object->userId, 'phonenumbers', true);
     $newPhonenumbers    = $_POST['phonenumbers'];
     $changedNumbers        = array_diff($newPhonenumbers, $oldPhonenumbers);
-    foreach ($changedNumbers as $key=>$changedNumber) {
+    foreach ($changedNumbers as $key => $changedNumber) {
         // Make sure the phonenumber is in the right format
         # = should be +
         if ($changedNumber[0] == '=') {
@@ -50,17 +54,17 @@ function beforeSavingData($submission, $object) {
 
         # 00 should be +
         if (substr($changedNumber, 0, 2) == '00') {
-            $changedNumber = $submission->phonenumbers[$key]    = '+' .substr($changedNumber, 2);
+            $changedNumber = $submission->phonenumbers[$key]    = '+' . substr($changedNumber, 2);
         }
 
         # 0 should be +234
         if ($changedNumber[0] == '0') {
-            $changedNumber = $submission->phonenumbers[$key]    = '+234' .substr($changedNumber, 1);
+            $changedNumber = $submission->phonenumbers[$key]    = '+234' . substr($changedNumber, 1);
         }
 
         # Should start with + by now
         if ($changedNumber[0] != '+') {
-            $changedNumber = $submission->phonenumbers[$key]    = '+234' .$changedNumber;
+            $changedNumber = $submission->phonenumbers[$key]    = '+234' . $changedNumber;
         }
 
         do_action('tsjippy-phonenumber-updated', $changedNumber, $object->userId);
@@ -76,13 +80,14 @@ function beforeSavingData($submission, $object) {
 
 //Add ministry modal
 add_filter('tsjippy_before_form', __NAMESPACE__ . '\beforeGenericsForm', 10, 2);
-function beforeGenericsForm($html, $formSlug) {
+function beforeGenericsForm($html, $formSlug)
+{
     if ($formSlug != 'user_generics') {
         return $html;
     }
 
     ob_start();
-    ?>
+?>
     <div id="add-ministry-modal" class="modal hidden">
         <div class="modal-content">
             <span id="modal-close" class="close">&times;</span>
@@ -109,13 +114,13 @@ function beforeGenericsForm($html, $formSlug) {
                     <input type="text" class="longitude wide" name="location[longitude]">
                 </label>
 
-                <?php TSJIPPY\addSaveButton('add_ministry','Add ministry page'); ?>
+                <?php TSJIPPY\addSaveButton('add_ministry', 'Add ministry page'); ?>
             </form>
         </div>
     </div>
-    <?php
+<?php
 
-    return $html.ob_get_clean();
+    return $html . ob_get_clean();
 }
 
 /**
@@ -123,16 +128,17 @@ function beforeGenericsForm($html, $formSlug) {
  *
  * @return    array    Ministries list
  */
-function getMinistries() {
+function getMinistries()
+{
     $categories    = get_categories(array(
         'taxonomy'    => 'locations',
         'parent'      => get_term_by('name', 'Ministries', 'locations')->term_id
-   ));
+    ));
 
     $ministries = [];
 
     foreach ($categories as $category) {
-        $url    = "<a href='" .get_category_link($category). "'>$category->name</a>";
+        $url    = "<a href='" . get_category_link($category) . "'>$category->name</a>";
 
         //Get all pages describing a ministry of this category
         $ministryPages = get_posts([
@@ -145,11 +151,11 @@ function getMinistries() {
                     'taxonomy'    => 'locations',
                     'field'     => 'term_id',
                     'terms'     => $category->term_id
-               )
-           )
+                )
+            )
         ]);
 
-        foreach ( $ministryPages as $ministryPage) {
+        foreach ($ministryPages as $ministryPage) {
             // do not show the main page of the category in th elist
             if ($ministryPage->post_title == $category->name) {
                 continue;
@@ -170,72 +176,73 @@ function getMinistries() {
  *
  * @return    srtring                html
  */
-function displayMinistryPositions($userId) {
+function displayMinistryPositions($userId)
+{
     $userMinistries     = (array)get_user_meta($userId, "jobs", true);
 
     ob_start();
-    ?>
+?>
     <div id="ministries-list" name='display-ministry-positions-php'>
         <ul style='margin-left:0px;'>
             <?php
             //Retrieve all the ministries from the database
-            foreach (getMinistries() as $url=>$ministries) {
-                ?>
+            foreach (getMinistries() as $url => $ministries) {
+            ?>
                 <li style="list-style-type: none" class="page_item page-item-204 page_item_has_children">
-                    <?php echo esc_url($url);?>
+                    <?php echo esc_url($url); ?>
                     <button class="button small expand-children" type='button' style='font-size: 8px;'>▼</button>
                     <ul class='children'>
                         <?php
-                        foreach ($ministries as $pageId=>$ministry) {
+                        foreach ($ministries as $pageId => $ministry) {
                             //Check which option should be a checked ministry
                             if (!empty($userMinistries[$pageId])) {
                                 $checked    = 'checked="checked"';
                                 $class        = '';
                                 $position    = $userMinistries[$pageId];
-                            }else{
+                            } else {
                                 $checked    = '';
                                 $class        = 'hidden';
                                 $position    = "";
                             }
                             //Add the ministries as options to the checkbox
-                            ?>
+                        ?>
                             <li style="list-style-type: none">
                                 <label>
-                                    <input type='checkbox' class='ministry-option-checkbox' name='ministries[]' value='<?php echo esc_attr($pageId);?>' <?php echo $checked;?>>
-                                    <span class='option-label'><?php echo $ministry;?></span>
+                                    <input type='checkbox' class='ministry-option-checkbox' name='ministries[]' value='<?php echo esc_attr($pageId); ?>' <?php echo $checked; ?>>
+                                    <span class='option-label'><?php echo $ministry; ?></span>
                                 </label>
-                                <label class='ministryposition <?php echo esc_attr($class);?>' style='display:block;'>
-                                    <h4 class='label-text'>Position at <?php echo $ministry;?>:</h4>
-                                    <input type='text' name='jobs[<?php echo esc_attr($pageId);?>]' value='<?php echo $position;?>'>
+                                <label class='ministryposition <?php echo esc_attr($class); ?>' style='display:block;'>
+                                    <h4 class='label-text'>Position at <?php echo $ministry; ?>:</h4>
+                                    <input type='text' name='jobs[<?php echo esc_attr($pageId); ?>]' value='<?php echo $position; ?>'>
                                     <?php
                                     if ($ministry == "Other") {
-                                        ?>
+                                    ?>
                                         <p>Is your ministry not listed? Just add it! <button type='button' class='button' id='add-ministry-button'>Add Ministry</button></p>
-                                        <?php
+                                    <?php
                                     }
                                     ?>
                                 </label>
                             </li>
-                            <?php
+                        <?php
                         }
-                    ?>
+                        ?>
                     </ul>
                 </li>
-                <?php
+            <?php
             }
             ?>
         </ul>
     </div>
 
     <script>
-        document.addEventListener('click', ev=>{
+        document.addEventListener('click', ev => {
             if (ev.target.matches(' .expand-children')) {
                 ev.stopImmediatePropagation();
                 ev.target.closest('li').querySelector(' .children').classList.toggle('hidden');
             }
         });
     </script>
-    <?php
+<?php
 
     return ob_get_clean();
 }

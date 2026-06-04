@@ -1,9 +1,12 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 use TSJIPPY\ADMIN;
 
-class AccountCreatedMail extends ADMIN\MailSetting{
+class AccountCreatedMail extends ADMIN\MailSetting
+{
 
     public \WP_User $user;
     public string $loginUrl;
@@ -17,7 +20,8 @@ class AccountCreatedMail extends ADMIN\MailSetting{
      *
      * @return void
      */
-    public function __construct($user, $loginUrl='', $validTill='') {
+    public function __construct($user, $loginUrl = '', $validTill = '')
+    {
         // call parent constructor
         parent::__construct('account_created', PLUGINSLUG);
 

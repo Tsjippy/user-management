@@ -1,12 +1,15 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 add_action('rest_api_init', __NAMESPACE__ . '\blockRestApiInit');
-function blockRestApiInit() {
+function blockRestApiInit()
+{
     // show reminders
     register_rest_route(
-        RESTAPIPREFIX. '/usermanagement',
+        RESTAPIPREFIX . '/usermanagement',
         '/show_reminders',
         array(
             'methods'                 => 'GET',
@@ -14,6 +17,6 @@ function blockRestApiInit() {
             'permission_callback'     => function () {
                 return current_user_can('read');
             },
-       )
-   );
+        )
+    );
 }

@@ -1,15 +1,19 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 add_action('init', __NAMESPACE__ . '\init');
-function init() {
+function init()
+{
     add_image_size('avatar', 50, 50, true);
 }
 
 
 add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingPictureFormData', 10, 2);
-function beforeSavingPictureFormData($submission, $object) {
+function beforeSavingPictureFormData($submission, $object)
+{
     if ($object->formData->slug != 'profile_picture') {
         return $submission;
     }
@@ -31,7 +35,8 @@ function beforeSavingPictureFormData($submission, $object) {
  *
  * @return    string                The url
  */
-function getProfilePictureUrl($userId, $size='avatar') {
+function getProfilePictureUrl($userId, $size = 'avatar')
+{
     $attachmentId    = (array)get_user_meta($userId, 'profile_picture', true);
 
     $url            = false;
@@ -49,7 +54,8 @@ function getProfilePictureUrl($userId, $size='avatar') {
  *
  * @return    string|false        The path or false if no picture
  */
-function getProfilePicturePath($userId) {
+function getProfilePicturePath($userId)
+{
     $attachmentId    = get_user_meta($userId, 'profile_picture', true);
     $path            = false;
     if (is_numeric($attachmentId)) {
@@ -65,30 +71,30 @@ function getProfilePicturePath($userId) {
 }
 
 // Apply filter
-add_filter('get_avatar' , __NAMESPACE__ . '\getAvatar', 1 , 5);
-function getAvatar($avatar, $idOrEmail, $size, $default, $alt) {
+add_filter('get_avatar', __NAMESPACE__ . '\getAvatar', 1, 5);
+function getAvatar($avatar, $idOrEmail, $size, $default, $alt)
+{
     $user = false;
 
     //Check if an, id, email or user is given
-    if ( is_numeric($idOrEmail)) {
+    if (is_numeric($idOrEmail)) {
         $id = (int) $idOrEmail;
-        $user = get_user_by('id' , $id);
-
-    } elseif ( is_object($idOrEmail)) {
-        if ( ! empty($idOrEmail->user_id)) {
+        $user = get_user_by('id', $id);
+    } elseif (is_object($idOrEmail)) {
+        if (! empty($idOrEmail->user_id)) {
             $id = (int) $idOrEmail->user_id;
-            $user = get_user_by('id' , $id);
+            $user = get_user_by('id', $id);
         }
     } else {
         $user = get_user_by('email', $idOrEmail);
     }
 
     //If we have valid user, return there profile picture or the default
-    if ( $user && is_object($user)) {
+    if ($user && is_object($user)) {
         //Get profile picture id from db
         $url = getProfilePictureUrl($user->ID);
-        if ( empty($url)) {
-            $url = TSJIPPY\pathToUrl(PLUGINPATH. 'pictures/usericon.png');
+        if (empty($url)) {
+            $url = TSJIPPY\pathToUrl(PLUGINPATH . 'pictures/usericon.png');
         }
         $avatar = "<img alt='$alt' src='$url' loading='lazy' class='avatar avatar-{$size} photo' height='$size' width='$size' />";
     }

@@ -1,5 +1,7 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 /**
@@ -20,7 +22,7 @@ use TSJIPPY;
  *
  * @author Ewald Harmsen
  */
-if ( ! defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
@@ -31,7 +33,7 @@ define(__NAMESPACE__ . '\PLUGIN', plugin_basename(__FILE__));
 define(__NAMESPACE__ . '\PLUGINPATH', __DIR__ . '/');
 define(__NAMESPACE__ . '\PLUGINVERSION', get_plugin_data(__FILE__, false, false)['Version']);
 define(__NAMESPACE__ . '\PLUGINSLUG', str_replace('tsjippy-', '', basename(__FILE__, ' .php')));
-define(__NAMESPACE__ . '\SETTINGS', get_option('tsjippy_' .PLUGINSLUG. '_settings', []));
+define(__NAMESPACE__ . '\SETTINGS', get_option('tsjippy_' . PLUGINSLUG . '_settings', []));
 
 // run right before activation
 register_activation_hook(__FILE__, function () {
@@ -52,7 +54,7 @@ register_activation_hook(__FILE__, function () {
     // Create pending users page
     $settings['pending-users-page']     = TSJIPPY\ADMIN\createDefaultPage('Pending user accounts', '[pending_user]');
 
-    update_option('tsjippy_' .PLUGINSLUG. '_settings', $settings);
+    update_option('tsjippy_' . PLUGINSLUG . '_settings', $settings);
 
     /**
      * Import the forms
@@ -65,7 +67,7 @@ register_activation_hook(__FILE__, function () {
     }
 
     // add the last logindate for existing users
-    foreach (get_users(['meta_key' => 'last_login_date','meta_compare'  => 'NOT EXISTS']) as $user) {
+    foreach (get_users(['meta_key' => 'last_login_date', 'meta_compare'  => 'NOT EXISTS']) as $user) {
         update_user_meta($user->ID, 'last_login_date', gmdate('Y-m-d'));
     }
 
@@ -83,7 +85,7 @@ register_activation_hook(__FILE__, function () {
             'rolemanagement',
             'Role Manager',
             $roleSet
-       );
+        );
     }
 
     if (!wp_roles()->is_role('usermanagement')) {
@@ -97,7 +99,7 @@ register_activation_hook(__FILE__, function () {
             'usermanagement',
             'User Manager',
             $roleSet
-       );
+        );
     }
 });
 
@@ -116,4 +118,3 @@ register_deactivation_hook(__FILE__, function () {
     wp_clear_scheduled_hook('check-details-mail_action');
     wp_clear_scheduled_hook('check_last_login_date_action');
 });
-

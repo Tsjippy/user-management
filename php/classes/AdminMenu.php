@@ -1,15 +1,18 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 use function TSJIPPY\addElement;
 use function TSJIPPY\addRawHtml;
 
-if ( ! defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
-class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
+class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
+{
 
     /**
      * AdminMenu constructor.
@@ -17,11 +20,13 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
      * @param array $settings The settings for the plugin
      * @param string $name The name of the plugin
      */
-    public function __construct($settings, $name) {
+    public function __construct($settings, $name)
+    {
         parent::__construct($settings, $name);
     }
 
-    public function settings($parent) {
+    public function settings($parent)
+    {
         $label  = addElement('label', $parent, [], 'Enable temporary user accounts');
 
         addElement(
@@ -35,7 +40,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             ],
             '',
             'afterBegin'
-       );
+        );
 
         addElement('br', $parent);
 
@@ -69,12 +74,13 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
                 $attributes,
                 '',
                 'afterBegin'
-           );
+            );
         }
         return true;
     }
 
-    public function emails($parent) {
+    public function emails($parent)
+    {
         $tab      = 'account-approved-email';
         if (isset($_GET['second-tab'])) {
             $tab  = sanitize_key(wp_unslash($_GET['second-tab']));
@@ -101,8 +107,8 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
         }
 
         ob_start();
-        ?>
-        <div id="account-approved-email" class="tabcontent <?php echo $tab != 'account-approved-email' ? 'hidden' : '';?>">
+?>
+        <div id="account-approved-email" class="tabcontent <?php echo $tab != 'account-approved-email' ? 'hidden' : ''; ?>">
             <h4>E-mail to people who's account is just approved</h4>
             <label>Define the e-mail people get when they are added to the website</label>
             <?php
@@ -112,7 +118,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             ?>
         </div>
 
-        <div id="account-created-email" class="tabcontent <?php echo $tab != 'account-created-email' ? 'hidden' : '';?>">
+        <div id="account-created-email" class="tabcontent <?php echo $tab != 'account-created-email' ? 'hidden' : ''; ?>">
             <h4>E-mail to people who's account is just created</h4>
             <label>Define the e-mail people get when they are added to the website</label>
             <?php
@@ -122,7 +128,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             ?>
         </div>
 
-        <div id="account-will-expired-email" class="tabcontent <?php echo $tab != 'account-will-expired-email' ? 'hidden' : '';?>">
+        <div id="account-will-expired-email" class="tabcontent <?php echo $tab != 'account-will-expired-email' ? 'hidden' : ''; ?>">
             <h4>E-mail to people who's account is about to expire</h4>
             <label>Define the e-mail people get when they are about to be removed from the website</label>
             <?php
@@ -132,7 +138,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             ?>
         </div>
 
-        <div id="account-deleted-email" class="tabcontent <?php echo $tab != 'account-deleted-email' ? 'hidden' : '';?>">
+        <div id="account-deleted-email" class="tabcontent <?php echo $tab != 'account-deleted-email' ? 'hidden' : ''; ?>">
             <h4>E-mail to people who's account is deleted</h4>
             <label>Define the e-mail people get when they are removed from the website</label>
             <?php
@@ -142,7 +148,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             ?>
         </div>
 
-        <div id="not-seen-email" class="tabcontent <?php echo $tab != 'not-seen-email' ? 'hidden' : '';?>">
+        <div id="not-seen-email" class="tabcontent <?php echo $tab != 'not-seen-email' ? 'hidden' : ''; ?>">
             <h4>E-mail to people who have not logged in for more than a year</h4>
             <label>Define the e-mail people get when they have not logged into the website for more than a year</label>
             <?php
@@ -151,19 +157,21 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
             $weMissYouMail->printInputs();
             ?>
         </div>
-        <?php
+<?php
 
         addRawHtml(ob_get_clean(), $parent);
 
         return true;
     }
 
-    public function data($parent='') {
+    public function data($parent = '')
+    {
 
         return false;
     }
 
-    public function functions($parent) {
+    public function functions($parent)
+    {
 
         return false;
     }
@@ -171,15 +179,17 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu{
     /**
      * Function to do extra actions from $_POST data. Overwrite if needed
      */
-    public function postActions() {
+    public function postActions()
+    {
         return '';
     }
 
     /**
      * Schedules the tasks for this plugin
      *
-    */
-    public function postSettingsSave() {
+     */
+    public function postSettingsSave()
+    {
         scheduleTasks();
     }
 }

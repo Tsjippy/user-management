@@ -1,5 +1,7 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 /**
@@ -10,7 +12,8 @@ use TSJIPPY;
  *
  * @return    string                The dashboard html
  */
-function showDashboard($userId, $admin=false) {
+function showDashboard($userId, $admin = false)
+{
     if (!is_numeric($userId)) {
         return "<p>Invalid user id $userId</p>";
     }
@@ -23,7 +26,7 @@ function showDashboard($userId, $admin=false) {
 
     if ($admin) {
         $loginCount = get_user_meta($userId, 'login_count', true);
-        $lastLogin    = get_user_meta($userId, 'last_login_date',true);
+        $lastLogin    = get_user_meta($userId, 'last_login_date', true);
 
         if (is_numeric($loginCount)) {
             $timeString     = strtotime($lastLogin);
@@ -32,7 +35,7 @@ function showDashboard($userId, $admin=false) {
             }
 
             $message = "$firstName has logged in $loginCount times.<br>Last login was $lastLogin. ";
-        }else{
+        } else {
             $message = "$firstName has never logged in.<br>";
         }
 
@@ -42,7 +45,7 @@ function showDashboard($userId, $admin=false) {
 
     echo "<p>Hello $firstName</p>";
 
-    ?>
+?>
     <div id="warnings">
         <?php
         do_action('tsjippy_dashboard_warnings', $userId, $admin);
@@ -54,52 +57,52 @@ function showDashboard($userId, $admin=false) {
     ?>
 
     <div id="ministrywarnings">
-        <?php
-        //Show warning about out of date ministry pages
-        $ministryPages = get_pages([
-            'meta_key'         => 'icon_id',
-            'meta_value'       => $MinistrieIconID
-        ]);
+    <?php
+    //Show warning about out of date ministry pages
+    $ministryPages = get_pages([
+        'meta_key'         => 'icon_id',
+        'meta_value'       => $MinistrieIconID
+    ]);
 
-        $warningHtml    = '';
-        //Loop over all the pages
-        foreach ( $ministryPages as $ministryPage) {
-            //Get the ID of the current page
-            $postId        = $ministryPage->ID;
-            $postTitle    = $ministryPage->post_title;
+    $warningHtml    = '';
+    //Loop over all the pages
+    foreach ($ministryPages as $ministryPage) {
+        //Get the ID of the current page
+        $postId        = $ministryPage->ID;
+        $postTitle    = $ministryPage->post_title;
 
-            //Get the last modified date
-            $date1        = date_create($ministryPage->post_modified);
-            $today        = date_create('now');
+        //Get the last modified date
+        $date1        = date_create($ministryPage->post_modified);
+        $today        = date_create('now');
 
-            //days since last modified
-            $pageAge    = date_diff($date1,$today);
-            $pageAge     = $pageAge->format("%a");
+        //days since last modified
+        $pageAge    = date_diff($date1, $today);
+        $pageAge     = $pageAge->format("%a");
 
-            //Get the first warning parameter and convert to days
-            $days         = TSJIPPY\FRONTENDPOSTING\SETTINGS['max-page-age'] ?? 1 * 30;
+        //Get the first warning parameter and convert to days
+        $days         = TSJIPPY\FRONTENDPOSTING\SETTINGS['max-page-age'] ?? 1 * 30;
 
-            //If the page is not modified since the parameter
-            if ($pageAge > $days) {
-                //Get the edit page url
-                $url            = get_permalink(SETTINGS['front-end-post-page'] , '');
-                if (!$url) {
-                    $url     = '';
-                }
-                $url            = add_query_arg(['post-id' => $postId], $url);
-
-                $warningHtml     .= "<li><a href='$url'>$postTitle</a></li>";
+        //If the page is not modified since the parameter
+        if ($pageAge > $days) {
+            //Get the edit page url
+            $url            = get_permalink(SETTINGS['front-end-post-page'], '');
+            if (!$url) {
+                $url     = '';
             }
+            $url            = add_query_arg(['post-id' => $postId], $url);
+
+            $warningHtml     .= "<li><a href='$url'>$postTitle</a></li>";
         }
-        if (!empty($warningHtml)) {
-            echo "<h3>Notice</h3>";
-            echo "<p>";
-                echo "Please update these pages:<br>";
-                echo "<ul>";
-                    echo $warningHtml;
-                echo "</ul>";
-            echo"</p>";
-        }
+    }
+    if (!empty($warningHtml)) {
+        echo "<h3>Notice</h3>";
+        echo "<p>";
+        echo "Please update these pages:<br>";
+        echo "<ul>";
+        echo $warningHtml;
+        echo "</ul>";
+        echo "</p>";
+    }
     echo '</div>';
 
     return ob_get_clean();

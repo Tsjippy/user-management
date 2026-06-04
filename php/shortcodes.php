@@ -1,39 +1,43 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 //Shortcode for the dashboard
 add_action('tsjippy_dashboard_warnings', __NAMESPACE__ . '\dashboardWarnings', 20);
-function dashboardWarnings($userId) {
+function dashboardWarnings($userId)
+{
     $dashboardWarnings    = new DashboardWarnings($userId);
 
     if (!empty($dashboardWarnings->reminderHtml)) {
         $text    = 'Reminders';
 
         if ($dashboardWarnings->reminderCount < 2) {
-            $dashboardWarnings->reminderHtml = str_replace(['</li>','<li>'], '', $dashboardWarnings->reminderHtml);
+            $dashboardWarnings->reminderHtml = str_replace(['</li>', '<li>'], '', $dashboardWarnings->reminderHtml);
             $text    = 'Reminder';
-        }else{
+        } else {
             //$dashboardWarnings->reminderHtml = str_replace(['</li>','<li>'], '', $dashboardWarnings->reminderHtml);
         }
 
-        ?>
+?>
         <div id=reminders>
-            <h3 class='frontpage'><?php echo $text;?></h3>
+            <h3 class='frontpage'><?php echo $text; ?></h3>
             <p>
-                <?php echo $dashboardWarnings->reminderHtml;?>
+                <?php echo $dashboardWarnings->reminderHtml; ?>
             </p>
         </div>
-        <?php
+    <?php
     }
 }
 
 //Shortcode for expiry warnings
 add_shortcode("expiry_warnings", __NAMESPACE__ . '\expiryWarnings');
-function expiryWarnings() {
+function expiryWarnings()
+{
     if (!empty($_GET["user-id"]) && is_numeric($_GET["user-id"]) && in_array('usermanagement', wp_get_current_user()->roles)) {
         $userId    = $_GET["user-id"];
-    }else{
+    } else {
         $userId = get_current_user_id();
     }
 
@@ -49,20 +53,21 @@ function expiryWarnings() {
 
     $html = '<h3 class="frontpage">';
     if ($dashboardWarnings->reminderCount > 1) {
-        $html             .= 'Reminders</h3><p>' .$dashboardWarnings->reminderHtml;
-    }else{
+        $html             .= 'Reminders</h3><p>' . $dashboardWarnings->reminderHtml;
+    } else {
         $dashboardWarnings->reminderHtml     = str_replace(['</li>', '<li>'], '', $dashboardWarnings->reminderHtml);
-        $html             .= 'Reminder</h3><p>' .$dashboardWarnings->reminderHtml;
+        $html             .= 'Reminder</h3><p>' . $dashboardWarnings->reminderHtml;
     }
 
     return  "<div id=reminders>$html</p></div>";
 }
 
 add_shortcode("userstatistics", __NAMESPACE__ . '\userStatistics');
-function userStatistics() {
+function userStatistics()
+{
 
     add_filter('post-edit-button', function ($buttonHtml, $post, $content) {
-        return $buttonHtml. "<form style='display: inline-block;' action='' method='post'><button class='button small' name='getlist' value=1>Get Contact List</button></form>";
+        return $buttonHtml . "<form style='display: inline-block;' action='' method='post'><button class='button small' name='getlist' value=1>Get Contact List</button></form>";
     }, 10, 3);
 
     if (isset($_REQUEST['getlist'])) {
@@ -100,15 +105,15 @@ function userStatistics() {
             <tbody>
                 <?php
                 foreach ($users as $user) {
-                    $loginCount= get_user_meta($user->ID,'login_count',true);
+                    $loginCount = get_user_meta($user->ID, 'login_count', true);
                     if (!is_numeric(($loginCount))) {
                         $loginCount = 0;
                     }
 
-                    $lastLoginDate    = get_user_meta($user->ID,'last_login_date',true);
+                    $lastLoginDate    = get_user_meta($user->ID, 'last_login_date', true);
                     if (empty($lastLoginDate)) {
                         $lastLoginDate    = 'Never';
-                    }else{
+                    } else {
                         $timeString     = strtotime($lastLoginDate);
                         if ($timeString) {
                             $lastLoginDate = gmdate('d F Y', $timeString);
@@ -118,24 +123,24 @@ function userStatistics() {
                     $picture = TSJIPPY\displayProfilePicture($user->ID);
 
                     echo "<tr class='table-row'>";
-                        echo "<td>$picture <a href='$baseUrl/?user-id=$user->ID'>{$user->display_name}</a></td>";
-                        echo "<td>$loginCount</td>";
-                        echo "<td>$lastLoginDate</td>";
-                        if (function_exists('TSJIPPY\MANDATORY\mustReadDocuments')) {
-                            echo "<td>" .TSJIPPY\MANDATORY\mustReadDocuments($user->ID,true). "</td>";
-                        }
-                        echo "<td>";
-                        foreach ($user->roles as $role) {
-                            echo $role. '<br>';
-                        }
-                        echo "</td>";
-                        echo "<td>" .get_user_meta($user->ID,'account_validity',true). "</td>";
+                    echo "<td>$picture <a href='$baseUrl/?user-id=$user->ID'>{$user->display_name}</a></td>";
+                    echo "<td>$loginCount</td>";
+                    echo "<td>$lastLoginDate</td>";
+                    if (function_exists('TSJIPPY\MANDATORY\mustReadDocuments')) {
+                        echo "<td>" . TSJIPPY\MANDATORY\mustReadDocuments($user->ID, true) . "</td>";
+                    }
+                    echo "<td>";
+                    foreach ($user->roles as $role) {
+                        echo $role . '<br>';
+                    }
+                    echo "</td>";
+                    echo "<td>" . get_user_meta($user->ID, 'account_validity', true) . "</td>";
                     echo "</tr>";
                 }
                 ?>
             </tbody>
         </table>
     </div>
-    <?php
+<?php
     return ob_get_clean();
 }

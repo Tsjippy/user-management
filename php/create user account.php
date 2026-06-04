@@ -1,23 +1,26 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 //Shortcode for adding user accounts
 add_shortcode('create_user_account', __NAMESPACE__ . '\createUserAccountForm');
-function createUserAccountForm() {
+function createUserAccountForm()
+{
     wp_enqueue_script('tsjippy_user_management');
 
     $user = wp_get_current_user();
-    if ( in_array('usermanagement', $user->roles)) {
+    if (in_array('usermanagement', $user->roles)) {
         ob_start();
-        ?>
+?>
         <div class="tabcontent">
             <form class='tsjippy-form' data-reset="true">
                 <p>Please fill in the form to create an user account</p>
 
                 <label>
                     <h4>First name<span class="required">*</span></h4>
-                    <input type="text"  class='wide' name="first-name" value="" required>
+                    <input type="text" class='wide' name="first-name" value="" required>
                 </label>
 
                 <label>
@@ -49,18 +52,19 @@ function createUserAccountForm() {
                 ?>
             </form>
         </div>
-        <?php
+<?php
 
         return ob_get_clean();
-    }else{
+    } else {
         return "You have no permission to see this";
     }
 }
 
 //Shortcode to display the pending user accounts
 add_shortcode('pending_user', __NAMESPACE__ . '\pendingUsers');
-function pendingUsers() {
-    if ( !current_user_can('edit_others_pages')) {
+function pendingUsers()
+{
+    if (!current_user_can('edit_others_pages')) {
         return "No permission!";
     }
 
@@ -69,9 +73,9 @@ function pendingUsers() {
         //Get user id from url parameter
         $UserId = $_GET['delete_pending_user'];
         //Check if the user account is still pending
-        if (get_user_meta($UserId,'disabled',true) == 'pending') {
+        if (get_user_meta($UserId, 'disabled', true) == 'pending') {
             //Load delete function
-            require_once(ABSPATH. 'wp-admin/includes/user.php');
+            require_once(ABSPATH . 'wp-admin/includes/user.php');
 
             //Delete the account
             $result = wp_delete_user($UserId);
@@ -87,7 +91,7 @@ function pendingUsers() {
         //Get user id from url parameter
         $UserId = $_GET['activate_pending_user'];
         //Check if the user account is still pending
-        if (get_user_meta($UserId,'disabled',true) == 'pending') {
+        if (get_user_meta($UserId, 'disabled', true) == 'pending') {
             //Send welcome-email
             wp_new_user_notification($UserId, null, 'user');
 
@@ -108,25 +112,25 @@ function pendingUsers() {
         'meta_key'     => 'disabled',
         'meta_value'   => 'pending',
         'meta_compare' => '=',
-   ));
+    ));
 
     // Array of WP_User objects.
-    if ( $pendingUsers) {
-        foreach ( $pendingUsers as $pendingUser) {
+    if ($pendingUsers) {
+        foreach ($pendingUsers as $pendingUser) {
             $approveUrl     = add_query_arg('activate_pending_user', $pendingUser->ID);
             $deleteUrl     = add_query_arg('delete_pending_user', $pendingUser->ID);
             $list        .= "<li>$pendingUser->display_name  ($pendingUser->user_email) <a href='$approveUrl'>Approve</a>   <a href='$deleteUrl'>Delete</a></li>";
         }
-    }else{
+    } else {
         return "<p>There are no pending user accounts.</p>";
     }
 
     if (!empty($list)) {
         $html      = "<p>";
-            $html    .= "<strong>Pending user accounts:</strong><br>";
-            $html    .= "<ul>";
-                $html    .= $list;
-            $html    .="</ul>";
+        $html    .= "<strong>Pending user accounts:</strong><br>";
+        $html    .= "<ul>";
+        $html    .= $list;
+        $html    .= "</ul>";
         $html    .= "</p>";
         return $html;
     }
@@ -134,14 +138,15 @@ function pendingUsers() {
 
 //Shortcode to display number of pending user accounts
 add_shortcode('pending_user_icon', __NAMESPACE__ . '\pendingUsersIcon');
-function pendingUsersIcon() {
+function pendingUsersIcon()
+{
     $pendingUsers = get_users(array(
         'meta_key'     => 'disabled',
         'meta_value'   => 'pending',
         'meta_compare' => '=',
-   ));
+    ));
 
     if (count($pendingUsers) > 0) {
-        return '<span class="numberCircle">' .count($pendingUsers). '</span>';
+        return '<span class="numberCircle">' . count($pendingUsers) . '</span>';
     }
 }

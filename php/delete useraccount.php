@@ -1,15 +1,18 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 //Delete user shortcode
 add_shortcode('delete_user', __NAMESPACE__ . '\deleteUser');
-function deleteUser() {
-    require_once(ABSPATH. 'wp-admin/includes/user.php');
+function deleteUser()
+{
+    require_once(ABSPATH . 'wp-admin/includes/user.php');
 
     $user = wp_get_current_user();
 
-    if ( !in_array('usermanagement', $user->roles)) {
+    if (!in_array('usermanagement', $user->roles)) {
         return "<div class='error'>You have no permission to delete user accounts!</div>";
     }
 
@@ -26,11 +29,11 @@ function deleteUser() {
         }
 
         $family         = get_user_meta($userId, "family", true);
-        $nonceString     = 'delete_user_' .$userId. '_nonce';
+        $nonceString     = 'delete_user_' . $userId . '_nonce';
 
         if (!isset($_GET["confirm"])) {
             $html .= askConfirmation($userdata, $nonceString, $family);
-        }elseif ($_GET["confirm"] == "true") {
+        } elseif ($_GET["confirm"] == "true") {
             $html .= removeUserAccount($nonceString, $family, $userdata, $userId);
         }
     }
@@ -40,34 +43,36 @@ function deleteUser() {
     return $html;
 }
 
-function askConfirmation($userdata, $nonceString, $family) {
-    $html    ="<script>";
-        $html    .= "var remove = confirm('Are you sure you want to remove the useraccount for $userdata->display_name?');";
-        $html    .= "if (remove) {";
-            $html    .= "var url=`\${window.location}&$nonceString=" .wp_create_nonce($nonceString). "`;";
-            if (is_array($family) && !empty($family)) {
-                $html    .= "var family = confirm('Do you want to delete all useraccounts for the familymembers of $userdata->display_name as well?');";
-                $html    .= "if (family) {";
-                    $html    .= "window.location = url+'&confirm=true&family=true'";
-                $html    .= "}else{";
-                    $html    .= "window.location = url+'&confirm=true'";
-                $html    .= "}";
-            }else{
-                $html    .= "window.location = url+'&confirm=true'";
-            }
+function askConfirmation($userdata, $nonceString, $family)
+{
+    $html    = "<script>";
+    $html    .= "var remove = confirm('Are you sure you want to remove the useraccount for $userdata->display_name?');";
+    $html    .= "if (remove) {";
+    $html    .= "var url=`\${window.location}&$nonceString=" . wp_create_nonce($nonceString) . "`;";
+    if (is_array($family) && !empty($family)) {
+        $html    .= "var family = confirm('Do you want to delete all useraccounts for the familymembers of $userdata->display_name as well?');";
+        $html    .= "if (family) {";
+        $html    .= "window.location = url+'&confirm=true&family=true'";
+        $html    .= "}else{";
+        $html    .= "window.location = url+'&confirm=true'";
         $html    .= "}";
+    } else {
+        $html    .= "window.location = url+'&confirm=true'";
+    }
+    $html    .= "}";
     $html    .= "</script>";
 
     return $html;
 }
 
-function removeUserAccount($nonceString, $family, $userdata) {
+function removeUserAccount($nonceString, $family, $userdata)
+{
     $html     = '';
     $family = new TSJIPPY\FAMILY\Family();
 
-    if (!isset($_GET[$nonceString]) || !wp_create_nonce($_GET[$nonceString],$nonceString)) {
-        $html .='<div class="error">Invalid nonce! Refresh the page</div>';
-    }else{
+    if (!isset($_GET[$nonceString]) || !wp_create_nonce($_GET[$nonceString], $nonceString)) {
+        $html .= '<div class="error">Invalid nonce! Refresh the page</div>';
+    } else {
         $deletedName = $userdata->display_name;
         if (isset($_GET["family"]) && $_GET["family"] == "true" && is_array($family) && !empty($family)) {
             $deletedName .= " and all the family";
@@ -81,9 +86,9 @@ function removeUserAccount($nonceString, $family, $userdata) {
         wp_delete_user($userdata->ID, 1);
         $html .= "<div class='success'>Useraccount for $deletedName succcesfully deleted.</div>";
         $html .= "<script>";
-            $html .= "setTimeout(function () {";
-                $html .= "window.location = window.location.href.replace('/?user-id=$userdata->ID&delete_user_{$userdata->ID}_nonce=" .$_GET[$nonceString]. "&confirm=true','').replace('&family=true','');";
-            $html .= "}, 3000);";
+        $html .= "setTimeout(function () {";
+        $html .= "window.location = window.location.href.replace('/?user-id=$userdata->ID&delete_user_{$userdata->ID}_nonce=" . $_GET[$nonceString] . "&confirm=true','').replace('&family=true','');";
+        $html .= "}, 3000);";
         $html .= "</script>";
     }
 

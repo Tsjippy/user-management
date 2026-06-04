@@ -1,11 +1,14 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 /**
  * Displays the forms for children
  */
-function showChildrenFields($childId) {
+function showChildrenFields($childId)
+{
     $availableForms        = (array)SETTINGS['enabled-forms'] ?? [];
 
     ob_start();
@@ -13,7 +16,7 @@ function showChildrenFields($childId) {
     $hidden    = '';
     if (in_array('generic', $availableForms)) {
         echo "<button class=' button tablink $active' id='show-generic-child-info-$childId' data-target='generic-child-info-$childId'>Generic info</button>";
-        $active= '';
+        $active = '';
     }
 
     if (in_array('profile picture', $availableForms)) {
@@ -21,18 +24,18 @@ function showChildrenFields($childId) {
     }
 
     if (in_array('generic', $availableForms)) {
-        ?>
-        <div id='generic-child-info-<?php echo esc_attr($childId);?>' class='tabcontent'>
+?>
+        <div id='generic-child-info-<?php echo esc_attr($childId); ?>' class='tabcontent'>
             <?php echo do_shortcode("[formbuilder slug=child_generic user-id=$childId]"); ?>
         </div>
-        <?php
+<?php
 
         $hidden    = 'hidden';
     }
 
     if (in_array('profile picture', $availableForms)) {
         echo    "<div id='profile-picture-child-info-$childId' class='tabcontent $hidden'>";
-            echo do_shortcode("[formbuilder slug=profile_picture user-id='$childId']");
+        echo do_shortcode("[formbuilder slug=profile_picture user-id='$childId']");
         echo    "</div>";
     }
 

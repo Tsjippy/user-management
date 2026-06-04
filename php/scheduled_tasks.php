@@ -1,9 +1,12 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 add_action('init', __NAMESPACE__ . '\taskInit');
-function taskInit() {
+function taskInit()
+{
     //add action for use in scheduled task
     add_action('birthday_check_action', __NAMESPACE__ . '\birthdayCheck');
     add_action('check_details_mail_action', __NAMESPACE__ . '\checkDetailsMail');
@@ -11,7 +14,8 @@ function taskInit() {
     add_action('check_last_login_date_action', __NAMESPACE__ . '\checkLastLoginDate');
 }
 
-function scheduleTasks() {
+function scheduleTasks()
+{
     TSJIPPY\scheduleTask('birthday_check_action', 'daily');
     TSJIPPY\scheduleTask('account_expiry_check_action', 'daily');
     TSJIPPY\scheduleTask('check_last_login_date_action', 'monthly');
@@ -22,7 +26,8 @@ function scheduleTasks() {
     }
 }
 
-function birthdayCheck() {
+function birthdayCheck()
+{
     //Current date time
     $date   = new \DateTime();
 
@@ -31,7 +36,7 @@ function birthdayCheck() {
         'meta_key'     => 'birthday',
         'meta_value'   => $date->format('-m-d'),
         'meta_compare' => 'LIKE',
-   ));
+    ));
 
     foreach ($users as $user) {
         $userId     = $user->ID;
@@ -44,21 +49,21 @@ function birthdayCheck() {
             'tsjippy-user-management-birthday-message',
             "Hi $firstName,\nCongratulations with your birthday!",
             $userId
-       );
+        );
 
         //Send to parents
         if ($family->isChild($userId)) {
             $childTitle = TSJIPPY\getChildTitle($user->ID);
 
-            $message = "Congratulations with the birthday of your $childTitle " .get_userdata($user->ID)->first_name;
+            $message = "Congratulations with the birthday of your $childTitle " . get_userdata($user->ID)->first_name;
         }
 
         foreach ($family->getParents($userId) as $parent) {
             add_action(
                 'tsjippy-user-management-birthday-message',
-                "Hi " .get_userdata($parent)->first_name. ",\n$message",
+                "Hi " . get_userdata($parent)->first_name . ",\n$message",
                 $parent
-           );
+            );
         }
     }
 }
@@ -66,7 +71,8 @@ function birthdayCheck() {
 /**
  * send an e-mail with an overview of an users details for them to check
  */
-function checkDetailsMail() {
+function checkDetailsMail()
+{
 
     $family     = new TSJIPPY\FAMILY\Family();
 
@@ -101,13 +107,13 @@ function checkDetailsMail() {
             $message         .= "This is your profile picture:<br>";
             $message         .= "<img src='$profilePicture' alt='$profilePicture' width='100px' height='100px'";
             $message         .= "<br><br>";
-        }else{
+        } else {
             $message .= "<table>";
-                $message .= "<tr>";
-                    $message .= "<td>";
-                        $message .= "<a href='{$baseUrl}profilePicture' $styleString>You have not uploaded a picture</a>";
-                    $message .= "</td>";
-                $message .= "</tr>";
+            $message .= "<tr>";
+            $message .= "<td>";
+            $message .= "<a href='{$baseUrl}profilePicture' $styleString>You have not uploaded a picture</a>";
+            $message .= "</td>";
+            $message .= "</tr>";
             $message .= "</table>";
         }
         $message .= "<br>";
@@ -117,31 +123,31 @@ function checkDetailsMail() {
          */
         $message .= "<a href='{$baseUrl}generic-info' $styleString><b>Personal details</b></a><br>";
         $message .= "<table>";
-            $message .= "<tr>";
-                $message .= "<td>";
-                    $message .= "Name:";
-                $message .= "</td>";
-                $message .= "<td>";
-                    $message .= "$user->display_name";
-                $message .= "</td>";
-            $message .= "</tr>";
+        $message .= "<tr>";
+        $message .= "<td>";
+        $message .= "Name:";
+        $message .= "</td>";
+        $message .= "<td>";
+        $message .= "$user->display_name";
+        $message .= "</td>";
+        $message .= "</tr>";
 
-            $birthday = get_user_meta($user->ID, 'birthday', true);
-            if (empty($birthday)) {
-                $birthday = 'No birthday specified. ';
-            }else{
-                $birthday = gmdate('d  F Y', strtotime($birthday));
-            }
-            $message .= "<tr>";
-                $message .= "<td>";
-                    $message .= "Birthday:";
-                $message .= "</td>";
-                $message .= "<td>";
-                    $message .= "<a href='{$baseUrl}generic-info#birthday' $styleString>$birthday</a>";
-                $message .= "</td>";
-            $message .= "</tr>";
+        $birthday = get_user_meta($user->ID, 'birthday', true);
+        if (empty($birthday)) {
+            $birthday = 'No birthday specified. ';
+        } else {
+            $birthday = gmdate('d  F Y', strtotime($birthday));
+        }
+        $message .= "<tr>";
+        $message .= "<td>";
+        $message .= "Birthday:";
+        $message .= "</td>";
+        $message .= "<td>";
+        $message .= "<a href='{$baseUrl}generic-info#birthday' $styleString>$birthday</a>";
+        $message .= "</td>";
+        $message .= "</tr>";
 
-            $message    = apply_filters('tsjippy-usermanagement-details-reminder-html', $message, $user, $baseUrl, $styleString);
+        $message    = apply_filters('tsjippy-usermanagement-details-reminder-html', $message, $user, $baseUrl, $styleString);
         $message .= "</table>";
         $message .= "<br>";
 
@@ -151,7 +157,7 @@ function checkDetailsMail() {
         $phonenumbers = (array)get_user_meta($user->ID, 'phonenumbers', true);
         array_filter($phonenumbers);
         $title    = 'Phonenumber';
-        if (count($phonenumbers)>1) {
+        if (count($phonenumbers) > 1) {
             $title .= 's';
         }
 
@@ -159,26 +165,26 @@ function checkDetailsMail() {
         $message .= "<table>";
         if (empty($phonenumbers)) {
             $message .= "<tr>";
-                $message .= "<td>";
-                    $message .= "<a href='{$baseUrl}generic-info#phonenumbers[0]' $styleString>No phonenumbers provided</a>";
-                $message .= "</td>";
+            $message .= "<td>";
+            $message .= "<a href='{$baseUrl}generic-info#phonenumbers[0]' $styleString>No phonenumbers provided</a>";
+            $message .= "</td>";
             $message .= "</tr>";
-        }elseif (count($phonenumbers) == 1) {
+        } elseif (count($phonenumbers) == 1) {
             $message .= "<tr>";
-                $message .= "<td>";
-                    $message .= "<a href='{$baseUrl}generic-info#phonenumbers[0]' $styleString>" .array_values($phonenumbers)[0]. '</a>';
-                $message .= "</td>";
+            $message .= "<td>";
+            $message .= "<a href='{$baseUrl}generic-info#phonenumbers[0]' $styleString>" . array_values($phonenumbers)[0] . '</a>';
+            $message .= "</td>";
             $message .= "</tr>";
-        }else{
-            foreach ($phonenumbers as $key=>$number) {
-                $nr    = $key+1;
+        } else {
+            foreach ($phonenumbers as $key => $number) {
+                $nr    = $key + 1;
                 $message .= "<tr>";
-                    $message .= "<td>";
-                        $message .= "Phonenumber $nr:";
-                    $message .= "</td>";
-                    $message .= "<td>";
-                        $message .= "<a href='{$baseUrl}generic-info#phonenumbers[$key]' $styleString>$number</a>";
-                    $message .= "</td>";
+                $message .= "<td>";
+                $message .= "Phonenumber $nr:";
+                $message .= "</td>";
+                $message .= "<td>";
+                $message .= "<a href='{$baseUrl}generic-info#phonenumbers[$key]' $styleString>$number</a>";
+                $message .= "</td>";
                 $message .= "</tr>";
             }
         }
@@ -189,34 +195,33 @@ function checkDetailsMail() {
         ** MINISTRIES
          */
         $userMinistries = (array)get_user_meta($user->ID, 'jobs', true);
-        if (count($userMinistries)>1) {
+        if (count($userMinistries) > 1) {
             $title    = 'Ministries';
-        }else{
+        } else {
             $title    = 'Ministry';
         }
         $message .= "<a href='{$baseUrl}generic-info' $styleString><b>$title</b></a><br>";
 
         $message .= "<table>";
-            array_filter($userMinistries);
-            if (empty($userMinistries)) {
+        array_filter($userMinistries);
+        if (empty($userMinistries)) {
+            $message .= "<tr>";
+            $message .= "<td>";
+            $message .= "<a href='{$baseUrl}generic-info#ministries[]' $styleString>No ministry provided</a>";
+            $message .= "</td>";
+            $message .= "</tr>";
+        } else {
+            foreach ($userMinistries as $ministry => $job) {
                 $message .= "<tr>";
-                    $message .= "<td>";
-                        $message .= "<a href='{$baseUrl}generic-info#ministries[]' $styleString>No ministry provided</a>";
-                    $message .= "</td>";
+                $message .= "<td>";
+                $message .= get_the_title($ministry) . ":";
+                $message .= "</td>";
+                $message .= "<td>";
+                $message .= "<a href='{$baseUrl}generic-info#ministries[]' $styleString>$job</a>";
+                $message .= "</td>";
                 $message .= "</tr>";
-            }else{
-                foreach ($userMinistries as $ministry=>$job) {
-                    $message .= "<tr>";
-                        $message .= "<td>";
-                            $message .= get_the_title($ministry). ":";
-                        $message .= "</td>";
-                        $message .= "<td>";
-                            $message .= "<a href='{$baseUrl}generic-info#ministries[]' $styleString>$job</a>";
-                        $message .= "</td>";
-                    $message .= "</tr>";
-                }
-
             }
+        }
         $message .= "</table>";
         $message .= "<br>";
 
@@ -228,16 +233,16 @@ function checkDetailsMail() {
         array_filter($location);
         if (empty($location['address'])) {
             $location = "No location provided";
-        }else{
+        } else {
             $location = $location['address'];
         }
 
         $message .= "<table>";
-            $message .= "<tr>";
-                $message .= "<td>";
-                    $message .= "<a href='{$baseUrl}location#location[compound]' $styleString>$location</a>" ;
-                $message .= "</td>";
-            $message .= "</tr>";
+        $message .= "<tr>";
+        $message .= "<td>";
+        $message .= "<a href='{$baseUrl}location#location[compound]' $styleString>$location</a>";
+        $message .= "</td>";
+        $message .= "</tr>";
         $message .= "</table>";
         $message .= "<br>";
 
@@ -252,70 +257,70 @@ function checkDetailsMail() {
             if ($picture) {
                 $url        = wp_get_attachment_url($picture);
                 $picture    = "<img src='$url' width=100 height=100>";
-            }else{
+            } else {
                 $picture    = "You have not uploaded a picture";
             }
 
             $weddingDate    = $family->getWeddingDate($user->ID);
             if (!$partner) {
                 $partner         = 'You have no spouse';
-            }else{
+            } else {
                 $partner = $partner->display_name;
 
                 if ($weddingDate) {
                     $text    = gmdate('d F Y', strtotime($weddingDate));
-                }else{
+                } else {
                     $text    = "No weddingdate provided";
                 }
 
                 $weddingDateHtml = "<tr>";
-                    $weddingDateHtml .= "<td>";
-                        $weddingDateHtml .= "Wedding date:";
-                    $weddingDateHtml .= "</td>";
-                    $weddingDateHtml .= "<td>";
-                        $weddingDateHtml .= "<a href='{$baseUrl}family#weddingdate' $styleString>$text</a>";
-                    $weddingDateHtml .= "</td>";
+                $weddingDateHtml .= "<td>";
+                $weddingDateHtml .= "Wedding date:";
+                $weddingDateHtml .= "</td>";
+                $weddingDateHtml .= "<td>";
+                $weddingDateHtml .= "<a href='{$baseUrl}family#weddingdate' $styleString>$text</a>";
+                $weddingDateHtml .= "</td>";
                 $weddingDateHtml .= "</tr>";
             }
 
             $message .= "<a href='{$baseUrl}family' $styleString><b>Family details</b></a><br>";
             $message .= "<table>";
+            $message .= "<tr>";
+            $message .= "<td>";
+            $message .= "Family picture:";
+            $message .= "</td>";
+            $message .= "<td>";
+            $message .= "<a href='{$baseUrl}family#family_picture' $styleString>$picture</a>";
+            $message .= "</td>";
+            $message .= "</tr>";
+
+            $message .= "<tr>";
+            $message .= "<td>";
+            $message .= "Spouse:";
+            $message .= "</td>";
+            $message .= "<td>";
+            $message .= "<a href='{$baseUrl}family#partner' $styleString>$partner</a>";
+            $message .= "</td>";
+            $message .= "</tr>";
+
+            $message .= $weddingDateHtml;
+
+            foreach ($children as $key => $child) {
+                $nr    = $key + 1;
                 $message .= "<tr>";
-                    $message .= "<td>";
-                        $message .= "Family picture:";
-                    $message .= "</td>";
-                    $message .= "<td>";
-                        $message .= "<a href='{$baseUrl}family#family_picture' $styleString>$picture</a>";
-                    $message .= "</td>";
+                $message .= "<td>";
+                $message .= "Child $nr:";
+                $message .= "</td>";
+                $message .= "<td>";
+                $message .= "<a href='{$baseUrl}family#children[$key]' $styleString>" . get_userdata($child)->display_name . "</a>";
+                $message .= "</td>";
                 $message .= "</tr>";
-
-                $message .= "<tr>";
-                    $message .= "<td>";
-                        $message .= "Spouse:";
-                    $message .= "</td>";
-                    $message .= "<td>";
-                        $message .= "<a href='{$baseUrl}family#partner' $styleString>$partner</a>";
-                    $message .= "</td>";
-                $message .= "</tr>";
-
-                $message .= $weddingDateHtml;
-
-                foreach ($children as $key => $child) {
-                    $nr    = $key + 1;
-                    $message .= "<tr>";
-                        $message .= "<td>";
-                            $message .= "Child $nr:";
-                        $message .= "</td>";
-                        $message .= "<td>";
-                            $message .= "<a href='{$baseUrl}family#children[$key]' $styleString>" .get_userdata($child)->display_name. "</a>";
-                        $message .= "</td>";
-                    $message .= "</tr>";
-                }
+            }
             $message .= "</table>";
         }
 
         $message .= '<br>';
-        $message .= "If any information is not correct, please correct it on <a href='$accountPageUrl'>" .str_replace(['https://www. ','https://'], '', $accountPageUrl). "</a>.<br>Or just click on any details listed above. ";
+        $message .= "If any information is not correct, please correct it on <a href='$accountPageUrl'>" . str_replace(['https://www. ', 'https://'], '', $accountPageUrl) . "</a>.<br>Or just click on any details listed above. ";
         wp_mail($user->user_email, $subject, $message);
     }
 }
@@ -323,8 +328,9 @@ function checkDetailsMail() {
 /**
  * Notifies people that their account is about to expire or has been deleted
  */
-function accountExpiryCheck() {
-    require_once(ABSPATH. 'wp-admin/includes/user.php');
+function accountExpiryCheck()
+{
+    require_once(ABSPATH . 'wp-admin/includes/user.php');
 
     //Get the users who will expire in 1 month
     $users = get_users(
@@ -334,22 +340,22 @@ function accountExpiryCheck() {
                 array(
                     'key'         => 'account_validity',
                     'compare'     => 'EXISTS'
-               ),
+                ),
                 array(
                     'key'         => 'account_validity',
                     'value'     => 'unlimited',
                     'compare'     => '!='
-               ),
+                ),
                 array(
                     'key'         => 'account_validity',
                     'value'     => gmdate("Y-m-d", strtotime(" +1 months")),
                     'compare'     => '=',
                     'type'         => 'DATE'
-               ),
+                ),
 
-           ),
-       )
-   );
+            ),
+        )
+    );
 
     foreach ($users as $user) {
         //Send e-mail
@@ -357,9 +363,9 @@ function accountExpiryCheck() {
         $accountExpiryMail->filterMail();
 
         //Send the mail if valid email
-        if (!str_contains($user->user_email,' .empty')) {
+        if (!str_contains($user->user_email, ' .empty')) {
             $recipient = $user->user_email;
-        }else{
+        } else {
             $recipient = '';
         }
 
@@ -374,22 +380,22 @@ function accountExpiryCheck() {
                 array(
                     'key'         => 'account_validity',
                     'compare'     => 'EXISTS'
-               ),
+                ),
                 array(
                     'key'         => 'account_validity',
                     'value'     => 'unlimited',
                     'compare'    => '!='
-               ),
+                ),
                 array(
                     'key'        => 'account_validity',
                     'value'     => gmdate("Y-m-d"),
                     'compare'     => '<=',
                     'type'         => 'DATE'
-               ),
+                ),
 
-           ),
-       )
-   );
+            ),
+        )
+    );
 
     foreach ($expiredUsers as $user) {
         // check if it is a valid date string
@@ -406,11 +412,12 @@ function accountExpiryCheck() {
 /**
  * Send reminder to people to login
  */
-function checkLastLoginDate() {
+function checkLastLoginDate()
+{
 
     $users = TSJIPPY\getUserAccounts();
     foreach ($users as $user) {
-        $lastLogin                = get_user_meta($user->ID, 'last_login_date',true);
+        $lastLogin                = get_user_meta($user->ID, 'last_login_date', true);
 
         //user has never logged in
         if (empty($lastLogin)) {
@@ -418,7 +425,7 @@ function checkLastLoginDate() {
             $to = $user->user_email;
 
             //Skip if not valid email
-            if (str_contains($to,' .empty')) {
+            if (str_contains($to, ' .empty')) {
                 continue;
             }
 
@@ -427,14 +434,14 @@ function checkLastLoginDate() {
                 return $key;
             }
 
-            $pageUrl     = get_permalink(TSJIPPY\LOGIN\SETTINGS['password-reset-page'] [0]);
+            $pageUrl     = get_permalink(TSJIPPY\LOGIN\SETTINGS['password-reset-page'][0]);
             $url         = "$pageUrl?key=$key&login=$user->user_login";
 
             $mail = new AccountCreatedMail($user, $url);
             $mail->filterMail();
 
             wp_mail($to, $mail->subject, $mail->message);
-        }else{
+        } else {
             $lastLoginDate            = date_create($lastLogin);
             $now                     = new \DateTime();
             $yearsSinceLastLogin     = date_diff($lastLoginDate, $now)->format("%y");
@@ -456,5 +463,4 @@ function checkLastLoginDate() {
             }
         }
     }
-
 }

@@ -1,9 +1,12 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 use TSJIPPY\ADMIN;
 
-class AccountExpiryMail extends ADMIN\MailSetting{
+class AccountExpiryMail extends ADMIN\MailSetting
+{
 
     public \WP_User $user;
 
@@ -14,7 +17,8 @@ class AccountExpiryMail extends ADMIN\MailSetting{
      *
      * @return void
      */
-    public function __construct($user) {
+    public function __construct($user)
+    {
         // call parent constructor
         parent::__construct('account_expiry', PLUGINSLUG);
 
@@ -30,4 +34,3 @@ class AccountExpiryMail extends ADMIN\MailSetting{
         $this->defaultMessage     .= 'If you think this should be extended you can contact the STA coordinator (cc). ';
     }
 }
-

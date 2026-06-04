@@ -1,13 +1,16 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 use WP_User;
 
 add_action('rest_api_init', __NAMESPACE__ . '\restApiInit');
-function restApiInit() {
+function restApiInit()
+{
     // add element to form
     register_rest_route(
-        RESTAPIPREFIX. '/user_management',
+        RESTAPIPREFIX . '/user_management',
         '/add_ministry',
         array(
             'methods'                 => 'POST',
@@ -18,14 +21,14 @@ function restApiInit() {
             'args'                    => array(
                 'location-name'        => array(
                     'required'    => true
-               )
-           )
-       )
-   );
+                )
+            )
+        )
+    );
 
     // disable or enable useraccount
     register_rest_route(
-        RESTAPIPREFIX. '/user_management',
+        RESTAPIPREFIX . '/user_management',
         '/disable-user-account',
         array(
             'methods'                 => 'POST',
@@ -39,14 +42,14 @@ function restApiInit() {
                     'validate_callback' => function ($userId) {
                         return is_numeric($userId);
                     }
-               )
-           )
-       )
-   );
+                )
+            )
+        )
+    );
 
     // update user roles
     register_rest_route(
-        RESTAPIPREFIX. '/user_management',
+        RESTAPIPREFIX . '/user_management',
         '/update_roles',
         array(
             'methods'                 => 'POST',
@@ -62,17 +65,17 @@ function restApiInit() {
                     'validate_callback' => function ($userId) {
                         return is_numeric($userId);
                     }
-               ),
+                ),
                 'roles'        => array(
                     'required'    => true
-               )
-           )
-       )
-   );
+                )
+            )
+        )
+    );
 
     // add user account
     register_rest_route(
-        RESTAPIPREFIX. '/user_management',
+        RESTAPIPREFIX . '/user_management',
         '/add_useraccount',
         array(
             'methods'                 => 'POST',
@@ -83,17 +86,17 @@ function restApiInit() {
             'args'                    => array(
                 'first-name' => array(
                     'required'    => true
-               ),
+                ),
                 'last-name'     => array(
                     'required'    => true
-               )
-           )
-       )
-   );
+                )
+            )
+        )
+    );
 
     // extend user account validity
     register_rest_route(
-        RESTAPIPREFIX. '/user_management',
+        RESTAPIPREFIX . '/user_management',
         '/extend_validity',
         array(
             'methods'                 => 'POST',
@@ -107,17 +110,17 @@ function restApiInit() {
                     'validate_callback' => function ($userId) {
                         return is_numeric($userId);
                     }
-               ),
+                ),
                 'new-expiry-date'        => array(
                     'required'    => true
-               )
-           )
-       )
-   );
+                )
+            )
+        )
+    );
 
     // get userpage tab contents
     register_rest_route(
-        RESTAPIPREFIX. '/user_management',
+        RESTAPIPREFIX . '/user_management',
         '/get_userpage_tab',
         array(
             'methods'                 => 'POST',
@@ -131,13 +134,13 @@ function restApiInit() {
                     'validate_callback' => function ($userId) {
                         return is_numeric($userId);
                     }
-               ),
+                ),
                 'tabname'        => array(
                     'required'    => true
-               )
-           )
-       )
-   );
+                )
+            )
+        )
+    );
 }
 
 /**
@@ -147,7 +150,8 @@ function restApiInit() {
  *
  * @return array An array containing the HTML, JS, and CSS for the requested tab content
  */
-function getUserPageTab($wpRestRequest) {
+function getUserPageTab($wpRestRequest)
+{
     $params                = $wpRestRequest->get_params();
 
     $userId                = $params['user-id'];
@@ -159,11 +163,11 @@ function getUserPageTab($wpRestRequest) {
 
     if ($userId    != get_current_user_id() && array_intersect($userSelectRoles, $userRoles)) {
         $admin    = true;
-    }else{
+    } else {
         $admin    = false;
     }
 
-    switch($params['tabname']) {
+    switch ($params['tabname']) {
         case 'generic':
             $html    = getGenericsTab($userId);
             break;
@@ -187,7 +191,7 @@ function getUserPageTab($wpRestRequest) {
             $childId    = explode('-', $params['tabname']);
             if ($childId[0] == 'child' && isset($childId[1]) && is_numeric($childId[1])) {
                 $html    = showChildrenFields($childId[1]);
-            }else{
+            } else {
                 $html    = "<div class='error'>Something went wrong, you should never see this</div>";
             }
     }
@@ -209,11 +213,12 @@ function getUserPageTab($wpRestRequest) {
     ];
 }
 
-function disableUserAccount() {
+function disableUserAccount()
+{
     if (empty(get_user_meta($_POST['user-id'], 'disabled', true))) {
         update_user_meta($_POST['user-id'], 'disabled', true);
         return 'Succesfully disabled the user account';
-    }else{
+    } else {
         delete_user_meta($_POST['user-id'], 'disabled');
         return 'Succesfully enabled the user account';
     }
@@ -222,7 +227,8 @@ function disableUserAccount() {
 /**
  * add new ministry location via rest api
  */
-function addMinistry() {
+function addMinistry()
+{
     //Get the post data
     $name = sanitize_text_field(wp_unslash($_POST["location-name"]));
 
@@ -238,7 +244,7 @@ function addMinistry() {
         'post_status'   => $status,
         'post_type'        => 'location',
         'post_author'    => get_current_user_id(),
-   );
+    );
 
     $ministryCatId    = get_term_by('name', 'Ministries', 'locations')->term_id;
 
@@ -246,7 +252,7 @@ function addMinistry() {
     $postId = wp_insert_post($ministryPage);
 
     //Add the ministry cat
-    wp_set_post_terms($postId , $ministryCatId, 'locations');
+    wp_set_post_terms($postId, $ministryCatId, 'locations');
 
     //Store the ministry location
     if ($postId != 0) {
@@ -265,9 +271,10 @@ function addMinistry() {
 /**
  * Update the users roles
  */
-add_action('tsjippy-after-user-register' , __NAMESPACE__ . '\updateRoles');
-function updateRoles($userId='', $newRoles=[]) {
-    if ( !function_exists('populate_roles')) {
+add_action('tsjippy-after-user-register', __NAMESPACE__ . '\updateRoles');
+function updateRoles($userId = '', $newRoles = [])
+{
+    if (!function_exists('populate_roles')) {
         require_once(ABSPATH . 'wp-admin/includes/schema.php');
     }
 
@@ -300,15 +307,16 @@ function updateRoles($userId='', $newRoles=[]) {
 /**
  * Extend the validity of an temporary account
  */
-function extendValidity() {
+function extendValidity()
+{
     $userId = $_POST['user-id'];
     if (isset($_POST['unlimited']) && $_POST['unlimited'] == 'unlimited') {
         $date       = 'unlimited';
-        $message    = "Marked the useraccount for " .get_userdata($userId)->first_name. " to never expire. ";
-    }else{
+        $message    = "Marked the useraccount for " . get_userdata($userId)->first_name . " to never expire. ";
+    } else {
         $date       = sanitize_text_field(wp_unslash($_POST['new-expiry-date']));
         $dateStr   = gmdate(DATEFORMAT, strtotime($date));
-        $message    = "Extended valitidy for " .get_userdata($userId)->first_name. " till $dateStr";
+        $message    = "Extended valitidy for " . get_userdata($userId)->first_name . " till $dateStr";
     }
     update_user_meta($userId, 'account_validity', $date);
 

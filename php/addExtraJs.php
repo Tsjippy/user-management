@@ -1,5 +1,7 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 /* HELPER FUNCTIONS */
@@ -14,10 +16,11 @@ add_filter('tsjippy_form_extra_js', __NAMESPACE__ . '\addJs', 10, 3);
  *
  * @return string                The updated JavaScript code with the extra code added
  */
-function addJs($js, $object, $minimized) {
-    $path    = plugin_dir_path(__DIR__). "js/{$object->formData->slug}.min.js";
+function addJs($js, $object, $minimized)
+{
+    $path    = plugin_dir_path(__DIR__) . "js/{$object->formData->slug}.min.js";
     if (!$minimized || !file_exists($path)) {
-        $path    = plugin_dir_path(__DIR__). "js/{$object->formData->slug}.js";
+        $path    = plugin_dir_path(__DIR__) . "js/{$object->formData->slug}.js";
     }
 
     if (file_exists($path)) {

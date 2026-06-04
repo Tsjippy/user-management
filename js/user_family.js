@@ -1,52 +1,66 @@
-async function submitAddAccountForm(event){
-	
-	ev.preventDefault();
-	ev.stopPropagation();
+async function submitAddAccountForm(event) {
+  ev.preventDefault();
+  ev.stopPropagation();
 
-	var target		= event.target;
+  var target = event.target;
 
-	var response	= await FormSubmit.submitForm(target, 'user_management/add_useraccount');
+  var response = await FormSubmit.submitForm(
+    target,
+    "user_management/add_useraccount",
+  );
 
-	if(response){
-		var form		= target.closest('form');
+  if (response) {
+    var form = target.closest("form");
 
-		var firstName	= form.querySelector('[name="first-name"]').value;
-		var lastName	= form.querySelector('[name="last-name"]').value;
-		var userId		= response.user_id;
+    var firstName = form.querySelector('[name="first-name"]').value;
+    var lastName = form.querySelector('[name="last-name"]').value;
+    var userId = response.user_id;
 
-		//check if we should add a new child field
-		var emptyFound	= false;
-		document.querySelectorAll('select[name^="family"]').forEach(select=>{if(select.value==''){emptyFound=true}});
+    //check if we should add a new child field
+    var emptyFound = false;
+    document.querySelectorAll('select[name^="family"]').forEach((select) => {
+      if (select.value == "") {
+        emptyFound = true;
+      }
+    });
 
-		if(!emptyFound){
-			document.querySelector('select[name^="family"]').closest('form').querySelector('.add.button').click();
-		}
+    if (!emptyFound) {
+      document
+        .querySelector('select[name^="family"]')
+        .closest("form")
+        .querySelector(".add.button")
+        .click();
+    }
 
-		var opt 		= document.createElement('option');
-		opt.value 		= userId;
-		opt.innerHTML 	= firstName+' '+lastName;
+    var opt = document.createElement("option");
+    opt.value = userId;
+    opt.innerHTML = firstName + " " + lastName;
 
-		document.querySelectorAll('select[name^="family"]').forEach(select=>{
-			select.appendChild(opt);
+    document.querySelectorAll('select[name^="family"]').forEach((select) => {
+      select.appendChild(opt);
 
-			// Make the new name selected if the there is no selection currently
-			if(select.selectedIndex == 0){
-				select.querySelector(`[value="${userId}"]`).defaultSelected	= true;
-			}
-		});
+      // Make the new name selected if the there is no selection currently
+      if (select.selectedIndex == 0) {
+        select.querySelector(`[value="${userId}"]`).defaultSelected = true;
+      }
+    });
 
-		Main.displayMessage(response.message);
-	}
+    Main.displayMessage(response.message);
+  }
 
-	Main.hideModals();
+  Main.hideModals();
 }
 
-function showAddAccountModal(){
-	Main.showModal('add_account');
+function showAddAccountModal() {
+  Main.showModal("add_account");
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-	document.querySelectorAll('[name="add-user-account-button"]').forEach(el=>el.addEventListener('click', showAddAccountModal));
+document.addEventListener("DOMContentLoaded", function () {
+  document
+    .querySelectorAll('[name="add-user-account-button"]')
+    .forEach((el) => el.addEventListener("click", showAddAccountModal));
 
-	document.querySelectorAll('[name="adduseraccount"]').forEach(el=>el.addEventListener('click', submitAddAccountForm));
+  document
+    .querySelectorAll('[name="adduseraccount"]')
+    .forEach((el) => el.addEventListener("click", submitAddAccountForm));
 });

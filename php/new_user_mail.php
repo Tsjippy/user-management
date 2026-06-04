@@ -1,5 +1,7 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 //Add link to the user menu to resend the confirmation e-mail
@@ -12,13 +14,15 @@ add_filter('user_row_actions', __NAMESPACE__ . '\userRowActions', 10, 2);
  *
  * @return array The modified actions.
  */
-function userRowActions($actions, $user) {
-    $actions['Resend welcome mail'] = "<a href='" .SITEURL. "/wp-admin/users.php?send_activation_email=$user->ID'>Resend welcome email</a>";
+function userRowActions($actions, $user)
+{
+    $actions['Resend welcome mail'] = "<a href='" . SITEURL . "/wp-admin/users.php?send_activation_email=$user->ID'>Resend welcome email</a>";
     return $actions;
 }
 
 add_action('admin_menu', __NAMESPACE__ . '\adminMenu');
-function adminMenu() {
+function adminMenu()
+{
     //Process the request
     if (!empty($_GET['send_activation_email']) && is_numeric($_GET['send_activation_email'])) {
         $userId    = $_GET['send_activation_email'];
@@ -43,16 +47,17 @@ add_filter('wp_new_user_notification_email', __NAMESPACE__ . '\notificationEmail
  *
  * @return array The modified email arguments.
  */
-function notificationEmail($args, $user) {
+function notificationEmail($args, $user)
+{
 
     $expirationDuration    = apply_filters('password_reset_expiration', DAY_IN_SECONDS);
     $key                 = get_password_reset_key($user);
     if (is_wp_error($key)) {
         return $key;
     }
-    $validTill            = time()+$expirationDuration;
+    $validTill            = time() + $expirationDuration;
 
-    $format                = get_option('date_format'). ' ' .get_option('time_format');
+    $format                = get_option('date_format') . ' ' . get_option('time_format');
 
     $validTillString    = gmdate($format, $validTill);
 
@@ -64,7 +69,7 @@ function notificationEmail($args, $user) {
     if (get_user_meta($user->ID, 'disabled', true) == 'pending') {
         $mail = new AccountApproveddMail($user, $url, $validTillString);
         $mail->filterMail();
-    }else{
+    } else {
         $mail = new AccountCreatedMail($user, $url, $validTillString);
         $mail->filterMail();
     }

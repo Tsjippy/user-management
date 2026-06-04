@@ -1,10 +1,13 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 use TSJIPPY\ADMIN;
 
 
-class WeMissYouMail extends ADMIN\MailSetting{
+class WeMissYouMail extends ADMIN\MailSetting
+{
 
     public \WP_User $user;
     public string $lastLogin;
@@ -17,7 +20,8 @@ class WeMissYouMail extends ADMIN\MailSetting{
      *
      * @return void
      */
-    public function __construct($user, $lastLogin='') {
+    public function __construct($user, $lastLogin = '')
+    {
         // call parent constructor
         parent::__construct('miss_you', PLUGINSLUG);
 

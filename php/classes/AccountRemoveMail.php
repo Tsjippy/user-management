@@ -1,11 +1,14 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 use TSJIPPY\ADMIN;
 
-class AccountRemoveMail extends ADMIN\MailSetting{
+class AccountRemoveMail extends ADMIN\MailSetting
+{
 
-    public \WP_User$user;
+    public \WP_User $user;
 
     /**
      * Constructor
@@ -14,7 +17,8 @@ class AccountRemoveMail extends ADMIN\MailSetting{
      *
      * @return void
      */
-    public function __construct($user) {
+    public function __construct($user)
+    {
         // call parent constructor
         parent::__construct('account_removal', PLUGINSLUG);
 
@@ -32,4 +36,3 @@ class AccountRemoveMail extends ADMIN\MailSetting{
         $this->defaultMessage   .= 'You are no longer able to login. ';
     }
 }
-

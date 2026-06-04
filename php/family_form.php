@@ -1,10 +1,13 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 //Add availbale partners as default
 add_filter('tsjippy_add_form_multi_defaults', __NAMESPACE__ . '\addMultiDefault', 10, 3);
-function addMultiDefault($defaultArrayValues, $userId, $formSlug) {
+function addMultiDefault($defaultArrayValues, $userId, $formSlug)
+{
     if ($formSlug != 'user_family') {
         return $defaultArrayValues;
     }
@@ -22,7 +25,8 @@ function addMultiDefault($defaultArrayValues, $userId, $formSlug) {
 
 //Save family picture
 add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingFormData', 10, 2);
-function beforeSavingFormData($submission, $object) {
+function beforeSavingFormData($submission, $object)
+{
     if ($object->formData->slug != 'user_family') {
         return $submission;
     }
@@ -46,20 +50,21 @@ function beforeSavingFormData($submission, $object) {
 
 // add a family member modal
 add_filter('tsjippy_before_form', __NAMESPACE__ . '\beforeForm', 10, 2);
-function beforeForm($html, $formSlug) {
+function beforeForm($html, $formSlug)
+{
     if ($formSlug != 'user_family') {
         return $html;
     }
 
     if (isset($_GET['user-id'])) {
         $lastname = get_userdata($_GET['user-id'])->last_name;
-    }else{
+    } else {
         $lastname = wp_get_current_user()->last_name;
     }
 
     ob_start();
 
-    ?>
+?>
     <div id='add-account-modal' class="modal hidden">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -68,24 +73,24 @@ function beforeForm($html, $formSlug) {
 
                 <label>
                     <h4>First name</h4>
-                    <input type="text"  class='wide' name="first-name">
+                    <input type="text" class='wide' name="first-name">
                 </label>
 
                 <label>
                     <h4>Last name</h4>
-                    <input type="text" name="last-name"  class='wide' value="<?php echo esc_attr($lastname);?>">
+                    <input type="text" name="last-name" class='wide' value="<?php echo esc_attr($lastname); ?>">
                 </label>
 
                 <label>
                     <h4>E-mail</h4>
-                    <input type="email"  class='wide' name="email">
+                    <input type="email" class='wide' name="email">
                 </label>
 
-                <?php TSJIPPY\addSaveButton('adduseraccount', 'Add family member');?>
+                <?php TSJIPPY\addSaveButton('adduseraccount', 'Add family member'); ?>
             </form>
         </div>
     </div>
-    <?php
+<?php
 
-    return $html.ob_get_clean();
+    return $html . ob_get_clean();
 }

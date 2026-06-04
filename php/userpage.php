@@ -1,10 +1,13 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 // edit users dropdown
 add_action('tsjippy_user_description', __NAMESPACE__ . '\userDescription');
-function userDescription($user) {
+function userDescription($user)
+{
     $family    = new TSJIPPY\FAMILY\Family();
 
     //Add a useraccount edit button if the user has the usermanagement role
@@ -16,7 +19,7 @@ function userDescription($user) {
 
         $url .= '/?user-id=';
 
-        $html = "<div class='flex edit-useraccounts'><a href='$url$user->ID' class='button sim'>Edit useraccount for " .$user->first_name. "</a>";
+        $html = "<div class='flex edit-useraccounts'><a href='$url$user->ID' class='button sim'>Edit useraccount for " . $user->first_name . "</a>";
         $partner    = $family->getPartner($user->ID, true);
         if ($partner) {
             $html .= "<a  href='$url$partner->ID' class='button sim'>Edit useraccount for $partner->first_name</a>";
@@ -25,7 +28,7 @@ function userDescription($user) {
         $children    = $family->getChildren($user);
         if ($children) {
             foreach ($children as $child) {
-                $html .= "<a href='$url$child' class='button sim'>Edit useraccount for " .get_userdata($child)->first_name. "</a>";
+                $html .= "<a href='$url$child' class='button sim'>Edit useraccount for " . get_userdata($child)->first_name . "</a>";
             }
         }
         $html .= '</div>';
@@ -36,11 +39,12 @@ function userDescription($user) {
 
 //Shortcode for userdata forms
 add_shortcode("user-info", __NAMESPACE__ . '\userInfoPage');
-function userInfoPage($atts) {
+function userInfoPage($atts)
+{
     if (!is_user_logged_in()) {
         if (function_exists('TSJIPPY\LOGIN\loginModal')) {
             TSJIPPY\LOGIN\loginModal("You do not have permission to see this, sorry. ");
-            return'';
+            return '';
         }
 
         return "<p>You do not have permission to see this, sorry.</p>";
@@ -54,7 +58,7 @@ function userInfoPage($atts) {
     $a = shortcode_atts(array(
         'currentuser'     => false,
         'id'             => '',
-   ), $atts);
+    ), $atts);
 
     $showCurrentUserData = $a['currentuser'];
 
@@ -72,8 +76,8 @@ function userInfoPage($atts) {
     //Showing data for current user
     if ($showCurrentUserData) {
         $userId = get_current_user_id();
-    //Display a select to choose which users data should be shown
-    }elseif (array_intersect($userSelectRoles, $userRoles)) {
+        //Display a select to choose which users data should be shown
+    } elseif (array_intersect($userSelectRoles, $userRoles)) {
         $userId    = $a['id'];
         $user    = false;
 
@@ -87,7 +91,7 @@ function userInfoPage($atts) {
 
         if ($user) {
             $userId = $_GET["user-id"];
-        }else{
+        } else {
             return TSJIPPY\userSelect("Select an user to show the data of:", false, false, '', 'user-selection', [], '', []);
         }
 
@@ -95,7 +99,7 @@ function userInfoPage($atts) {
         if (!empty($userBirthday)) {
             $userAge = date_diff(date_create(gmdate("Y-m-d")), date_create($userBirthday))->y;
         }
-    }else{
+    } else {
         return "<div class='error'>You do not have permission to see this, sorry.</div>";
     }
 
@@ -110,18 +114,18 @@ function userInfoPage($atts) {
     if (in_array('usermanagement', $userRoles) || $showCurrentUserData) {
         if ($showCurrentUserData) {
             $admin         = false;
-        }else{
+        } else {
             $admin         = true;
         }
 
         //Add a tab button
         $tabs[]    = "<li class='tablink active' id='show-dashboard' data-target='dashboard'>Dashboard</li>";
         $html .= "<div id='dashboard'>";
-            if (!isset($_GET['main-tab']) || $_GET['main-tab'] == 'dashboard') {
-                $html    .= showDashboard($userId, $admin);
-            }else{
-                $html    .= "<div class='loader-wrapper loading hidden'></div>";
-            }
+        if (!isset($_GET['main-tab']) || $_GET['main-tab'] == 'dashboard') {
+            $html    .= showDashboard($userId, $admin);
+        } else {
+            $html    .= "<div class='loader-wrapper loading hidden'></div>";
+        }
         $html    .= '</div>';
     }
 
@@ -132,9 +136,9 @@ function userInfoPage($atts) {
         (
             array_intersect($genericInfoRoles, $userRoles) ||        // we do  have permission to view others data
             $showCurrentUserData                                    // or its our own data
-       ) &&
+        ) &&
         in_array('family', $availableForms)                            // and the family form is enabled
-   ) {
+    ) {
         $shouldShow    = apply_filters('tsjippy-should-show-family-form', true, $userId);
 
         if ($shouldShow && $userAge > 18) {
@@ -144,11 +148,11 @@ function userInfoPage($atts) {
             //Content
             $html    .= '<div id="family-info" class="tabcontent hidden">';
 
-                if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'family') {
-                    $html    .= do_shortcode('[formbuilder slug=user_family]');
-                }else{
-                    $html    .= "<div class='loader-wrapper loading hidden'></div>";
-                }
+            if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'family') {
+                $html    .= do_shortcode('[formbuilder slug=user_family]');
+            } else {
+                $html    .= "<div class='loader-wrapper loading hidden'></div>";
+            }
 
             $html .= '</div>';
         }
@@ -163,11 +167,11 @@ function userInfoPage($atts) {
 
         $html    .= "<div id='generic-info' class='tabcontent hidden'>";
 
-            if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'generic-info') {
-                $html    .= getGenericsTab($userId);
-            }else{
-                $html    .= "<div class='loader-wrapper loading hidden'></div>";
-            }
+        if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'generic-info') {
+            $html    .= getGenericsTab($userId);
+        } else {
+            $html    .= "<div class='loader-wrapper loading hidden'></div>";
+        }
 
         $html    .= "</div>";
     }
@@ -179,9 +183,9 @@ function userInfoPage($atts) {
         (
             array_intersect($genericInfoRoles, $userRoles) ||
             $showCurrentUserData
-       ) &&
+        ) &&
         in_array('location', $availableForms)
-   ) {
+    ) {
         $shouldShow    = apply_filters('tsjippy-should-show-location-form', true, $userId);
 
         if ($shouldShow) {
@@ -191,11 +195,11 @@ function userInfoPage($atts) {
             //Content
             $html .= '<div id="location-info" class="tabcontent hidden">';
 
-                if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'location-info') {
-                    $html    .= do_shortcode('[formbuilder slug=user_location]');
-                }else{
-                    $html    .= "<div class='loader-wrapper loading hidden'></div>";
-                }
+            if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'location-info') {
+                $html    .= do_shortcode('[formbuilder slug=user_location]');
+            } else {
+                $html    .= "<div class='loader-wrapper loading hidden'></div>";
+            }
 
             $html .= '</div>';
         }
@@ -224,15 +228,15 @@ function userInfoPage($atts) {
             //Content
             $html    .= '<div id="profile-picture-info" class="tabcontent hidden">';
 
-                if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'profile_picture') {
-                    if ($family->isChild($userId)) {
-                        $html    .= do_shortcode("[formbuilder slug=profile_picture user-id='$userId']");
-                    }else{
-                        $html    .= do_shortcode('[formbuilder slug=profile_picture]');
-                    }
-                }else{
-                    $html    .= "<div class='loader-wrapper loading hidden'></div>";
+            if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'profile_picture') {
+                if ($family->isChild($userId)) {
+                    $html    .= do_shortcode("[formbuilder slug=profile_picture user-id='$userId']");
+                } else {
+                    $html    .= do_shortcode('[formbuilder slug=profile_picture]');
                 }
+            } else {
+                $html    .= "<div class='loader-wrapper loading hidden'></div>";
+            }
 
             $html .= '</div>';
         }
@@ -247,7 +251,7 @@ function userInfoPage($atts) {
 
         //Content
         ob_start();
-        ?>
+?>
         <div id="role-info" class="tabcontent hidden">
             <h3>Select user roles</h3>
             <p>
@@ -255,7 +259,7 @@ function userInfoPage($atts) {
                 If you want to disable a user go to the login info tab.
             </p>
             <form>
-                <input type='hidden' class='no-reset' name='user-id' value='<?php echo esc_attr($userId);?>'>
+                <input type='hidden' class='no-reset' name='user-id' value='<?php echo esc_attr($userId); ?>'>
                 <?php
                 echo displayRoles($userId);
 
@@ -264,7 +268,7 @@ function userInfoPage($atts) {
             </form>
         </div>
 
-        <?php
+<?php
         $html    .= ob_get_clean();
     }
 
@@ -275,9 +279,9 @@ function userInfoPage($atts) {
         (
             array_intersect($genericInfoRoles, $userRoles) ||
             $showCurrentUserData
-       ) &&
+        ) &&
         in_array('security', $availableForms)
-   ) {
+    ) {
         $shouldShow    = apply_filters('tsjippy-should-show-security-form', true, $userId);
 
         if ($shouldShow) {
@@ -287,18 +291,18 @@ function userInfoPage($atts) {
             //Content
             $html    .= "<div id='security-info' class='tabcontent hidden'>";
 
-                if (isset($_GET['main-tab']) && $_GET['main-tab'] == "security-info") {
-                    $html    .= do_shortcode('[formbuilder slug=security_questions]');
-                }else{
-                    $html    .= "<div class='loader-wrapper loading hidden'></div>";
-                }
+            if (isset($_GET['main-tab']) && $_GET['main-tab'] == "security-info") {
+                $html    .= do_shortcode('[formbuilder slug=security_questions]');
+            } else {
+                $html    .= "<div class='loader-wrapper loading hidden'></div>";
+            }
 
             $html .= '</div>';
         }
     }
 
     //  Add filter to add extra pages, children tabs should always be last
-    $filteredHtml    = apply_filters('tsjippy_user_info_page', ['tabs'=>$tabs, 'html'=>$html], $showCurrentUserData, $user, $userAge);
+    $filteredHtml    = apply_filters('tsjippy_user_info_page', ['tabs' => $tabs, 'html' => $html], $showCurrentUserData, $user, $userAge);
     $tabs             = $filteredHtml['tabs'];
     $html             = $filteredHtml['html'];
 
@@ -315,25 +319,25 @@ function userInfoPage($atts) {
             //Content
             $html    .= "<div id='child-info-$childId' class='tabcontent hidden'>";
 
-                $html    .= "<div class='loader-wrapper loading hidden'></div>";
+            $html    .= "<div class='loader-wrapper loading hidden'></div>";
 
             $html .= '</div>';
         }
     }
 
     $result    = "<div style='min-width: 50vw;'>";
-        $result    .= "<nav id='profile-menu'>";
-            $result    .= "<ul id='profile-menu-list'>";
-                foreach ($tabs as $tab) {
-                    $result    .= $tab;
-                }
-            $result    .= "</ul>";
-        $result    .= "</nav>";
+    $result    .= "<nav id='profile-menu'>";
+    $result    .= "<ul id='profile-menu-list'>";
+    foreach ($tabs as $tab) {
+        $result    .= $tab;
+    }
+    $result    .= "</ul>";
+    $result    .= "</nav>";
 
-        $result    .= "<div id='profile-forms'>";
-            $result .= "<input type='hidden' class='no-reset' class='input-text' name='user-id' value='$userId'>";
-            $result    .= $html;
-        $result    .= "</div>";
+    $result    .= "<div id='profile-forms'>";
+    $result .= "<input type='hidden' class='no-reset' class='input-text' name='user-id' value='$userId'>";
+    $result    .= $html;
+    $result    .= "</div>";
     $result    .= "</div>";
 
     return $result;
@@ -346,10 +350,11 @@ function userInfoPage($atts) {
  *
  * @return    string                    The html
  */
-function getGenericsTab($userId) {
+function getGenericsTab($userId)
+{
     $family    = new TSJIPPY\FAMILY\Family();
 
-    $accountValidity     = get_user_meta($userId, 'account_validity',true);
+    $accountValidity     = get_user_meta($userId, 'account_validity', true);
 
     $genericInfoRoles     = array_merge(['usermanagement'], ['administrator']);
 
@@ -361,26 +366,26 @@ function getGenericsTab($userId) {
         $removalDate     = date_create($accountValidity);
 
         $html    .= "<div id='validity-warning' style='border: 3px solid #bd2919; padding: 10px;'>";
-            if (array_intersect($genericInfoRoles, $userRoles)) {
-                wp_enqueue_script('tsjippy_user_management');
+        if (array_intersect($genericInfoRoles, $userRoles)) {
+            wp_enqueue_script('tsjippy_user_management');
 
-                $html    .= "<form>";
-                    $html    .= "<input type='hidden' class='no-reset' name='user-id' value='$userId'>";
-                    $html    .= "This user account is only valid till " .date_format($removalDate, "d F Y");
-                    $html    .= "<br><br>";
-                    $html    .= "Change expiry date to";
-                    $html    .= "<input type='date' name='new-expiry-date' min='$accountValidity' style='width:auto; display: initial; padding:0px; margin:0px;'>";
-                    $html    .= "<br>";
-                    $html    .= "<input type='checkbox' name='unlimited' value='unlimited' style='width:auto; display: initial; padding:0px; margin:0px;'>";
-                    $html    .= "<label for='unlimited'> Check if the useraccount should never expire.</label>";
-                    $html    .= "<br>";
-                    $html    .= TSJIPPY\addSaveButton('extend_validity', 'Change validity', '', false);
-                $html    .= "</form>";
-            }else{
-                $html    .= "<p>";
-                    $html    .= "Your user account will be automatically deactivated on " .date_format($removalDate, "d F Y"). " . ";
-                $html    .= "</p>";
-            }
+            $html    .= "<form>";
+            $html    .= "<input type='hidden' class='no-reset' name='user-id' value='$userId'>";
+            $html    .= "This user account is only valid till " . date_format($removalDate, "d F Y");
+            $html    .= "<br><br>";
+            $html    .= "Change expiry date to";
+            $html    .= "<input type='date' name='new-expiry-date' min='$accountValidity' style='width:auto; display: initial; padding:0px; margin:0px;'>";
+            $html    .= "<br>";
+            $html    .= "<input type='checkbox' name='unlimited' value='unlimited' style='width:auto; display: initial; padding:0px; margin:0px;'>";
+            $html    .= "<label for='unlimited'> Check if the useraccount should never expire.</label>";
+            $html    .= "<br>";
+            $html    .= TSJIPPY\addSaveButton('extend_validity', 'Change validity', '', false);
+            $html    .= "</form>";
+        } else {
+            $html    .= "<p>";
+            $html    .= "Your user account will be automatically deactivated on " . date_format($removalDate, "d F Y") . " . ";
+            $html    .= "</p>";
+        }
         $html    .= "</div>";
     }
 
@@ -389,10 +394,10 @@ function getGenericsTab($userId) {
     if (empty($form)) {
         if ($family->isChild($userId)) {
             $html    .= do_shortcode("[formbuilder slug=child_generic user-id=$userId]");
-        }else{
+        } else {
             $html    .= do_shortcode("[formbuilder slug=user_generics user-id='$userId']");
         }
-    }else{
+    } else {
         $html    .= $form;
     }
 

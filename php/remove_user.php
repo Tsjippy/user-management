@@ -1,10 +1,13 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 // Send message about deletion
 add_action('delete_user', __NAMESPACE__ . '\userDeleted');
-function userDeleted($userId) {
+function userDeleted($userId)
+{
     $userdata        = get_userdata($userId);
     $displayname    = $userdata->display_name;
 

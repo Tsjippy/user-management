@@ -1,5 +1,7 @@
 <?php
+
 namespace TSJIPPY\USERMANAGEMENT;
+
 use TSJIPPY;
 
 // Only load when option is activated
@@ -9,14 +11,16 @@ if (!(SETTINGS['tempuser'] ?? false)) {
 
 //Add expiry data column to users screen
 add_filter('manage_users_columns', __NAMESPACE__ . '\manageUserColumns');
-function manageUserColumns($columns) {
+function manageUserColumns($columns)
+{
     $columns['expiry_date'] = 'Expiry Date';
     return $columns;
 }
 
 //Add content to the expiry data column
 add_filter('manage_users_custom_column', __NAMESPACE__ . '\userCustomColumn', 10, 3);
-function userCustomColumn($val, $columnName, $userId) {
+function userCustomColumn($val, $columnName, $userId)
+{
     if ($columnName != 'expiry_date') {
         return $val;
     }
@@ -24,7 +28,8 @@ function userCustomColumn($val, $columnName, $userId) {
 }
 
 add_filter('manage_users_sortable_columns', __NAMESPACE__ . '\sortableUserColumn');
-function sortableUserColumn($columns) {
+function sortableUserColumn($columns)
+{
     $columns['expiry_date'] = 'Expiry Date';
 
     return $columns;
