@@ -58,6 +58,14 @@ function displayRoles($userId = '')
             position: absolute;
             right: 40px;
             bottom: unset;
+            display:none;
+        }
+
+        .role-info .infobox:hover{
+            margin-top: 0px;
+        }
+        .role-info .infobox:hover .info-text {
+            display: inline-block;
         }
     </style>
 
@@ -89,7 +97,7 @@ function displayRoles($userId = '')
                         </div>
                         <span class="info-text">
                             <?php
-                            echo $roleName . ' - <i>' . apply_filters('tsjippy_role_description', '', $key) . '</i>';
+                            echo esc_attr($roleName) . ' - <i>' . esc_html(apply_filters('tsjippy_role_description', '', $key)) . '</i>';
                             ?>
                         </span>
                     </div>
