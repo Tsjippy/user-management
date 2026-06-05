@@ -97,7 +97,7 @@ function displayRoles($userId = '')
                         </div>
                         <span class="info-text">
                             <?php
-                            echo esc_attr($roleName) . ' - <i>' . esc_html(apply_filters('tsjippy_role_description', '', $key)) . '</i>';
+                            echo esc_attr($roleName) . ' - <i>' . esc_html(apply_filters('tsjippy-role-description', '', $key)) . '</i>';
                             ?>
                         </span>
                     </div>
@@ -133,7 +133,7 @@ function displayRoles($userId = '')
                         <td style='border: none;'>
                             <i>
                                 <?php
-                                echo apply_filters('tsjippy_role_description', '', $key);
+                                echo apply_filters('tsjippy-role-description', '', $key);
                                 ?>
                             </i>
                         </td>

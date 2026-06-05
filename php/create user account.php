@@ -99,7 +99,7 @@ function pendingUsers()
             delete_user_meta($UserId, 'disabled');
 
             // run account update hook
-            do_action('tsjippy_approved_user', $userId);
+            do_action('tsjippy-approved-user', $userId);
 
             echo '<div class="success">Useraccount succesfully activated</div>';
         }
