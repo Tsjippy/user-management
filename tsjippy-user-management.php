@@ -16,7 +16,7 @@ use TSJIPPY;
  * Plugin URI:            https://github.com/Tsjippy/usermanagement
  * Tested:                6.9
  * TextDomain:            tsjippy
- * Requires Plugins:    tsjippy-shared-functionality, tsjippy-forms
+ * Requires Plugins:    , tsjippy-forms
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  *
@@ -26,7 +26,10 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-
+// Load shared code
+if(file_exists(__DIR__  . '/shared_functionality/loader.php')){
+    require_once(__DIR__  . '/shared_functionality/loader.php');
+}
 
 // Define constants
 define(__NAMESPACE__ . '\PLUGIN', plugin_basename(__FILE__));
