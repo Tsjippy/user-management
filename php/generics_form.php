@@ -236,9 +236,9 @@ function displayMinistryPositions($userId)
 
     <script>
         document.addEventListener('click', ev => {
-            if (ev.target.matches(' .expand-children')) {
+            if (ev.target.matches('.expand-children')) {
                 ev.stopImmediatePropagation();
-                ev.target.closest('li').querySelector(' .children').classList.toggle('hidden');
+                ev.target.closest('li').querySelector('.children').classList.toggle('hidden');
             }
         });
     </script>

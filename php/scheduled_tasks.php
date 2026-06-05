@@ -363,7 +363,7 @@ function accountExpiryCheck()
         $accountExpiryMail->filterMail();
 
         //Send the mail if valid email
-        if (!str_contains($user->user_email, ' .empty')) {
+        if (!str_contains($user->user_email, '.empty')) {
             $recipient = $user->user_email;
         } else {
             $recipient = '';
@@ -425,7 +425,7 @@ function checkLastLoginDate()
             $to = $user->user_email;
 
             //Skip if not valid email
-            if (str_contains($to, ' .empty')) {
+            if (str_contains($to, '.empty')) {
                 continue;
             }
 
@@ -451,7 +451,7 @@ function checkLastLoginDate()
                 //Send e-mail
                 $to = $user->user_email;
                 //Skip if not valid email
-                if (str_contains($to, ' .empty')) {
+                if (str_contains($to, '.empty')) {
                     continue;
                 }
 
