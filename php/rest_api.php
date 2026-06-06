@@ -10,7 +10,7 @@ function restApiInit()
 {
     // add element to form
     register_rest_route(
-        RESTAPIPREFIX . '/user_management',
+        TSJIPPY\RESTAPIPREFIX . '/user_management',
         '/add_ministry',
         array(
             'methods'                 => 'POST',
@@ -28,7 +28,7 @@ function restApiInit()
 
     // disable or enable useraccount
     register_rest_route(
-        RESTAPIPREFIX . '/user_management',
+        TSJIPPY\RESTAPIPREFIX . '/user_management',
         '/disable-user-account',
         array(
             'methods'                 => 'POST',
@@ -49,7 +49,7 @@ function restApiInit()
 
     // update user roles
     register_rest_route(
-        RESTAPIPREFIX . '/user_management',
+        TSJIPPY\RESTAPIPREFIX . '/user_management',
         '/update_roles',
         array(
             'methods'                 => 'POST',
@@ -75,7 +75,7 @@ function restApiInit()
 
     // add user account
     register_rest_route(
-        RESTAPIPREFIX . '/user_management',
+        TSJIPPY\RESTAPIPREFIX . '/user_management',
         '/add_useraccount',
         array(
             'methods'                 => 'POST',
@@ -96,7 +96,7 @@ function restApiInit()
 
     // extend user account validity
     register_rest_route(
-        RESTAPIPREFIX . '/user_management',
+        TSJIPPY\RESTAPIPREFIX . '/user_management',
         '/extend_validity',
         array(
             'methods'                 => 'POST',
@@ -120,7 +120,7 @@ function restApiInit()
 
     // get userpage tab contents
     register_rest_route(
-        RESTAPIPREFIX . '/user_management',
+        TSJIPPY\RESTAPIPREFIX . '/user_management',
         '/get_userpage_tab',
         array(
             'methods'                 => 'POST',
@@ -315,7 +315,7 @@ function extendValidity()
         $message    = "Marked the useraccount for " . get_userdata($userId)->first_name . " to never expire. ";
     } else {
         $date       = sanitize_text_field(wp_unslash($_POST['new-expiry-date']));
-        $dateStr   = gmdate(DATEFORMAT, strtotime($date));
+        $dateStr   = gmdate(TSJIPPY\DATEFORMAT, strtotime($date));
         $message    = "Extended valitidy for " . get_userdata($userId)->first_name . " till $dateStr";
     }
     update_user_meta($userId, 'account_validity', $date);

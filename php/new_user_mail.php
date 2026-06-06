@@ -16,7 +16,7 @@ add_filter('user_row_actions', __NAMESPACE__ . '\userRowActions', 10, 2);
  */
 function userRowActions($actions, $user)
 {
-    $actions['Resend welcome mail'] = "<a href='" . SITEURL . "/wp-admin/users.php?send_activation_email=$user->ID'>Resend welcome email</a>";
+    $actions['Resend welcome mail'] = "<a href='" . TSJIPPY\SITEURL . "/wp-admin/users.php?send_activation_email=$user->ID'>Resend welcome email</a>";
     return $actions;
 }
 

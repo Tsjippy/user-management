@@ -9,7 +9,7 @@ function blockRestApiInit()
 {
     // show reminders
     register_rest_route(
-        RESTAPIPREFIX . '/usermanagement',
+        TSJIPPY\RESTAPIPREFIX . '/usermanagement',
         '/show_reminders',
         array(
             'methods'                 => 'GET',
