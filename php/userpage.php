@@ -79,19 +79,17 @@ function userInfoPage($atts)
         //Display a select to choose which users data should be shown
     } elseif (array_intersect($userSelectRoles, $userRoles)) {
         $userId    = $a['id'];
-        $user    = false;
+        $user      = false;
 
         if (isset($_GET["user-id"])) {
-            $userId    = $_GET['user-id'];
+            $userId    = (int) $_GET['user-id'];
         }
 
         if (is_numeric($userId)) {
             $user    = get_userdata($userId);
         }
 
-        if ($user) {
-            $userId = $_GET["user-id"];
-        } else {
+        if (!$user) {
             return TSJIPPY\userSelect("Select an user to show the data of:", false, false, '', 'user-selection', [], '', []);
         }
 
@@ -148,7 +146,7 @@ function userInfoPage($atts)
             //Content
             $html    .= '<div id="family-info" class="tabcontent hidden">';
 
-            if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'family') {
+            if (($_GET['main-tab'] ?? '') == 'family') {
                 $html    .= do_shortcode('[formbuilder slug=user_family]');
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
@@ -167,7 +165,7 @@ function userInfoPage($atts)
 
         $html    .= "<div id='generic-info' class='tabcontent hidden'>";
 
-        if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'generic-info') {
+        if (($_GET['main-tab'] ?? '') == 'generic-info') {
             $html    .= getGenericsTab($userId);
         } else {
             $html    .= "<div class='loader-wrapper loading hidden'></div>";
@@ -195,7 +193,7 @@ function userInfoPage($atts)
             //Content
             $html .= '<div id="location-info" class="tabcontent hidden">';
 
-            if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'location-info') {
+            if (($_GET['main-tab'] ?? '') == 'location-info') {
                 $html    .= do_shortcode('[formbuilder slug=user_location]');
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
@@ -228,7 +226,7 @@ function userInfoPage($atts)
             //Content
             $html    .= '<div id="profile-picture-info" class="tabcontent hidden">';
 
-            if (isset($_GET['main-tab']) && $_GET['main-tab'] == 'profile_picture') {
+            if (($_GET['main-tab'] ?? '') == 'profile_picture') {
                 if ($family->isChild($userId)) {
                     $html    .= do_shortcode("[formbuilder slug=profile_picture user-id='$userId']");
                 } else {
@@ -291,7 +289,7 @@ function userInfoPage($atts)
             //Content
             $html    .= "<div id='security-info' class='tabcontent hidden'>";
 
-            if (isset($_GET['main-tab']) && $_GET['main-tab'] == "security-info") {
+            if (($_GET['main-tab'] ?? '') == "security-info") {
                 $html    .= do_shortcode('[formbuilder slug=security_questions]');
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";

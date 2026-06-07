@@ -36,7 +36,7 @@ function beforeSavingFormData($submission, $object)
     $family = new TSJIPPY\FAMILY\Family();
 
     // Family Picture
-    $newPicture    = sanitize_text_field(wp_unslash($_POST['family_picture']));
+    $newPicture    = TSJIPPY\sanitize($_POST['family_picture']);
     $oldPicture    = $family->getFamilyMeta($userId, 'family_picture');
     if ($newPicture != $oldPicture) {
         // Do not show in picture gallery
@@ -57,7 +57,7 @@ function beforeForm($html, $formSlug)
     }
 
     if (isset($_GET['user-id'])) {
-        $lastname = get_userdata($_GET['user-id'])->last_name;
+        $lastname = get_userdata((int) $_GET['user-id'])->last_name;
     } else {
         $lastname = wp_get_current_user()->last_name;
     }

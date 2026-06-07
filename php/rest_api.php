@@ -215,11 +215,11 @@ function getUserPageTab($wpRestRequest)
 
 function disableUserAccount()
 {
-    if (empty(get_user_meta($_POST['user-id'], 'disabled', true))) {
-        update_user_meta($_POST['user-id'], 'disabled', true);
+    if (empty(get_user_meta((int) $_POST['user-id'], 'disabled', true))) {
+        update_user_meta((int) $_POST['user-id'], 'disabled', true);
         return 'Succesfully disabled the user account';
     } else {
-        delete_user_meta($_POST['user-id'], 'disabled');
+        delete_user_meta((int) $_POST['user-id'], 'disabled');
         return 'Succesfully enabled the user account';
     }
 }
@@ -230,7 +230,7 @@ function disableUserAccount()
 function addMinistry()
 {
     //Get the post data
-    $name = sanitize_text_field(wp_unslash($_POST["location-name"]));
+    $name = TSJIPPY\sanitize($_POST["location-name"]);
 
     $status    = 'pending';
     if (wp_get_current_user()->has_cap('publish_post')) {
@@ -292,7 +292,7 @@ function updateRoles($userId = '', $newRoles = [])
     $userRoles     = $user->roles;
 
     if (empty($newRoles)) {
-        $newRoles    = (array)$_POST['roles'];
+        $newRoles    = TSJIPPY\sanitize((array)$_POST['roles']);
     }
 
     if (empty(array_diff($userRoles, array_keys($newRoles))) && empty(array_diff(array_keys($newRoles), $userRoles))) {
@@ -310,11 +310,11 @@ function updateRoles($userId = '', $newRoles = [])
 function extendValidity()
 {
     $userId = $_POST['user-id'];
-    if (isset($_POST['unlimited']) && $_POST['unlimited'] == 'unlimited') {
+    if (($_POST['unlimited'] ?? '') == 'unlimited') {
         $date       = 'unlimited';
         $message    = "Marked the useraccount for " . get_userdata($userId)->first_name . " to never expire. ";
     } else {
-        $date       = sanitize_text_field(wp_unslash($_POST['new-expiry-date']));
+        $date       = TSJIPPY\sanitize($_POST['new-expiry-date']);
         $dateStr   = gmdate(TSJIPPY\DATEFORMAT, strtotime($date));
         $message    = "Extended valitidy for " . get_userdata($userId)->first_name . " till $dateStr";
     }

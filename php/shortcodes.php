@@ -35,7 +35,7 @@ function dashboardWarnings($userId)
 add_shortcode("expiry_warnings", __NAMESPACE__ . '\expiryWarnings');
 function expiryWarnings()
 {
-    if (!empty($_GET["user-id"]) && is_numeric($_GET["user-id"]) && in_array('usermanagement', wp_get_current_user()->roles)) {
+    if (is_numeric($_GET["user-id"] ?? '') && in_array('usermanagement', wp_get_current_user()->roles)) {
         $userId    = $_GET["user-id"];
     } else {
         $userId = get_current_user_id();

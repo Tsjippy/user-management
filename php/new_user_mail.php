@@ -24,9 +24,9 @@ add_action('admin_menu', __NAMESPACE__ . '\adminMenu');
 function adminMenu()
 {
     //Process the request
-    if (!empty($_GET['send_activation_email']) && is_numeric($_GET['send_activation_email'])) {
-        $userId    = $_GET['send_activation_email'];
-        $email = get_userdata($userId)->user_email;
+    if (is_numeric($_GET['send_activation_email'] ?? '')) {
+        $userId    = (int) $_GET['send_activation_email'];
+        $email     = get_userdata($userId)->user_email;
         TSJIPPY\printArray("Sending welcome email to $email");
         wp_new_user_notification($userId, null, 'user');
     }

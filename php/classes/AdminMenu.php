@@ -83,7 +83,7 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
     {
         $tab      = 'account-approved-email';
         if (isset($_GET['second-tab'])) {
-            $tab  = sanitize_key(wp_unslash($_GET['second-tab']));
+            $tab  = TSJIPPY\sanitize($_GET['second-tab'], 'key');
         }
 
         $tablinkWrapper = addElement('div', $parent, ['class' => 'tablink-wrapper']);

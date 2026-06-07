@@ -18,5 +18,5 @@ function afterUserCreateForm()
 add_action('tsjippy-approved-user', __NAMESPACE__ . '\userApproved');
 function userApproved($userId)
 {
-    update_user_meta($userId, 'visa_info', $_POST['visa-info']);
+    update_user_meta($userId, 'visa_info', TSJIPPY\sanitize($_POST['visa-info']));
 }

@@ -43,7 +43,7 @@ function beforeSavingData($submission, $object)
 
     //check if phonenumber has changed
     $oldPhonenumbers    = (array)get_user_meta($object->userId, 'phonenumbers', true);
-    $newPhonenumbers    = $_POST['phonenumbers'];
+    $newPhonenumbers    = TSJIPPY\sanitize($_POST['phonenumbers']);
     $changedNumbers        = array_diff($newPhonenumbers, $oldPhonenumbers);
     foreach ($changedNumbers as $key => $changedNumber) {
         // Make sure the phonenumber is in the right format
@@ -142,15 +142,15 @@ function getMinistries()
 
         //Get all pages describing a ministry of this category
         $ministryPages = get_posts([
-            'post_type'            => 'location',
-            'posts_per_page'    => -1,
+            'post_type'          => 'location',
+            'posts_per_page'     => -1,
             'post_status'        => 'publish',
             'orderby'            => 'title',
             'tax_query' => array(
                 array(
-                    'taxonomy'    => 'locations',
-                    'field'     => 'term_id',
-                    'terms'     => $category->term_id
+                    'taxonomy'   => 'locations',
+                    'field'      => 'term_id',
+                    'terms'      => $category->term_id
                 )
             )
         ]);

@@ -71,7 +71,7 @@ function pendingUsers()
     //Delete user account if there is an url parameter for it
     if (isset($_GET['delete_pending_user'])) {
         //Get user id from url parameter
-        $UserId = $_GET['delete_pending_user'];
+        $UserId = (int) $_GET['delete_pending_user'];
         //Check if the user account is still pending
         if (get_user_meta($UserId, 'disabled', true) == 'pending') {
             //Load delete function
@@ -89,7 +89,7 @@ function pendingUsers()
     //Activate useraccount
     if (isset($_GET['activate_pending_user'])) {
         //Get user id from url parameter
-        $UserId = $_GET['activate_pending_user'];
+        $UserId = (int) $_GET['activate_pending_user'];
         //Check if the user account is still pending
         if (get_user_meta($UserId, 'disabled', true) == 'pending') {
             //Send welcome-email

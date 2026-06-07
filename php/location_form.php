@@ -16,10 +16,10 @@ function beforeSavingLocationFormData($submission, $object)
     $oldLocation = get_user_meta($object->userId, 'location', true);
 
     //Get the location from the post array
-    $location = $_POST["location"];
+    $location = TSJIPPY\sanitize($_POST["location"] ?? []);
 
     //Only update when needed and if valid coordinates
-    if (is_array($location) && $location != $oldLocation && !empty($location['latitude']) && !empty($location['longitude'])) {
+    if ($location != $oldLocation && !empty($location['latitude']) && !empty($location['longitude'])) {
         $latitude = $location['latitude'] = filter_var(
             $location['latitude'],
             FILTER_SANITIZE_NUMBER_FLOAT,
@@ -32,7 +32,7 @@ function beforeSavingLocationFormData($submission, $object)
             FILTER_FLAG_ALLOW_FRACTION
         );
 
-        $location['address'] = sanitize_text_field(wp_unslash($location['address']));
+        $location['address'] = TSJIPPY\sanitize($location['address']);
 
         $family    = new TSJIPPY\FAMILY\Family();
         $family->updateFamilyMeta($object->userId, "location", $location);
