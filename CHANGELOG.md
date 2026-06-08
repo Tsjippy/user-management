@@ -10,6 +10,7 @@
 - _ to -
 - namespaced all constants
 - sanitize all posts and get vars
+- js update
 
 ### Fixed
 - spacing problem
