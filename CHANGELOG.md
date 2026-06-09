@@ -16,6 +16,7 @@
 ### Fixed
 - spacing problem
 - space before dot bug
+- include nonce in user account creation form
 
 ### Updated
 
