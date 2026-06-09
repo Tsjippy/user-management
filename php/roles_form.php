@@ -35,39 +35,11 @@ function displayRoles($userId = '')
         }
     }
 
+    wp_enqueue_style('tsjippy_useraccount');
+
     ob_start();
     //Content
 ?>
-    <style>
-        .role-info .infobox {
-            margin-top: -20px;
-        }
-
-        .role-info .info-icon-wrapper {
-            margin-bottom: 10px;
-        }
-
-        .role-info .info-icon {
-            margin-bottom: 0px;
-            position: absolute;
-            right: 10px;
-            max-width: 20px;
-        }
-
-        .role-info .infobox .info-text {
-            position: absolute;
-            right: 40px;
-            bottom: unset;
-            display:none;
-        }
-
-        .role-info .infobox:hover{
-            margin-top: 0px;
-        }
-        .role-info .infobox:hover .info-text {
-            display: inline-block;
-        }
-    </style>
 
     <div class="role-info">
         <?php
