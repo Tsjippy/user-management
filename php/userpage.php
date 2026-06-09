@@ -56,21 +56,21 @@ function userInfoPage($atts)
     wp_enqueue_script('tsjippy_userpage');
 
     $a = shortcode_atts(array(
-        'currentuser'     => false,
-        'id'             => '',
+        'currentuser' => false,
+        'id'          => '',
     ), $atts);
 
     $showCurrentUserData = $a['currentuser'];
 
     //Variables
-    $family                = new TSJIPPY\FAMILY\Family();
-    $genericInfoRoles     = array_merge(['usermanagement'], ['administrator']);
-    $user                 = wp_get_current_user();
-    $userRoles             = $user->roles;
-    $tabs                = [];
-    $html                = '';
-    $userAge             = 19;
-    $availableForms        = (array)SETTINGS['enabled-forms'] ?? [];
+    $family             = new TSJIPPY\FAMILY\Family();
+    $genericInfoRoles   = array_merge(['usermanagement'], ['administrator']);
+    $user               = wp_get_current_user();
+    $userRoles          = $user->roles;
+    $tabs               = [];
+    $html               = '';
+    $userAge            = 19;
+    $availableForms     = (array)SETTINGS['enabled-forms'] ?? [];
     $userSelectRoles    = apply_filters('tsjippy_user_page_dropdown', $genericInfoRoles);
 
     //Showing data for current user

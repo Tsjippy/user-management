@@ -9,13 +9,13 @@ function postStates($states, $post)
 {
 
     if ($post->ID == (SETTINGS['account_page'] ?? '')) {
-        $states[] = __('Account page', 'tsjippy');
+        $states[] = __('Account page', '%TEXTDOMAIN%');
     } elseif ($post->ID == (SETTINGS['user-edit-page'] ?? '')) {
-        $states[] = __('User edit page', 'tsjippy');
+        $states[] = __('User edit page', '%TEXTDOMAIN%');
     } elseif ($post->ID == (SETTINGS['account-create-page'] ?? '')) {
-        $states[] = __('Account create page', 'tsjippy');
+        $states[] = __('Account create page', '%TEXTDOMAIN%');
     } elseif ($post->ID == (SETTINGS['pending-users-page'] ?? '')) {
-        $states[] = __('Pending users page', 'tsjippy');
+        $states[] = __('Pending users page', '%TEXTDOMAIN%');
     }
 
     return $states;
