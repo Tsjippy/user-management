@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 //Shortcode for adding user accounts
-add_shortcode('create_user_account', __NAMESPACE__ . '\createUserAccountForm');
+add_shortcode('tsjippy_create_user_account', __NAMESPACE__ . '\createUserAccountForm');
 function createUserAccountForm()
 {
     wp_enqueue_script('tsjippy_user_management');
@@ -63,7 +63,7 @@ function createUserAccountForm()
 }
 
 //Shortcode to display the pending user accounts
-add_shortcode('pending_user', __NAMESPACE__ . '\pendingUsers');
+add_shortcode('tsjippy_pending_user', __NAMESPACE__ . '\pendingUsers');
 function pendingUsers()
 {
     if (!current_user_can('edit_others_pages')) {
@@ -139,7 +139,7 @@ function pendingUsers()
 }
 
 //Shortcode to display number of pending user accounts
-add_shortcode('pending_user_icon', __NAMESPACE__ . '\pendingUsersIcon');
+add_shortcode('tsjippy_pending_user_icon', __NAMESPACE__ . '\pendingUsersIcon');
 function pendingUsersIcon()
 {
     $pendingUsers = get_users(array(

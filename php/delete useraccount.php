@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 //Delete user shortcode
-add_shortcode('delete_user', __NAMESPACE__ . '\deleteUser');
+add_shortcode('tsjippy_delete_user', __NAMESPACE__ . '\deleteUser');
 function deleteUser()
 {
     require_once(ABSPATH . 'wp-admin/includes/user.php');

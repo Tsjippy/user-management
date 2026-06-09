@@ -32,7 +32,7 @@ function dashboardWarnings($userId)
 }
 
 //Shortcode for expiry warnings
-add_shortcode("expiry_warnings", __NAMESPACE__ . '\expiryWarnings');
+add_shortcode("tsjippy_expiry_warnings", __NAMESPACE__ . '\expiryWarnings');
 function expiryWarnings()
 {
     if (is_numeric($_GET["user-id"] ?? '') && in_array('usermanagement', wp_get_current_user()->roles)) {
@@ -62,7 +62,7 @@ function expiryWarnings()
     return  "<div id=reminders>$html</p></div>";
 }
 
-add_shortcode("userstatistics", __NAMESPACE__ . '\userStatistics');
+add_shortcode("tsjippy_userstatistics", __NAMESPACE__ . '\userStatistics');
 function userStatistics()
 {
 

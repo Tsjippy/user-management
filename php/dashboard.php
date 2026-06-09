@@ -60,7 +60,7 @@ function showDashboard($userId, $admin = false)
     <?php
     //Show warning about out of date ministry pages
     $ministryPages = get_pages([
-        'meta_key'         => 'icon_id',
+        'meta_key'         => 'tsjippy_icon_id',
         'meta_value'       => $MinistrieIconID
     ]);
 

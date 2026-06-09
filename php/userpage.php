@@ -38,7 +38,7 @@ function userDescription($user)
 }
 
 //Shortcode for userdata forms
-add_shortcode("user-info", __NAMESPACE__ . '\userInfoPage');
+add_shortcode("tsjippy_user-info", __NAMESPACE__ . '\userInfoPage');
 function userInfoPage($atts)
 {
     if (!is_user_logged_in()) {
@@ -147,7 +147,7 @@ function userInfoPage($atts)
             $html    .= '<div id="family-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'family') {
-                $html    .= do_shortcode('[formbuilder slug=user_family]');
+                $html    .= do_shortcode('[tsjippy_formbuilder slug=user_family]');
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -194,7 +194,7 @@ function userInfoPage($atts)
             $html .= '<div id="location-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'location-info') {
-                $html    .= do_shortcode('[formbuilder slug=user_location]');
+                $html    .= do_shortcode('[tsjippy_formbuilder slug=user_location]');
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -228,9 +228,9 @@ function userInfoPage($atts)
 
             if (($_GET['main-tab'] ?? '') == 'profile_picture') {
                 if ($family->isChild($userId)) {
-                    $html    .= do_shortcode("[formbuilder slug=profile_picture user-id='$userId']");
+                    $html    .= do_shortcode("[tsjippy_formbuilder slug=profile_picture user-id='$userId']");
                 } else {
-                    $html    .= do_shortcode('[formbuilder slug=profile_picture]');
+                    $html    .= do_shortcode('[tsjippy_formbuilder slug=profile_picture]');
                 }
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
@@ -290,7 +290,7 @@ function userInfoPage($atts)
             $html    .= "<div id='security-info' class='tabcontent hidden'>";
 
             if (($_GET['main-tab'] ?? '') == "security-info") {
-                $html    .= do_shortcode('[formbuilder slug=security_questions]');
+                $html    .= do_shortcode('[tsjippy_formbuilder slug=security_questions]');
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -391,9 +391,9 @@ function getGenericsTab($userId)
 
     if (empty($form)) {
         if ($family->isChild($userId)) {
-            $html    .= do_shortcode("[formbuilder slug=child_generic user-id=$userId]");
+            $html    .= do_shortcode("[tsjippy_formbuilder slug=child_generic user-id=$userId]");
         } else {
-            $html    .= do_shortcode("[formbuilder slug=user_generics user-id='$userId']");
+            $html    .= do_shortcode("[tsjippy_formbuilder slug=user_generics user-id='$userId']");
         }
     } else {
         $html    .= $form;

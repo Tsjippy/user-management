@@ -21,7 +21,7 @@ function beforeSavingPictureFormData($submission, $object)
     // Hide profile picture by default from media galery
     $pictureId    =  $submission->profile_picture[0];
     if (is_numeric($pictureId)) {
-        update_post_meta($pictureId, 'gallery_visibility', 'hide');
+        update_post_meta($pictureId, 'tsjippy_gallery_visibility', 'hide');
     }
 
     return $submission;

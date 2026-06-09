@@ -40,7 +40,7 @@ function beforeSavingFormData($submission, $object)
     $oldPicture    = $family->getFamilyMeta($userId, 'family_picture');
     if ($newPicture != $oldPicture) {
         // Do not show in picture gallery
-        update_post_meta($newPicture, 'gallery_visibility', 'hide');
+        update_post_meta($newPicture, 'tsjippy_gallery_visibility', 'hide');
 
         do_action('tsjippy_update_family_picture', $userId, $newPicture);
     }
