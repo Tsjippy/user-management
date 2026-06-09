@@ -16,6 +16,8 @@ function createUserAccountForm()
 ?>
         <div class="tabcontent">
             <form class='tsjippy-form' data-reset="true">
+                <input type="hidden" class="no-reset" name="nonce"  value="<?php echo wp_create_nonce('account-creation'); ?>">
+                
                 <p>Please fill in the form to create an user account</p>
 
                 <label>
