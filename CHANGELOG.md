@@ -2,6 +2,17 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+
+## [10.2.2] - 2026-06-09
+
+
+### Added
 - shared functionality loader
 
 ### Changed
@@ -17,8 +28,6 @@
 - spacing problem
 - space before dot bug
 - include nonce in user account creation form
-
-### Updated
 
 ## [10.2.1] - 2026-06-03
 
