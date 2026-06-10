@@ -27,13 +27,13 @@ function beforeSavingData($submission, $object)
     }
 
     // check if childrens age is correct
-    $children    = get_user_meta($object->userId, 'children');
+    $children    = get_user_meta($object->userId, 'tsjippy_children');
 
     if (!empty($children)) {
-        $ownAge        = strtotime(get_user_meta($object->userId, 'birthday', true));
+        $ownAge        = strtotime(get_user_meta($object->userId, 'tsjippy_birthday', true));
 
         foreach ($children as $child) {
-            $ageDiff    = strtotime(get_user_meta($child, 'birthday', true)) - $ownAge;
+            $ageDiff    = strtotime(get_user_meta($child, 'tsjippy_birthday', true)) - $ownAge;
 
             if ($ageDiff / YEAR_IN_SECONDS < 14) {
                 return new \WP_ERROR('forms', "Please don't lie");
@@ -42,7 +42,7 @@ function beforeSavingData($submission, $object)
     }
 
     //check if phonenumber has changed
-    $oldPhonenumbers    = (array)get_user_meta($object->userId, 'phonenumbers', true);
+    $oldPhonenumbers    = (array)get_user_meta($object->userId, 'tsjippy_phonenumbers', true);
     $newPhonenumbers    = TSJIPPY\sanitize($_POST['phonenumbers']);
     $changedNumbers        = array_diff($newPhonenumbers, $oldPhonenumbers);
     foreach ($changedNumbers as $key => $changedNumber) {
@@ -72,7 +72,7 @@ function beforeSavingData($submission, $object)
 
     // store changed date
     if (!empty($changedNumbers)) {
-        update_user_meta($object->userId, 'phone-last-changed', time());
+        update_user_meta($object->userId, 'tsjippy_phone-last-changed', time());
     }
 
     return $submission;
@@ -178,7 +178,7 @@ function getMinistries()
  */
 function displayMinistryPositions($userId)
 {
-    $userMinistries     = (array)get_user_meta($userId, "jobs", true);
+    $userMinistries     = (array)get_user_meta($userId, "tsjippy_jobs", true);
 
     ob_start();
 ?>

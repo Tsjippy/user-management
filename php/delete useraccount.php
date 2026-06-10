@@ -28,7 +28,7 @@ function deleteUser()
             return "<div class='error'>User with id $userId does not exist.</div>";
         }
 
-        $family         = get_user_meta($userId, "family", true);
+        $family         = get_user_meta($userId, "tsjippy_family", true);
 
         if (!isset($_GET["confirm"])) {
             $html .= askConfirmation($userdata, $family);

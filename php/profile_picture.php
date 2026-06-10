@@ -37,7 +37,7 @@ function beforeSavingPictureFormData($submission, $object)
  */
 function getProfilePictureUrl($userId, $size = 'avatar')
 {
-    $attachmentId    = (array)get_user_meta($userId, 'profile_picture', true);
+    $attachmentId    = (array)get_user_meta($userId, 'tsjippy_profile_picture', true);
 
     $url            = false;
     if (is_numeric($attachmentId[0])) {
@@ -56,7 +56,7 @@ function getProfilePictureUrl($userId, $size = 'avatar')
  */
 function getProfilePicturePath($userId)
 {
-    $attachmentId    = get_user_meta($userId, 'profile_picture', true);
+    $attachmentId    = get_user_meta($userId, 'tsjippy_profile_picture', true);
     $path            = false;
     if (is_numeric($attachmentId)) {
         $path = get_attached_file($attachmentId);

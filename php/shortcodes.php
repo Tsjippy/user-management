@@ -105,12 +105,12 @@ function userStatistics()
             <tbody>
                 <?php
                 foreach ($users as $user) {
-                    $loginCount = get_user_meta($user->ID, 'login_count', true);
+                    $loginCount = get_user_meta($user->ID, 'tsjippy_login_count', true);
                     if (!is_numeric(($loginCount))) {
                         $loginCount = 0;
                     }
 
-                    $lastLoginDate    = get_user_meta($user->ID, 'last_login_date', true);
+                    $lastLoginDate    = get_user_meta($user->ID, 'tsjippy_last_login_date', true);
                     if (empty($lastLoginDate)) {
                         $lastLoginDate    = 'Never';
                     } else {
@@ -134,7 +134,7 @@ function userStatistics()
                         echo $role . '<br>';
                     }
                     echo "</td>";
-                    echo "<td>" . get_user_meta($user->ID, 'account_validity', true) . "</td>";
+                    echo "<td>" . get_user_meta($user->ID, 'tsjippy_account_validity', true) . "</td>";
                     echo "</tr>";
                 }
                 ?>

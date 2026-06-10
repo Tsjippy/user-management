@@ -75,7 +75,7 @@ function pendingUsers()
         //Get user id from url parameter
         $UserId = (int) $_GET['delete_pending_user'];
         //Check if the user account is still pending
-        if (get_user_meta($UserId, 'disabled', true) == 'pending') {
+        if (get_user_meta($UserId, 'tsjippy_disabled', true) == 'pending') {
             //Load delete function
             require_once(ABSPATH . 'wp-admin/includes/user.php');
 
@@ -93,12 +93,12 @@ function pendingUsers()
         //Get user id from url parameter
         $UserId = (int) $_GET['activate_pending_user'];
         //Check if the user account is still pending
-        if (get_user_meta($UserId, 'disabled', true) == 'pending') {
+        if (get_user_meta($UserId, 'tsjippy_disabled', true) == 'pending') {
             //Send welcome-email
             wp_new_user_notification($UserId, null, 'user');
 
             //Make approved
-            delete_user_meta($UserId, 'disabled');
+            delete_user_meta($UserId, 'tsjippy_disabled');
 
             // run account update hook
             do_action('tsjippy-approved-user', $userId);

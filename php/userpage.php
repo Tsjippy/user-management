@@ -93,7 +93,7 @@ function userInfoPage($atts)
             return TSJIPPY\userSelect("Select an user to show the data of:", false, false, '', 'user-selection', [], '', []);
         }
 
-        $userBirthday = get_user_meta($userId, "birthday", true);
+        $userBirthday = get_user_meta($userId, "tsjippy_birthday", true);
         if (!empty($userBirthday)) {
             $userAge = date_diff(date_create(gmdate("Y-m-d")), date_create($userBirthday))->y;
         }
@@ -226,7 +226,7 @@ function userInfoPage($atts)
             //Content
             $html    .= '<div id="profile-picture-info" class="tabcontent hidden">';
 
-            if (($_GET['main-tab'] ?? '') == 'profile_picture') {
+            if (($_GET['main-tab'] ?? '') == 'profile-picture-info') {
                 if ($family->isChild($userId)) {
                     $html    .= do_shortcode("[tsjippy_formbuilder slug=profile_picture user-id='$userId']");
                 } else {
@@ -352,7 +352,7 @@ function getGenericsTab($userId)
 {
     $family    = new TSJIPPY\FAMILY\Family();
 
-    $accountValidity     = get_user_meta($userId, 'account_validity', true);
+    $accountValidity     = get_user_meta($userId, 'tsjippy_account_validity', true);
 
     $genericInfoRoles     = array_merge(['usermanagement'], ['administrator']);
 

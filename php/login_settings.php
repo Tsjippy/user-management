@@ -10,7 +10,7 @@ function authenticateUser($user, $password)
 {
     if (
         !is_wp_error($user) &&                                     // there is no error
-        get_user_meta($user->ID, 'disabled', true) &&             // the account is disabled
+        get_user_meta($user->ID, 'tsjippy_disabled', true) &&             // the account is disabled
         get_bloginfo('admin_email') !== $user->user_email            // this is not the main admin
     ) {
         $user = new \WP_Error(
@@ -30,7 +30,7 @@ function changePasswordForm($userId = null)
         $user        = wp_get_current_user();
     }
     $name        = $user->display_name;
-    $disabled    = get_user_meta($user->ID, 'disabled', true);
+    $disabled    = get_user_meta($user->ID, 'tsjippy_disabled', true);
     if ($disabled) {
         $actionText    = 'enable';
     } else {
@@ -52,7 +52,7 @@ function changePasswordForm($userId = null)
         } elseif ($_REQUEST['action'] == 'Change to e-mail') {
             TSJIPPY\LOGIN\addMethod('email', $user->ID);
 
-            delete_user_meta($user->ID, "2fa_methods", 'authenticator');
+            delete_user_meta($user->ID, "tsjippy_2fa_methods", 'authenticator');
             echo "<div class='success'>Succesfully changed the 2fa factor for $name to e-mail</div>";
         }
 
@@ -86,7 +86,7 @@ function changePasswordForm($userId = null)
             echo TSJIPPY\LOGIN\passwordResetForm($user);
         }
 
-        $methods    = get_user_meta($userId, '2fa_methods');
+        $methods    = get_user_meta($userId, 'tsjippy_2fa_methods');
         $nonce        = wp_create_nonce("wp-2fa-reset-nonce_$userId");
         if (is_array($methods)) {
 

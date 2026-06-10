@@ -132,7 +132,7 @@ function checkDetailsMail()
         $message .= "</td>";
         $message .= "</tr>";
 
-        $birthday = get_user_meta($user->ID, 'birthday', true);
+        $birthday = get_user_meta($user->ID, 'tsjippy_birthday', true);
         if (empty($birthday)) {
             $birthday = 'No birthday specified. ';
         } else {
@@ -154,7 +154,7 @@ function checkDetailsMail()
         /*
         ** PHONENUMBERS
          */
-        $phonenumbers = (array)get_user_meta($user->ID, 'phonenumbers', true);
+        $phonenumbers = (array)get_user_meta($user->ID, 'tsjippy_phonenumbers', true);
         array_filter($phonenumbers);
         $title    = 'Phonenumber';
         if (count($phonenumbers) > 1) {
@@ -194,7 +194,7 @@ function checkDetailsMail()
         /*
         ** MINISTRIES
          */
-        $userMinistries = (array)get_user_meta($user->ID, 'jobs', true);
+        $userMinistries = (array)get_user_meta($user->ID, 'tsjippy_jobs', true);
         if (count($userMinistries) > 1) {
             $title    = 'Ministries';
         } else {
@@ -229,7 +229,7 @@ function checkDetailsMail()
         ** LOCATION
          */
         $message    .= "<a href='{$baseUrl}location' $styleString><b>Location</b></a><br>";
-        $location    = (array)get_user_meta($user->ID, 'location', true);
+        $location    = (array)get_user_meta($user->ID, 'tsjippy_location', true);
         array_filter($location);
         if (empty($location['address'])) {
             $location = "No location provided";
@@ -399,7 +399,7 @@ function accountExpiryCheck()
 
     foreach ($expiredUsers as $user) {
         // check if it is a valid date string
-        if (!strtotime(get_user_meta($user->ID, 'account_validity', true))) {
+        if (!strtotime(get_user_meta($user->ID, 'tsjippy_account_validity', true))) {
             continue;
         }
 
@@ -417,7 +417,7 @@ function checkLastLoginDate()
 
     $users = TSJIPPY\getUserAccounts();
     foreach ($users as $user) {
-        $lastLogin                = get_user_meta($user->ID, 'last_login_date', true);
+        $lastLogin                = get_user_meta($user->ID, 'tsjippy_last_login_date', true);
 
         //user has never logged in
         if (empty($lastLogin)) {

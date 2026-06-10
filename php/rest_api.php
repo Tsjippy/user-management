@@ -215,11 +215,11 @@ function getUserPageTab($wpRestRequest)
 
 function disableUserAccount()
 {
-    if (empty(get_user_meta((int) $_POST['user-id'], 'disabled', true))) {
-        update_user_meta((int) $_POST['user-id'], 'disabled', true);
+    if (empty(get_user_meta((int) $_POST['user-id'], 'tsjippy_disabled', true))) {
+        update_user_meta((int) $_POST['user-id'], 'tsjippy_disabled', true);
         return 'Succesfully disabled the user account';
     } else {
-        delete_user_meta((int) $_POST['user-id'], 'disabled');
+        delete_user_meta((int) $_POST['user-id'], 'tsjippy_disabled');
         return 'Succesfully enabled the user account';
     }
 }
@@ -318,7 +318,7 @@ function extendValidity()
         $dateStr   = gmdate(TSJIPPY\DATEFORMAT, strtotime($date));
         $message    = "Extended valitidy for " . get_userdata($userId)->first_name . " till $dateStr";
     }
-    update_user_meta($userId, 'account_validity', $date);
+    update_user_meta($userId, 'tsjippy_account_validity', $date);
 
     return $message;
 }

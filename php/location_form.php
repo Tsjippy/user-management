@@ -13,7 +13,7 @@ function beforeSavingLocationFormData($submission, $object)
     }
 
     //Get the old values from the db
-    $oldLocation = get_user_meta($object->userId, 'location', true);
+    $oldLocation = get_user_meta($object->userId, 'tsjippy_location', true);
 
     //Get the location from the post array
     $location = TSJIPPY\sanitize($_POST["location"] ?? []);
@@ -42,7 +42,7 @@ function beforeSavingLocationFormData($submission, $object)
         TSJIPPY\printArray("Saved location for user id $object->userId");
     } elseif (isset($_POST["location"]) && (empty($location['latitude']) || empty($location['longitude']))) {
         //Remove location from db if empty
-        delete_user_meta($object->userId, 'location');
+        delete_user_meta($object->userId, 'tsjippy_location');
         TSJIPPY\printArray("Deleted location for user id $object->userId");
 
         do_action('tsjippy_location_removal', $object->userId);

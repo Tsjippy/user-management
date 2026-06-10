@@ -11,7 +11,7 @@ function userDeleted($userId)
     $userdata        = get_userdata($userId);
     $displayname    = $userdata->display_name;
 
-    $attachmentId = get_user_meta($userId, 'profile_picture', true);
+    $attachmentId = get_user_meta($userId, 'tsjippy_profile_picture', true);
     if (is_numeric($attachmentId)) {
         //Remove profile picture
         wp_delete_attachment($attachmentId, true);

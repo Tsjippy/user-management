@@ -66,7 +66,7 @@ function notificationEmail($args, $user)
         'login' => $user->user_login
     ], wp_lostpassword_url());
 
-    if (get_user_meta($user->ID, 'disabled', true) == 'pending') {
+    if (get_user_meta($user->ID, 'tsjippy_disabled', true) == 'pending') {
         $mail = new AccountApproveddMail($user, $url, $validTillString);
         $mail->filterMail();
     } else {

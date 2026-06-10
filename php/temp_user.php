@@ -24,7 +24,7 @@ function userCustomColumn($val, $columnName, $userId)
     if ($columnName != 'expiry_date') {
         return $val;
     }
-    return get_user_meta($userId, 'account_validity', true);
+    return get_user_meta($userId, 'tsjippy_account_validity', true);
 }
 
 add_filter('manage_users_sortable_columns', __NAMESPACE__ . '\sortableUserColumn');

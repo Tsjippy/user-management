@@ -20,8 +20,8 @@ class PotentialFamilyMembers
     public function __construct($userId)
     {
         $this->userId               = $userId;
-        $this->birthday                = get_user_meta($userId, 'birthday', true);
-        $this->gender                = get_user_meta($userId, 'gender', true);
+        $this->birthday                = get_user_meta($userId, 'tsjippy_birthday', true);
+        $this->gender                = get_user_meta($userId, 'tsjippy_gender', true);
         $family                     = new TSJIPPY\FAMILY\Family();
         $this->partner              = $family->getPartner($userId);
         $this->family                = $family->getFamily($userId, true);
@@ -68,8 +68,8 @@ class PotentialFamilyMembers
             }
 
             //Get the current gender
-            $user->gender        = get_user_meta($user->ID, 'gender', true);
-            $user->birthday    = get_user_meta($user->ID, "birthday", true);
+            $user->gender        = get_user_meta($user->ID, 'tsjippy_gender', true);
+            $user->birthday    = get_user_meta($user->ID, "tsjippy_birthday", true);
             $user->ageDifference         = null;
             $user->age         = null;
             if (!empty($user->birthday)) {

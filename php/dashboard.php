@@ -25,8 +25,8 @@ function showDashboard($userId, $admin = false)
     $firstName    = $userdata->first_name;
 
     if ($admin) {
-        $loginCount = get_user_meta($userId, 'login_count', true);
-        $lastLogin    = get_user_meta($userId, 'last_login_date', true);
+        $loginCount = get_user_meta($userId, 'tsjippy_login_count', true);
+        $lastLogin    = get_user_meta($userId, 'tsjippy_last_login_date', true);
 
         if (is_numeric($loginCount)) {
             $timeString     = strtotime($lastLogin);
