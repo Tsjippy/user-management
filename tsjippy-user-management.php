@@ -40,16 +40,21 @@ define(__NAMESPACE__ . '\SETTINGS', get_option('tsjippy_' . PLUGINSLUG . '_setti
 
 // run right before activation
 register_activation_hook(__FILE__, function () {
+    // Load shared code
+    if(file_exists(__DIR__  . '/shared-functionality/loader.php')){
+        require_once(__DIR__  . '/shared-functionality/loader.php');
+    }
+    
     /**
      *  Default pages
      */
     $settings    = SETTINGS;
 
     // Create account page
-    $settings['account_page']            = TSJIPPY\ADMIN\createDefaultPage('Account', '[user-info currentuser=true]');
+    $settings['account_page']           = TSJIPPY\ADMIN\createDefaultPage('Account', '[user-info currentuser=true]');
 
     // Create user edit page
-    $settings['user-edit-page']            = TSJIPPY\ADMIN\createDefaultPage('Edit users', '[user-info]');
+    $settings['user-edit-page']         = TSJIPPY\ADMIN\createDefaultPage('Edit users', '[user-info]');
 
     // Create user create page
     $settings['account-create-page']    = TSJIPPY\ADMIN\createDefaultPage('Add user account', '[create_user_account]');
