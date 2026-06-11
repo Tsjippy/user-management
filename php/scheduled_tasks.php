@@ -338,19 +338,19 @@ function accountExpiryCheck()
             'meta_query' => array(
                 'relation' => 'AND',
                 array(
-                    'key'         => 'account_validity',
+                    'key'         => 'tsjippy_account_validity',
                     'compare'     => 'EXISTS'
                 ),
                 array(
-                    'key'         => 'account_validity',
-                    'value'     => 'unlimited',
+                    'key'         => 'tsjippy_account_validity',
+                    'value'       => 'unlimited',
                     'compare'     => '!='
                 ),
                 array(
-                    'key'         => 'account_validity',
-                    'value'     => gmdate("Y-m-d", strtotime(" +1 months")),
+                    'key'         => 'tsjippy_account_validity',
+                    'value'       => gmdate("Y-m-d", strtotime(" +1 months")),
                     'compare'     => '=',
-                    'type'         => 'DATE'
+                    'type'        => 'DATE'
                 ),
 
             ),
@@ -376,21 +376,21 @@ function accountExpiryCheck()
     $expiredUsers = get_users(
         array(
             'meta_query'    => array(
-                'relation'         => 'AND',
+                'relation'      => 'AND',
                 array(
-                    'key'         => 'account_validity',
-                    'compare'     => 'EXISTS'
+                    'key'       => 'tsjippy_account_validity',
+                    'compare'   => 'EXISTS'
                 ),
                 array(
-                    'key'         => 'account_validity',
+                    'key'       => 'tsjippy_account_validity',
                     'value'     => 'unlimited',
-                    'compare'    => '!='
+                    'compare'   => '!='
                 ),
                 array(
-                    'key'        => 'account_validity',
+                    'key'       => 'tsjippy_account_validity',
                     'value'     => gmdate("Y-m-d"),
-                    'compare'     => '<=',
-                    'type'         => 'DATE'
+                    'compare'   => '<=',
+                    'type'      => 'DATE'
                 ),
 
             ),
