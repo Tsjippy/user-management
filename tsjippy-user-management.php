@@ -51,16 +51,16 @@ register_activation_hook(__FILE__, function () {
     $settings    = SETTINGS;
 
     // Create account page
-    $settings['account_page']           = TSJIPPY\ADMIN\createDefaultPage('Account', '[user-info currentuser=true]');
+    $settings['account_page']           = TSJIPPY\ADMIN\createDefaultPage('Account', '[tsjippy_user-info currentuser=true]');
 
     // Create user edit page
-    $settings['user-edit-page']         = TSJIPPY\ADMIN\createDefaultPage('Edit users', '[user-info]');
+    $settings['user-edit-page']         = TSJIPPY\ADMIN\createDefaultPage('Edit users', '[tsjippy_user-info]');
 
     // Create user create page
-    $settings['account-create-page']    = TSJIPPY\ADMIN\createDefaultPage('Add user account', '[create_user_account]');
+    $settings['account-create-page']    = TSJIPPY\ADMIN\createDefaultPage('Add user account', '[tsjippy_create_user_account]');
 
     // Create pending users page
-    $settings['pending-users-page']     = TSJIPPY\ADMIN\createDefaultPage('Pending user accounts', '[pending_user]');
+    $settings['pending-users-page']     = TSJIPPY\ADMIN\createDefaultPage('Pending user accounts', '[tsjippy_pending_user]');
 
     update_option('tsjippy_' . PLUGINSLUG . '_settings', $settings);
 
