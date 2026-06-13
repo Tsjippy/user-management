@@ -10,6 +10,7 @@
 - shared code loader
 - activation hook
 - use correct shortcodes on auto created pages
+- invalid html char
 
 ### Updated
 
