@@ -5,6 +5,7 @@
 
 ### Changed
 - prefix meta key in get_users
+- removed user ministry function
 
 ### Fixed
 - shared code loader
