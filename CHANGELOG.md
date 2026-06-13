@@ -4,6 +4,15 @@
 ### Added
 
 ### Changed
+
+### Fixed
+
+### Updated
+
+## [10.2.4] - 2026-06-13
+
+
+### Changed
 - prefix meta key in get_users
 - removed user ministry function
 
@@ -12,8 +21,6 @@
 - activation hook
 - use correct shortcodes on auto created pages
 - invalid html char
-
-### Updated
 
 ## [10.2.3] - 2026-06-11
 
