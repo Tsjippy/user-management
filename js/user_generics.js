@@ -70,10 +70,10 @@ document.addEventListener("click", function (event) {
   }
 
   if (target.matches('.expand-children')) {
-      ev.stopImmediatePropagation();
+      event.stopImmediatePropagation();
       target.closest('li').querySelector('.children').classList.toggle('hidden');
 
-      if(target.innerHTML  == "&#9660;"){
+      if(target.innerHTML  == '▼'){
         target.innerHTML = "&#9650;";
       }else{
         target.innerHTML = "&#9660;";

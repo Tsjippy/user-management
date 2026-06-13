@@ -178,7 +178,7 @@ function getMinistries()
  */
 function displayMinistryPositions($userId)
 {
-    $userMinistries = get_user_meta($userId, "tsjippy_jobs");
+    $userMinistries = get_user_meta($userId, "tsjippy_jobs", true);
 
     ob_start();
 ?>
@@ -190,8 +190,8 @@ function displayMinistryPositions($userId)
             ?>
                 <li style="list-style-type: none" class="page_item page-item-204 page_item_has_children">
                     <?php echo wp_kses_post($url); ?>
-                    <button class="button small expand-children" type='button' style='font-size: 12px;'>&#9660;</button>
-                    <ul class='children hidden'>
+                    <button class="button small expand-children" type='button' style='font-size: 12px;'>&#9650;</button>
+                    <ul class='children'>
                         <?php
                         foreach ($ministries as $pageId => $ministry) {
                             //Check which option should be a checked ministry
