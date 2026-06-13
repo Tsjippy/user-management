@@ -190,7 +190,7 @@ function displayMinistryPositions($userId)
             ?>
                 <li style="list-style-type: none" class="page_item page-item-204 page_item_has_children">
                     <?php echo wp_kses_post($url); ?>
-                    <button class="button small expand-children" type='button' style='font-size: 12px;'>&dArr;</button>
+                    <button class="button small expand-children" type='button' style='font-size: 12px;'>&#9660;</button>
                     <ul class='children hidden'>
                         <?php
                         foreach ($ministries as $pageId => $ministry) {

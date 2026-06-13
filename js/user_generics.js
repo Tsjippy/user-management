@@ -72,6 +72,12 @@ document.addEventListener("click", function (event) {
   if (target.matches('.expand-children')) {
       ev.stopImmediatePropagation();
       target.closest('li').querySelector('.children').classList.toggle('hidden');
+
+      if(target.innerHTML  == "&#9660;"){
+        target.innerHTML = "&#9650;";
+      }else{
+        target.innerHTML = "&#9660;";
+      }
   }
 });
 
