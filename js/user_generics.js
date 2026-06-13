@@ -68,6 +68,11 @@ document.addEventListener("click", function (event) {
   if (target.name == "add_ministry") {
     addNewMinistry(target);
   }
+
+  if (target.matches('.expand-children')) {
+      ev.stopImmediatePropagation();
+      target.closest('li').querySelector('.children').classList.toggle('hidden');
+  }
 });
 
 function onBlur(ev) {

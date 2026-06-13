@@ -127,12 +127,12 @@ function beforeGenericsForm($html, $formSlug)
  * Get all locations with the ministries category
  *
  * @return    array    Ministries list
- */
+*/
 function getMinistries()
 {
     $categories    = get_categories(array(
-        'taxonomy'    => 'locations',
-        'parent'      => get_term_by('name', 'Ministries', 'locations')->term_id
+        'taxonomy' => 'locations',
+        'parent'   => get_term_by('name', 'Ministries', 'locations')->term_id
     ));
 
     $ministries = [];
@@ -164,7 +164,7 @@ function getMinistries()
         }
     }
 
-    $ministries['Other'][-1]             = "Other";
+    $ministries['Other'][-1]     = "Other";
 
     return $ministries;
 }
@@ -174,24 +174,24 @@ function getMinistries()
  *
  * @param    int        $userId        WP_User id
  *
- * @return    srtring                html
+ * @return  string                html
  */
 function displayMinistryPositions($userId)
 {
-    $userMinistries     = (array)get_user_meta($userId, "tsjippy_jobs", true);
+    $userMinistries = get_user_meta($userId, "tsjippy_jobs");
 
     ob_start();
 ?>
     <div id="ministries-list" name='display-ministry-positions-php'>
         <ul style='margin-left:0px;'>
             <?php
-            //Retrieve all the ministries from the database
+            //Retrieve all the ministries from the database ▼
             foreach (getMinistries() as $url => $ministries) {
             ?>
                 <li style="list-style-type: none" class="page_item page-item-204 page_item_has_children">
-                    <?php echo esc_url($url); ?>
-                    <button class="button small expand-children" type='button' style='font-size: 8px;'>▼</button>
-                    <ul class='children'>
+                    <?php echo wp_kses_post($url); ?>
+                    <button class="button small expand-children" type='button' style='font-size: 12px;'>&dArr;</button>
+                    <ul class='children hidden'>
                         <?php
                         foreach ($ministries as $pageId => $ministry) {
                             //Check which option should be a checked ministry
@@ -233,15 +233,6 @@ function displayMinistryPositions($userId)
             ?>
         </ul>
     </div>
-
-    <script>
-        document.addEventListener('click', ev => {
-            if (ev.target.matches('.expand-children')) {
-                ev.stopImmediatePropagation();
-                ev.target.closest('li').querySelector('.children').classList.toggle('hidden');
-            }
-        });
-    </script>
 <?php
 
     return ob_get_clean();

@@ -111,7 +111,7 @@ function pendingUsers()
     $list = '';
     //Get all the users who need approval
     $pendingUsers = get_users(array(
-        'meta_key'     => 'disabled',
+        'meta_key'     => 'tsjippy_disabled',
         'meta_value'   => 'pending',
         'meta_compare' => '=',
     ));
@@ -143,7 +143,7 @@ add_shortcode('tsjippy_pending_user_icon', __NAMESPACE__ . '\pendingUsersIcon');
 function pendingUsersIcon()
 {
     $pendingUsers = get_users(array(
-        'meta_key'     => 'disabled',
+        'meta_key'     => 'tsjippy_disabled',
         'meta_value'   => 'pending',
         'meta_compare' => '=',
     ));

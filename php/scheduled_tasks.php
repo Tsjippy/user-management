@@ -33,7 +33,7 @@ function birthdayCheck()
 
     //Get all the birthday users of today
     $users = get_users(array(
-        'meta_key'     => 'birthday',
+        'meta_key'     => 'tsjippy_birthday',
         'meta_value'   => $date->format('-m-d'),
         'meta_compare' => 'LIKE',
     ));

@@ -75,7 +75,7 @@ register_activation_hook(__FILE__, function () {
     }
 
     // add the last logindate for existing users
-    foreach (get_users(['meta_key' => 'last_login_date', 'meta_compare'  => 'NOT EXISTS']) as $user) {
+    foreach (get_users(['meta_key' => 'tsjippy_last_login_date', 'meta_compare'  => 'NOT EXISTS']) as $user) {
         update_user_meta($user->ID, 'tsjippy_last_login_date', gmdate('Y-m-d'));
     }
 
@@ -84,10 +84,10 @@ register_activation_hook(__FILE__, function () {
      */
     // Only add the new role if it does not exist
     if (!wp_roles()->is_role('rolemanagement')) {
-        $roleSet                     = get_role('contributor')->capabilities;
-        $roleSet['edit_users']        = true;
-        $roleSet['list_users']        = true;
-        $roleSet['promote_users']    = true;
+        $roleSet                  = get_role('contributor')->capabilities;
+        $roleSet['edit_users']    = true;
+        $roleSet['list_users']    = true;
+        $roleSet['promote_users'] = true;
 
         add_role(
             'rolemanagement',
@@ -97,11 +97,11 @@ register_activation_hook(__FILE__, function () {
     }
 
     if (!wp_roles()->is_role('usermanagement')) {
-        $roleSet                     = get_role('contributor')->capabilities;
-        $roleSet['edit_users']        = true;
-        $roleSet['list_users']        = true;
-        $roleSet['remove_users']    = true;
-        $roleSet['promote_users']    = true;
+        $roleSet                  = get_role('contributor')->capabilities;
+        $roleSet['edit_users']    = true;
+        $roleSet['list_users']    = true;
+        $roleSet['remove_users']  = true;
+        $roleSet['promote_users'] = true;
 
         add_role(
             'usermanagement',
