@@ -146,7 +146,7 @@ function userInfoPage($atts)
             //Content
             $html    .= '<div id="family-info" class="tabcontent hidden">';
 
-            if (($_GET['main-tab'] ?? '') == 'family') {
+            if (($_GET['main-tab'] ?? '') == 'family-info') {
                 $html    .= do_shortcode('[tsjippy_formbuilder slug=user_family]');
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
