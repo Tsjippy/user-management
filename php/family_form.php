@@ -37,7 +37,7 @@ function beforeSavingFormData($submission, $object)
 
     // Family Picture
     $newPicture    = TSJIPPY\sanitize($_POST['family_picture']);
-    $oldPicture    = $family->getFamilyMeta($userId, 'family_picture');
+    $oldPicture    = $family->getFamilyMeta($userId, 'family_picture', true);
     if ($newPicture != $oldPicture) {
         // Do not show in picture gallery
         update_post_meta($newPicture, 'tsjippy_gallery_visibility', 'hide');

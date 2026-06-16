@@ -253,7 +253,7 @@ function checkDetailsMail()
         $children    = $family->getChildren($user->ID);
         $siblings    = $family->getSiblings($user->ID);
         if ($partner || $children || $siblings) {
-            $picture    = $family->getFamilyMeta($partner, 'family_picture');
+            $picture    = $family->getFamilyMeta($partner, 'family_picture', true);
             if ($picture) {
                 $url        = wp_get_attachment_url($picture);
                 $picture    = "<img src='$url' width=100 height=100>";
