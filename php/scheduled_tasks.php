@@ -8,21 +8,21 @@ add_action('init', __NAMESPACE__ . '\taskInit');
 function taskInit()
 {
     //add action for use in scheduled task
-    add_action('birthday_check_action', __NAMESPACE__ . '\birthdayCheck');
-    add_action('check_details_mail_action', __NAMESPACE__ . '\checkDetailsMail');
-    add_action('account_expiry_check_action', __NAMESPACE__ . '\accountExpiryCheck');
-    add_action('check_last_login_date_action', __NAMESPACE__ . '\checkLastLoginDate');
+    add_action('tsjippy-birthday-check', __NAMESPACE__ . '\birthdayCheck');
+    add_action('tsjippy-check-details-mail', __NAMESPACE__ . '\checkDetailsMail');
+    add_action('tsjippy-account-expiry-check', __NAMESPACE__ . '\accountExpiryCheck');
+    add_action('tsjippy-check-last-login-date', __NAMESPACE__ . '\checkLastLoginDate');
 }
 
 function scheduleTasks()
 {
-    TSJIPPY\scheduleTask('birthday_check_action', 'daily');
-    TSJIPPY\scheduleTask('account_expiry_check_action', 'daily');
-    TSJIPPY\scheduleTask('check_last_login_date_action', 'monthly');
+    TSJIPPY\scheduleTask('tsjippy-birthday-check', 'daily');
+    TSJIPPY\scheduleTask('tsjippy-account-expiry-check', 'daily');
+    TSJIPPY\scheduleTask('tsjippy-check-last-login-date', 'monthly');
 
     $freq    = SETTINGS['check-details-mail-freq'] ?? false;
     if ($freq) {
-        TSJIPPY\scheduleTask('check_details_mail_action', $freq);
+        TSJIPPY\scheduleTask('tsjippy-check-details-mail', $freq);
     }
 }
 

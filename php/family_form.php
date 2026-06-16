@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 //Add availbale partners as default
-add_filter('tsjippy_add_form_multi_defaults', __NAMESPACE__ . '\addMultiDefault', 10, 3);
+add_filter('tsjippy-add-form-multi-defaults', __NAMESPACE__ . '\addMultiDefault', 10, 3);
 function addMultiDefault($defaultArrayValues, $userId, $formSlug)
 {
     if ($formSlug != 'user_family') {
@@ -24,7 +24,7 @@ function addMultiDefault($defaultArrayValues, $userId, $formSlug)
 }
 
 //Save family picture
-add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingFormData', 10, 2);
+add_filter('tsjippy-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingFormData', 10, 2);
 function beforeSavingFormData($submission, $object)
 {
     if ($object->formData->slug != 'user_family') {
@@ -42,14 +42,14 @@ function beforeSavingFormData($submission, $object)
         // Do not show in picture gallery
         update_post_meta($newPicture, 'tsjippy_gallery_visibility', 'hide');
 
-        do_action('tsjippy_update_family_picture', $userId, $newPicture);
+        do_action('tsjippy-update-family-picture', $userId, $newPicture);
     }
 
     return $submission;
 }
 
 // add a family member modal
-add_filter('tsjippy_before_form', __NAMESPACE__ . '\beforeForm', 10, 2);
+add_filter('tsjippy-before-form', __NAMESPACE__ . '\beforeForm', 10, 2);
 function beforeForm($html, $formSlug)
 {
     if ($formSlug != 'user_family') {

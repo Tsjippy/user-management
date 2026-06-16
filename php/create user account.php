@@ -48,7 +48,7 @@ function createUserAccountForm()
                     <option value="unlimited">Always</option>
                 </select>
                 <?php
-                do_action('tsjippy_after_user_create_form');
+                do_action('tsjippy-after-user-create-form');
 
                 TSJIPPY\addSaveButton('adduseraccount', 'Add user account');
                 ?>

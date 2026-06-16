@@ -48,12 +48,12 @@ function showDashboard($userId, $admin = false)
 ?>
     <div id="warnings">
         <?php
-        do_action('tsjippy_dashboard_warnings', $userId, $admin);
+        do_action('tsjippy-dashboard-warnings', $userId, $admin);
         ?>
     </div>
 
     <?php
-    do_action('tsjippy_user_dashboard', $userId, $admin);
+    do_action('tsjippy-user-dashboard', $userId, $admin);
     ?>
 
     <div id="ministrywarnings">

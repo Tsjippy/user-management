@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 //create birthday and anniversary events
-add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingLocationFormData', 10, 2);
+add_filter('tsjippy-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingLocationFormData', 10, 2);
 function beforeSavingLocationFormData($submission, $object)
 {
     if ($object->formData->slug != 'user_location') {
@@ -37,7 +37,7 @@ function beforeSavingLocationFormData($submission, $object)
         $family    = new TSJIPPY\FAMILY\Family();
         $family->updateFamilyMeta($object->userId, "location", $location);
 
-        do_action('tsjippy_location_update', $object->userId, $location);
+        do_action('tsjippy-location-update', $object->userId, $location);
 
         TSJIPPY\printArray("Saved location for user id $object->userId");
     } elseif (isset($_POST["location"]) && (empty($location['latitude']) || empty($location['longitude']))) {
@@ -45,7 +45,7 @@ function beforeSavingLocationFormData($submission, $object)
         delete_user_meta($object->userId, 'tsjippy_location');
         TSJIPPY\printArray("Deleted location for user id $object->userId");
 
-        do_action('tsjippy_location_removal', $object->userId);
+        do_action('tsjippy-location-removal', $object->userId);
     }
 
     return $submission;

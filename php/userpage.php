@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 // edit users dropdown
-add_action('tsjippy_user_description', __NAMESPACE__ . '\userDescription');
+add_action('tsjippy-user-description', __NAMESPACE__ . '\userDescription');
 function userDescription($user)
 {
     $family    = new TSJIPPY\FAMILY\Family();
@@ -71,7 +71,7 @@ function userInfoPage($atts)
     $html               = '';
     $userAge            = 19;
     $availableForms     = (array)SETTINGS['enabled-forms'] ?? [];
-    $userSelectRoles    = apply_filters('tsjippy_user_page_dropdown', $genericInfoRoles);
+    $userSelectRoles    = apply_filters('tsjippy-user-page-dropdown', $genericInfoRoles);
 
     //Showing data for current user
     if ($showCurrentUserData) {
@@ -300,7 +300,7 @@ function userInfoPage($atts)
     }
 
     //  Add filter to add extra pages, children tabs should always be last
-    $filteredHtml    = apply_filters('tsjippy_user_info_page', ['tabs' => $tabs, 'html' => $html], $showCurrentUserData, $user, $userAge);
+    $filteredHtml    = apply_filters('tsjippy-user-info-page', ['tabs' => $tabs, 'html' => $html], $showCurrentUserData, $user, $userAge);
     $tabs             = $filteredHtml['tabs'];
     $html             = $filteredHtml['html'];
 

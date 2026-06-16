@@ -6,7 +6,7 @@ use TSJIPPY;
 
 
 // Adds userdata to the user metadata
-add_filter('tsjippy_forms_load_userdata', __NAMESPACE__ . '\loadUserData', 10, 2);
+add_filter('tsjippy-forms-load-userdata', __NAMESPACE__ . '\loadUserData', 10, 2);
 function loadUserData($usermeta, $userId)
 {
     $userdata    = (array)get_userdata($userId)->data;
@@ -19,7 +19,7 @@ function loadUserData($usermeta, $userId)
 }
 
 // phonenumbers and more
-add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingData', 10, 2);
+add_filter('tsjippy-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingData', 10, 2);
 function beforeSavingData($submission, $object)
 {
     if ($object->formData->slug != 'user_generics') {

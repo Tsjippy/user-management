@@ -8,24 +8,6 @@ use WP_User;
 add_action('rest_api_init', __NAMESPACE__ . '\restApiInit');
 function restApiInit()
 {
-    // add element to form
-    register_rest_route(
-        TSJIPPY\RESTAPIPREFIX . '/user_management',
-        '/add_ministry',
-        array(
-            'methods'                 => 'POST',
-            'callback'                 =>     __NAMESPACE__ . '\addMinistry',
-            'permission_callback'     => function () {
-                return current_user_can('read');
-            },
-            'args'                    => array(
-                'location-name'        => array(
-                    'required'    => true
-                )
-            )
-        )
-    );
-
     // disable or enable useraccount
     register_rest_route(
         TSJIPPY\RESTAPIPREFIX . '/user_management',
@@ -157,7 +139,7 @@ function getUserPageTab($wpRestRequest)
     $userId                = $params['user-id'];
 
     $genericInfoRoles     = array_merge(['usermanagement'], ['administrator']);
-    $userSelectRoles    = apply_filters('tsjippy_user_page_dropdown', $genericInfoRoles);
+    $userSelectRoles    = apply_filters('tsjippy-user-page-dropdown', $genericInfoRoles);
     $user                 = wp_get_current_user();
     $userRoles             = $user->roles;
 
@@ -222,50 +204,6 @@ function disableUserAccount()
         delete_user_meta((int) $_POST['user-id'], 'tsjippy_disabled');
         return 'Succesfully enabled the user account';
     }
-}
-
-/**
- * add new ministry location via rest api
- */
-function addMinistry()
-{
-    //Get the post data
-    $name = TSJIPPY\sanitize($_POST["location-name"]);
-
-    $status    = 'pending';
-    if (wp_get_current_user()->has_cap('publish_post')) {
-        $status    = 'publish';
-    }
-
-    //Build the ministry page
-    $ministryPage = array(
-        'post_title'    => ucfirst($name),
-        'post_content'  => '',
-        'post_status'   => $status,
-        'post_type'        => 'location',
-        'post_author'    => get_current_user_id(),
-    );
-
-    $ministryCatId    = get_term_by('name', 'Ministries', 'locations')->term_id;
-
-    //Insert the page
-    $postId = wp_insert_post($ministryPage);
-
-    //Add the ministry cat
-    wp_set_post_terms($postId, $ministryCatId, 'locations');
-
-    //Store the ministry location
-    if ($postId != 0) {
-        //Add the location to the page
-        do_action('tsjippy_ministry_added', [$ministryCatId], $postId);
-    }
-
-    $url = get_permalink($postId);
-
-    return [
-        'html'        => "Succesfully created new ministry page, see it <a href='$url'>here</a>",
-        'postId'    => $postId
-    ];
 }
 
 /**

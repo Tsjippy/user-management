@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 // add extra question to the new user form
-add_action('tsjippy_after_user_create_form', __NAMESPACE__ . '\afterUserCreateForm');
+add_action('tsjippy-after-user-create-form', __NAMESPACE__ . '\afterUserCreateForm');
 function afterUserCreateForm()
 {
     echo "<label>";

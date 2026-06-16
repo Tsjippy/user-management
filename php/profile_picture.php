@@ -11,7 +11,7 @@ function init()
 }
 
 
-add_filter('tsjippy_before_inserting_formdata', __NAMESPACE__ . '\beforeSavingPictureFormData', 10, 2);
+add_filter('tsjippy-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingPictureFormData', 10, 2);
 function beforeSavingPictureFormData($submission, $object)
 {
     if ($object->formData->slug != 'profile_picture') {
