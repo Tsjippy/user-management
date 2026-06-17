@@ -184,7 +184,7 @@ function userInfoPage($atts)
         ) &&
         in_array('location', $availableForms)
     ) {
-        $shouldShow    = apply_filters('tsjippy-user-management-should-show-family-form', true, $userId);
+        $shouldShow    = apply_filters('tsjippy-user-management-should-show-location-form', true, $userId);
 
         if ($shouldShow) {
             //Add tab button
