@@ -9,6 +9,7 @@
 - prefix all hooks with plugin name
 
 ### Fixed
+- loaction form
 
 ### Updated
 
