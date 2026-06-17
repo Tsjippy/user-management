@@ -16,6 +16,6 @@ class DashboardWarnings
         $this->reminderHtml     = '';
         $this->userId           = $userId;
 
-        do_action('tsjippy-dashboard-waring-construct', $this);
+        do_action('tsjippy-user-management-dashboard-waring-construct', $this);
     }
 }

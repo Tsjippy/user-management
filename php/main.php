@@ -21,7 +21,7 @@ function postStates($states, $post)
     return $states;
 }
 
-add_filter('tsjippy-role-description', __NAMESPACE__ . '\roleDescription', 10, 2);
+add_filter('tsjippy-user-management-role-description', __NAMESPACE__ . '\roleDescription', 10, 2);
 function roleDescription($description, $role)
 {
     if ($role == 'rolemanagement') {

@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 // edit users dropdown
-add_action('tsjippy-user-description', __NAMESPACE__ . '\userDescription');
+add_action('tsjippy-user-pages-description', __NAMESPACE__ . '\userDescription');
 function userDescription($user)
 {
     $family    = new TSJIPPY\FAMILY\Family();
@@ -71,7 +71,7 @@ function userInfoPage($atts)
     $html               = '';
     $userAge            = 19;
     $availableForms     = (array)SETTINGS['enabled-forms'] ?? [];
-    $userSelectRoles    = apply_filters('tsjippy-user-page-dropdown', $genericInfoRoles);
+    $userSelectRoles    = apply_filters('tsjippy-user-management-page-dropdown', $genericInfoRoles);
 
     //Showing data for current user
     if ($showCurrentUserData) {
@@ -137,7 +137,7 @@ function userInfoPage($atts)
         ) &&
         in_array('family', $availableForms)                            // and the family form is enabled
     ) {
-        $shouldShow    = apply_filters('tsjippy-should-show-family-form', true, $userId);
+        $shouldShow    = apply_filters('tsjippy-user-management-should-show-family-form', true, $userId);
 
         if ($shouldShow && $userAge > 18) {
             //Tab button
@@ -184,7 +184,7 @@ function userInfoPage($atts)
         ) &&
         in_array('location', $availableForms)
     ) {
-        $shouldShow    = apply_filters('tsjippy-should-show-location-form', true, $userId);
+        $shouldShow    = apply_filters('tsjippy-user-management-should-show-family-form', true, $userId);
 
         if ($shouldShow) {
             //Add tab button
@@ -217,7 +217,7 @@ function userInfoPage($atts)
         PROFILE PICTURE Info
     */
     if ((in_array('usermanagement', $userRoles) || $showCurrentUserData) && in_array('profile picture', $availableForms)) {
-        $shouldShow    = apply_filters('tsjippy-should-show-picture-form', true, $userId);
+        $shouldShow    = apply_filters('tsjippy-user-management-should-show-picture-form', true, $userId);
 
         if ($shouldShow) {
             //Add tab button
@@ -280,7 +280,7 @@ function userInfoPage($atts)
         ) &&
         in_array('security', $availableForms)
     ) {
-        $shouldShow    = apply_filters('tsjippy-should-show-security-form', true, $userId);
+        $shouldShow    = apply_filters('tsjippy-user-management-should-show-security-form', true, $userId);
 
         if ($shouldShow) {
             //Tab button
@@ -300,7 +300,7 @@ function userInfoPage($atts)
     }
 
     //  Add filter to add extra pages, children tabs should always be last
-    $filteredHtml    = apply_filters('tsjippy-user-info-page', ['tabs' => $tabs, 'html' => $html], $showCurrentUserData, $user, $userAge);
+    $filteredHtml    = apply_filters('tsjippy-user-management-user-info-page', ['tabs' => $tabs, 'html' => $html], $showCurrentUserData, $user, $userAge);
     $tabs             = $filteredHtml['tabs'];
     $html             = $filteredHtml['html'];
 
@@ -387,7 +387,7 @@ function getGenericsTab($userId)
         $html    .= "</div>";
     }
 
-    $form    = apply_filters('tsjippy-generics-form', '', $userId);
+    $form    = apply_filters('tsjippy-user-management-generics-form', '', $userId);
 
     if (empty($form)) {
         if ($family->isChild($userId)) {

@@ -183,13 +183,4 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
     {
         return '';
     }
-
-    /**
-     * Schedules the tasks for this plugin
-     *
-     */
-    public function postSettingsSave()
-    {
-        scheduleTasks();
-    }
 }

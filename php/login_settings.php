@@ -56,7 +56,7 @@ function changePasswordForm($userId = null)
             echo "<div class='success'>Succesfully changed the 2fa factor for $name to e-mail</div>";
         }
 
-        do_action('tsjippy-login-settings-save', $userId, $name);
+        do_action('tsjippy-user-management-login-settings-save', $userId, $name);
     }
 
     //Content
@@ -120,7 +120,7 @@ function changePasswordForm($userId = null)
         <?php
         }
 
-        do_action('tsjippy-after-login-settings', $userId, $nonce);
+        do_action('tsjippy-user-management-after-login-settings', $userId, $nonce);
         ?>
     </div>
 <?php

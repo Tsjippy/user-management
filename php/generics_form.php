@@ -67,7 +67,7 @@ function beforeSavingData($submission, $object)
             $changedNumber = $submission->phonenumbers[$key]    = '+234' . $changedNumber;
         }
 
-        do_action('tsjippy-phonenumber-updated', $changedNumber, $object->userId);
+        do_action('tsjippy-user-management-phonenumber-updated', $changedNumber, $object->userId);
     }
 
     // store changed date

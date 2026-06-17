@@ -134,14 +134,14 @@ function restApiInit()
  */
 function getUserPageTab($wpRestRequest)
 {
-    $params                = $wpRestRequest->get_params();
+    $params            = $wpRestRequest->get_params();
 
-    $userId                = $params['user-id'];
+    $userId           = $params['user-id'];
 
-    $genericInfoRoles     = array_merge(['usermanagement'], ['administrator']);
-    $userSelectRoles    = apply_filters('tsjippy-user-page-dropdown', $genericInfoRoles);
-    $user                 = wp_get_current_user();
-    $userRoles             = $user->roles;
+    $genericInfoRoles = array_merge(['usermanagement'], ['administrator']);
+    $userSelectRoles  = apply_filters('tsjippy-user-management-page-dropdown', $genericInfoRoles);
+    $user             = wp_get_current_user();
+    $userRoles        = $user->roles;
 
     if ($userId    != get_current_user_id() && array_intersect($userSelectRoles, $userRoles)) {
         $admin    = true;

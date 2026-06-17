@@ -4,7 +4,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 
 use TSJIPPY;
 
-add_filter('tsjippy-before-pdf-text', __NAMESPACE__ . '\beforePdfText', 10, 3);
+add_filter('tsjippy-pdf-before-text', __NAMESPACE__ . '\beforePdfText', 10, 3);
 function beforePdfText($cellText, $pdf)
 {
     //text contains a filepath
@@ -27,7 +27,7 @@ function beforePdfText($cellText, $pdf)
     return $cellText;
 }
 
-add_action('tsjippy-after-pdf-text', __NAMESPACE__ . '\afterPdfText', 10, 6);
+add_action('tsjippy-pdf-after-text', __NAMESPACE__ . '\afterPdfText', 10, 6);
 function afterPdfText($cellText, $pdf, $x, $y, $cellWidth, $reset)
 {
     if (is_array($cellText) && isset($cellText['picture'])) {

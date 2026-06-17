@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 //Shortcode for the dashboard
-add_action('tsjippy-dashboard-warnings', __NAMESPACE__ . '\dashboardWarnings', 20);
+add_action('tsjippy-user-management-dashboard-warnings', __NAMESPACE__ . '\dashboardWarnings', 20);
 function dashboardWarnings($userId)
 {
     $dashboardWarnings    = new DashboardWarnings($userId);
@@ -66,7 +66,7 @@ add_shortcode("tsjippy_userstatistics", __NAMESPACE__ . '\userStatistics');
 function userStatistics()
 {
 
-    add_filter('tsjippy-post-edit-button', function ($buttonHtml, $post, $content) {
+    add_filter('tsjippy-frontend-content-post-edit-button', function ($buttonHtml, $post, $content) {
         return $buttonHtml . "<form style='display: inline-block;' action='' method='post'><button class='button small' name='getlist' value=1>Get Contact List</button></form>";
     }, 10, 3);
 

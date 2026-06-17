@@ -48,7 +48,7 @@ function createUserAccountForm()
                     <option value="unlimited">Always</option>
                 </select>
                 <?php
-                do_action('tsjippy-after-user-create-form');
+                do_action('tsjippy-user-management-after-user-create-form');
 
                 TSJIPPY\addSaveButton('adduseraccount', 'Add user account');
                 ?>
@@ -101,7 +101,7 @@ function pendingUsers()
             delete_user_meta($UserId, 'tsjippy_disabled');
 
             // run account update hook
-            do_action('tsjippy-approved-user', $userId);
+            do_action('tsjippy-user-management-approved-user', $userId);
 
             echo '<div class="success">Useraccount succesfully activated</div>';
         }

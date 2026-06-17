@@ -4,25 +4,16 @@ namespace TSJIPPY\USERMANAGEMENT;
 
 use TSJIPPY;
 
-add_action('init', __NAMESPACE__ . '\taskInit');
-function taskInit()
-{
-    //add action for use in scheduled task
-    add_action('tsjippy-birthday-check', __NAMESPACE__ . '\birthdayCheck');
-    add_action('tsjippy-check-details-mail', __NAMESPACE__ . '\checkDetailsMail');
-    add_action('tsjippy-account-expiry-check', __NAMESPACE__ . '\accountExpiryCheck');
-    add_action('tsjippy-check-last-login-date', __NAMESPACE__ . '\checkLastLoginDate');
-}
-
+add_action('init', __NAMESPACE__ . '\scheduleTasks');
 function scheduleTasks()
 {
-    TSJIPPY\scheduleTask('tsjippy-birthday-check', 'daily');
-    TSJIPPY\scheduleTask('tsjippy-account-expiry-check', 'daily');
-    TSJIPPY\scheduleTask('tsjippy-check-last-login-date', 'monthly');
+    TSJIPPY\scheduleTask('tsjippy-birthday-check', 'daily', __NAMESPACE__, 'birthdayCheck');
+    TSJIPPY\scheduleTask('tsjippy-account-expiry-check', 'daily', __NAMESPACE__, 'accountExpiryCheck');
+    TSJIPPY\scheduleTask('tsjippy-check-last-login-date', 'monthly', __NAMESPACE__, 'checkLastLoginDate');
 
     $freq    = SETTINGS['check-details-mail-freq'] ?? false;
     if ($freq) {
-        TSJIPPY\scheduleTask('tsjippy-check-details-mail', $freq);
+        TSJIPPY\scheduleTask('tsjippy-check-details-mail', $freq, __NAMESPACE__, 'checkDetailsMail');
     }
 }
 
@@ -147,7 +138,7 @@ function checkDetailsMail()
         $message .= "</td>";
         $message .= "</tr>";
 
-        $message    = apply_filters('tsjippy-usermanagement-details-reminder-html', $message, $user, $baseUrl, $styleString);
+        $message    = apply_filters('tsjippy-user-management-details-reminder-html', $message, $user, $baseUrl, $styleString);
         $message .= "</table>";
         $message .= "<br>";
 

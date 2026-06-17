@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 // add extra question to the new user form
-add_action('tsjippy-after-user-create-form', __NAMESPACE__ . '\afterUserCreateForm');
+add_action('tsjippy-user-management-after-user-create-form', __NAMESPACE__ . '\afterUserCreateForm');
 function afterUserCreateForm()
 {
     echo "<label>";
@@ -15,7 +15,7 @@ function afterUserCreateForm()
 }
 
 // store the results of the form above
-add_action('tsjippy-approved-user', __NAMESPACE__ . '\userApproved');
+add_action('tsjippy-user-management-approved-user', __NAMESPACE__ . '\userApproved');
 function userApproved($userId)
 {
     update_user_meta($userId, 'tsjippy_visa_info', TSJIPPY\sanitize($_POST['visa-info']));

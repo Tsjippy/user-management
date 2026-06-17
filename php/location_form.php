@@ -37,7 +37,7 @@ function beforeSavingLocationFormData($submission, $object)
         $family    = new TSJIPPY\FAMILY\Family();
         $family->updateFamilyMeta($object->userId, "location", $location);
 
-        do_action('tsjippy-location-update', $object->userId, $location);
+        do_action('tsjippy-user-management-location-update', $object->userId, $location);
 
         TSJIPPY\printArray("Saved location for user id $object->userId");
     } elseif (isset($_POST["location"]) && (empty($location['latitude']) || empty($location['longitude']))) {
@@ -45,7 +45,7 @@ function beforeSavingLocationFormData($submission, $object)
         delete_user_meta($object->userId, 'tsjippy_location');
         TSJIPPY\printArray("Deleted location for user id $object->userId");
 
-        do_action('tsjippy-location-removal', $object->userId);
+        do_action('tsjippy-user-management-location-removal', $object->userId);
     }
 
     return $submission;
