@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- implemented edit_profile_url filter
 
 ### Fixed
 
