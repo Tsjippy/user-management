@@ -4,11 +4,16 @@
 ### Added
 
 ### Changed
-- implemented edit_profile_url filter
 
 ### Fixed
 
 ### Updated
+
+## [10.3.1] - 2026-06-21
+
+
+### Changed
+- implemented edit_profile_url filter
 
 ## [10.3.0] - 2026-06-19
 
