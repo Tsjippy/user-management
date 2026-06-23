@@ -42,9 +42,9 @@ function beforeSavingData($submission, $object)
     }
 
     //check if phonenumber has changed
-    $oldPhonenumbers    = (array)get_user_meta($object->userId, 'tsjippy_phonenumbers', true);
-    $newPhonenumbers    = TSJIPPY\sanitize($_POST['phonenumbers']);
-    $changedNumbers        = array_diff($newPhonenumbers, $oldPhonenumbers);
+    $oldPhonenumbers = get_user_meta($object->userId, 'tsjippy_phonenumbers');
+    $newPhonenumbers = TSJIPPY\sanitize($_POST['phonenumbers']);
+    $changedNumbers  = array_diff($newPhonenumbers, $oldPhonenumbers);
     foreach ($changedNumbers as $key => $changedNumber) {
         // Make sure the phonenumber is in the right format
         # = should be +

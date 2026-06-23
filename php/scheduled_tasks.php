@@ -145,7 +145,7 @@ function checkDetailsMail()
         /*
         ** PHONENUMBERS
          */
-        $phonenumbers = (array)get_user_meta($user->ID, 'tsjippy_phonenumbers', true);
+        $phonenumbers = get_user_meta($user->ID, 'tsjippy_phonenumbers');
         array_filter($phonenumbers);
         $title    = 'Phonenumber';
         if (count($phonenumbers) > 1) {
