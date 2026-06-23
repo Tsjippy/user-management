@@ -5,7 +5,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 //create birthday and anniversary events
-add_filter('tsjippy-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingLocationFormData', 10, 2);
+add_filter('tsjippy-forms-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingLocationFormData', 10, 2);
 function beforeSavingLocationFormData($submission, $object)
 {
     if ($object->formData->slug != 'user_location') {

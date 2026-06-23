@@ -24,7 +24,7 @@ function addMultiDefault($defaultArrayValues, $userId, $formSlug)
 }
 
 //Save family picture
-add_filter('tsjippy-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingFormData', 10, 2);
+add_filter('tsjippy-forms-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingFormData', 10, 2);
 function beforeSavingFormData($submission, $object)
 {
     if ($object->formData->slug != 'user_family') {
