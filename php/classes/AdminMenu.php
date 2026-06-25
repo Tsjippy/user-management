@@ -175,12 +175,4 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
 
         return false;
     }
-
-    /**
-     * Function to do extra actions from $_POST data. Overwrite if needed
-     */
-    public function postActions()
-    {
-        return '';
-    }
 }

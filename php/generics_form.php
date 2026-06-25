@@ -20,10 +20,10 @@ function loadUserData($usermeta, $userId)
 
 // phonenumbers and more
 add_filter('tsjippy-forms-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingData', 10, 2);
-function beforeSavingData($submission, $object)
+function beforeSavingData($request, $object)
 {
     if ($object->formData->slug != 'user_generics') {
-        return $submission;
+        return $request;
     }
 
     // check if childrens age is correct
@@ -43,7 +43,7 @@ function beforeSavingData($submission, $object)
 
     //check if phonenumber has changed
     $oldPhonenumbers = get_user_meta($object->userId, 'tsjippy_phonenumbers');
-    $newPhonenumbers = TSJIPPY\sanitize($_POST['phonenumbers']);
+    $newPhonenumbers = $request['phonenumbers'];
     $changedNumbers  = array_diff($newPhonenumbers, $oldPhonenumbers);
     foreach ($changedNumbers as $key => $changedNumber) {
         // Make sure the phonenumber is in the right format

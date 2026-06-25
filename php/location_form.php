@@ -6,17 +6,17 @@ use TSJIPPY;
 
 //create birthday and anniversary events
 add_filter('tsjippy-forms-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingLocationFormData', 10, 2);
-function beforeSavingLocationFormData($submission, $object)
+function beforeSavingLocationFormData($request, $object)
 {
     if ($object->formData->slug != 'user_location') {
-        return $submission;
+        return $request;
     }
 
     //Get the old values from the db
     $oldLocation = get_user_meta($object->userId, 'tsjippy_location', true);
 
     //Get the location from the post array
-    $location = TSJIPPY\sanitize($_POST["location"] ?? []);
+    $location = $request["location"] ?? [];
 
     //Only update when needed and if valid coordinates
     if ($location != $oldLocation && !empty($location['latitude']) && !empty($location['longitude'])) {
@@ -32,7 +32,7 @@ function beforeSavingLocationFormData($submission, $object)
             FILTER_FLAG_ALLOW_FRACTION
         );
 
-        $location['address'] = TSJIPPY\sanitize($location['address']);
+        $location['address'] = $location['address'];
 
         $family    = new TSJIPPY\FAMILY\Family();
         $family->updateFamilyMeta($object->userId, "location", $location);
@@ -40,7 +40,7 @@ function beforeSavingLocationFormData($submission, $object)
         do_action('tsjippy-user-management-location-update', $object->userId, $location);
 
         TSJIPPY\printArray("Saved location for user id $object->userId");
-    } elseif (isset($_POST["location"]) && (empty($location['latitude']) || empty($location['longitude']))) {
+    } elseif (isset($request["location"]) && (empty($location['latitude']) || empty($location['longitude']))) {
         //Remove location from db if empty
         delete_user_meta($object->userId, 'tsjippy_location');
         TSJIPPY\printArray("Deleted location for user id $object->userId");
@@ -48,5 +48,5 @@ function beforeSavingLocationFormData($submission, $object)
         do_action('tsjippy-user-management-location-removal', $object->userId);
     }
 
-    return $submission;
+    return $request;
 }

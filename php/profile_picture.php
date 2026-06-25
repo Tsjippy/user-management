@@ -12,19 +12,19 @@ function init()
 
 
 add_filter('tsjippy-forms-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingPictureFormData', 10, 2);
-function beforeSavingPictureFormData($submission, $object)
+function beforeSavingPictureFormData($request, $object)
 {
     if ($object->formData->slug != 'profile_picture') {
-        return $submission;
+        return $request;
     }
 
     // Hide profile picture by default from media galery
-    $pictureId    =  $submission->profile_picture[0];
+    $pictureId    =  $request->profile_picture[0];
     if (is_numeric($pictureId)) {
         update_post_meta($pictureId, 'tsjippy_gallery_visibility', 'hide');
     }
 
-    return $submission;
+    return $request;
 }
 
 /**
