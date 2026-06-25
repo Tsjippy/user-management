@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- removed exclude param in db call
 
 ### Fixed
 
