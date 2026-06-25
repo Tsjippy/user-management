@@ -4,11 +4,16 @@
 ### Added
 
 ### Changed
-- removed exclude param in db call
 
 ### Fixed
 
 ### Updated
+
+## [10.3.8] - 2026-06-25
+
+
+### Changed
+- removed exclude param in db call
 
 ## [10.3.7] - 2026-06-24
 
