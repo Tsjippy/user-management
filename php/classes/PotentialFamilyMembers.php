@@ -44,8 +44,7 @@ class PotentialFamilyMembers
             array(
                 'fields'     => array('ID', 'display_name'),
                 'orderby'    => 'meta_value',
-                'meta_key'    => 'last_name',
-                'exclude'   =>  [$this->userId]
+                'meta_key'    => 'last_name'
             )
         );
 
@@ -53,6 +52,10 @@ class PotentialFamilyMembers
 
         //Loop over all users to find dublicate displaynames
         foreach ($this->users as $key => &$user) {
+            if($user->ID == $this->userId){
+                continue;
+            }
+
             //Get the displayname
             $displayName = strtolower($user->display_name);
 
