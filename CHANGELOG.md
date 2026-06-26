@@ -4,11 +4,16 @@
 ### Added
 
 ### Changed
-- sanitize post on original function
 
 ### Fixed
 
 ### Updated
+
+## [10.3.9] - 2026-06-26
+
+
+### Changed
+- sanitize post on original function
 
 ## [10.3.8] - 2026-06-25
 
