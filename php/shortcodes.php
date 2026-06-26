@@ -22,7 +22,7 @@ function dashboardWarnings($userId)
 
 ?>
         <div id=reminders>
-            <h3 class='frontpage'><?php echo $text; ?></h3>
+            <h3 class='frontpage'><?php echo esc_attr($text); ?></h3>
             <p>
                 <?php echo $dashboardWarnings->reminderHtml; ?>
             </p>
@@ -86,7 +86,6 @@ function userStatistics()
         $baseUrl = '';
     }
 
-
     ?>
     <br>
     <div class='table-wrapper'>
@@ -119,23 +118,41 @@ function userStatistics()
                             $lastLoginDate = gmdate('d F Y', $timeString);
                         }
                     }
+                    ?>
 
-                    $picture = TSJIPPY\displayProfilePicture($user->ID);
-
-                    echo "<tr class='table-row'>";
-                    echo "<td>$picture <a href='$baseUrl/?user-id=$user->ID'>{$user->display_name}</a></td>";
-                    echo "<td>$loginCount</td>";
-                    echo "<td>$lastLoginDate</td>";
-                    if (function_exists('TSJIPPY\MANDATORY\mustReadDocuments')) {
-                        echo "<td>" . TSJIPPY\MANDATORY\mustReadDocuments($user->ID, true) . "</td>";
-                    }
-                    echo "<td>";
-                    foreach ($user->roles as $role) {
-                        echo $role . '<br>';
-                    }
-                    echo "</td>";
-                    echo "<td>" . get_user_meta($user->ID, 'tsjippy_account_validity', true) . "</td>";
-                    echo "</tr>";
+                    <tr class='table-row'>
+                        <td>
+                            <?php TSJIPPY\displayProfilePicture(userId: $user->ID, echo: true);?> <a href='<?php echo esc_url($baseUrl);?>/?user-id=$user->ID'>
+                                <?php echo esc_html($user->display_name);?>
+                            </a>
+                        </td>
+                        <td>
+                            <?php echo esc_html($loginCount);?>
+                        </td>
+                        <td>
+                            <?php echo esc_html($lastLoginDate);?>
+                        </td>
+                        <?php 
+                        if (function_exists('TSJIPPY\MANDATORY\mustReadDocuments')) {
+                            ?>
+                            <td>
+                                <?php echo esc_html(TSJIPPY\MANDATORY\mustReadDocuments($user->ID, true, true) );?>
+                            </td>
+                        <?php
+                        }
+                        ?>
+                        <td>
+                            <?php
+                                foreach ($user->roles as $role) {
+                                    echo esc_attr($role . '<br>');
+                                }
+                                ?>
+                        </td>
+                        <td>
+                            <?php echo esc_html(get_user_meta($user->ID, 'tsjippy_account_validity', true));?>
+                        </td>
+                    </tr>
+                    <?php
                 }
                 ?>
             </tbody>

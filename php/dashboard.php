@@ -28,24 +28,31 @@ function showDashboard($userId, $admin = false)
         $loginCount = get_user_meta($userId, 'tsjippy_login_count', true);
         $lastLogin    = get_user_meta($userId, 'tsjippy_last_login_date', true);
 
-        if (is_numeric($loginCount)) {
-            $timeString     = strtotime($lastLogin);
-            if ($timeString) {
-                $lastLogin = gmdate('d F Y', $timeString);
-            }
-
-            $message = "$firstName has logged in $loginCount times.<br>Last login was $lastLogin. ";
-        } else {
-            $message = "$firstName has never logged in.<br>";
-        }
-
         //show last login date
-        echo "<p id='login-message' style='border: 3px solid #bd2919; padding: 10px; text-align: center;'>$message</p>";
+        ?>
+        <p id='login-message' style='border: 3px solid #bd2919; padding: 10px; text-align: center;'>
+            <?php
+            if (is_numeric($loginCount)) {
+                $timeString     = strtotime($lastLogin);
+                if ($timeString) {
+                    $lastLogin = gmdate('d F Y', $timeString);
+                }
+
+                echo esc_html($firstName);?> has logged in <?php echo esc_html($loginCount);?> times.<br>Last login was <?php echo esc_html($lastLogin);?>
+                <?php
+            } else {
+                echo esc_html($firstName);?> has never logged in.<br>
+                <?php
+            }
+            ?>
+        </p>
+        <?php
     }
 
-    echo "<p>Hello $firstName</p>";
-
-?>
+    ?>
+    <p>
+        Hello <?php echo esc_html($firstName);?>
+    </p>
     <div id="warnings">
         <?php
         do_action('tsjippy-user-management-dashboard-warnings', $userId, $admin);
@@ -57,53 +64,57 @@ function showDashboard($userId, $admin = false)
     ?>
 
     <div id="ministrywarnings">
-    <?php
-    //Show warning about out of date ministry pages
-    $ministryPages = get_pages([
-        'meta_key'         => 'tsjippy_icon_id',
-        'meta_value'       => $MinistrieIconID
-    ]);
+        <?php
+        //Show warning about out of date ministry pages
+        $ministryPages = get_pages([
+            'meta_key'         => 'tsjippy_icon_id',
+            'meta_value'       => $MinistrieIconID
+        ]);
 
-    $warningHtml    = '';
-    //Loop over all the pages
-    foreach ($ministryPages as $ministryPage) {
-        //Get the ID of the current page
-        $postId        = $ministryPage->ID;
-        $postTitle    = $ministryPage->post_title;
+        $warningHtml    = '';
+        //Loop over all the pages
+        foreach ($ministryPages as $ministryPage) {
+            //Get the ID of the current page
+            $postId        = $ministryPage->ID;
+            $postTitle    = $ministryPage->post_title;
 
-        //Get the last modified date
-        $date1        = date_create($ministryPage->post_modified);
-        $today        = date_create('now');
+            //Get the last modified date
+            $date1        = date_create($ministryPage->post_modified);
+            $today        = date_create('now');
 
-        //days since last modified
-        $pageAge    = date_diff($date1, $today);
-        $pageAge     = $pageAge->format("%a");
+            //days since last modified
+            $pageAge    = date_diff($date1, $today);
+            $pageAge     = $pageAge->format("%a");
 
-        //Get the first warning parameter and convert to days
-        $days         = TSJIPPY\FRONTENDPOSTING\SETTINGS['max-page-age'] ?? 1 * 30;
+            //Get the first warning parameter and convert to days
+            $days         = TSJIPPY\FRONTENDPOSTING\SETTINGS['max-page-age'] ?? 1 * 30;
 
-        //If the page is not modified since the parameter
-        if ($pageAge > $days) {
-            //Get the edit page url
-            $url            = get_permalink(SETTINGS['front-end-post-page'], '');
-            if (!$url) {
-                $url     = '';
+            //If the page is not modified since the parameter
+            if ($pageAge > $days) {
+                //Get the edit page url
+                $url            = get_permalink(SETTINGS['front-end-post-page'], '');
+                if (!$url) {
+                    $url     = '';
+                }
+                $url            = add_query_arg(['post-id' => $postId], $url);
+
+                $warningHtml     .= "<li><a href='$url'>$postTitle</a></li>";
             }
-            $url            = add_query_arg(['post-id' => $postId], $url);
-
-            $warningHtml     .= "<li><a href='$url'>$postTitle</a></li>";
         }
-    }
-    if (!empty($warningHtml)) {
-        echo "<h3>Notice</h3>";
-        echo "<p>";
-        echo "Please update these pages:<br>";
-        echo "<ul>";
-        echo $warningHtml;
-        echo "</ul>";
-        echo "</p>";
-    }
-    echo '</div>';
+        if (!empty($warningHtml)) {
+            ?>
+            <h3>Notice</h3>
+            <p>
+                Please update these pages:<br>
+                <ul>
+                    echo <?php wp_kses_post($warningHtml);?>
+                </ul>
+            </p>
+            <?php
+        }
+        ?>
+    </div>
+    <?php
 
     return ob_get_clean();
 }

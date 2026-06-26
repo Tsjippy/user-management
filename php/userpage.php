@@ -19,21 +19,34 @@ function userDescription($user)
 
         $url .= '/?user-id=';
 
-        $html = "<div class='flex edit-useraccounts'><a href='$url$user->ID' class='button sim'>Edit useraccount for " . $user->first_name . "</a>";
-        $partner    = $family->getPartner($user->ID, true);
-        if ($partner) {
-            $html .= "<a  href='$url$partner->ID' class='button sim'>Edit useraccount for $partner->first_name</a>";
-        }
+        ?>
+        <div class='flex edit-useraccounts'>
+            <a href='<?php esc_url($url.$user->ID);?>' class='button'>
+                Edit useraccount for <?php esc_html($user->first_name);?>
+            </a>
+            <?php
+            $partner    = $family->getPartner($user->ID, true);
+            if ($partner) {
+                ?>
+                <a  href='<?php esc_url($url.$partner->ID);?>' class='button'>
+                    Edit useraccount for <?php esc_html($partner->first_name);?>
+                </a>
+                <?php
+            }
 
         $children    = $family->getChildren($user);
         if ($children) {
             foreach ($children as $child) {
-                $html .= "<a href='$url$child' class='button sim'>Edit useraccount for " . get_userdata($child)->first_name . "</a>";
+                ?>
+                <a href='<?php esc_url($url.$child);?>' class='button'>
+                    Edit useraccount for <?php esc_html(get_userdata($child)->first_name);?>
+                </a>
+                <?php
             }
         }
-        $html .= '</div>';
-
-        echo $html;
+        ?>
+        </div>
+        <?php
     }
 }
 
@@ -259,7 +272,7 @@ function userInfoPage($atts)
             <form>
                 <input type='hidden' class='no-reset' name='user-id' value='<?php echo esc_attr($userId); ?>'>
                 <?php
-                echo displayRoles($userId);
+                displayRoles($userId);
 
                 TSJIPPY\addSaveButton('updateroles', 'Update roles');
                 ?>

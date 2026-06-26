@@ -37,7 +37,6 @@ function displayRoles($userId = '')
 
     wp_enqueue_style('tsjippy_useraccount');
 
-    ob_start();
     //Content
 ?>
 
@@ -57,7 +56,7 @@ function displayRoles($userId = '')
                 }
         ?>
                 <label>
-                    <input type='checkbox' name='roles[<?php echo esc_attr($key); ?>]' value='<?php echo esc_attr($roleName); ?>' <?php echo $checked; ?>>
+                    <input type='checkbox' name='roles[<?php echo esc_attr($key); ?>]' value='<?php echo esc_attr($roleName); ?>' <?php echo esc_attr($checked); ?>>
                     <?php
                     echo esc_attr($roleName);
                     ?>
@@ -96,16 +95,16 @@ function displayRoles($userId = '')
                     <tr style='border: none;'>
                         <td style='border: none;'>
                             <label>
-                                <input type='checkbox' name='roles[<?php echo esc_attr($key); ?>]' value='<?php echo esc_attr($roleName); ?>' <?php echo $checked; ?>>
+                                <input type='checkbox' name='roles[<?php echo esc_attr($key); ?>]' value='<?php echo esc_attr($roleName); ?>' <?php echo esc_attr($checked); ?>>
                                 <?php
-                                echo $roleName;
+                                echo esc_attr($roleName);
                                 ?>
                             </label>
                         </td>
                         <td style='border: none;'>
                             <i>
                                 <?php
-                                echo apply_filters('tsjippy-user-management-role-description', '', $key);
+                                echo wp_kses_post(apply_filters('tsjippy-user-management-role-description', '', $key));
                                 ?>
                             </i>
                         </td>
@@ -119,5 +118,4 @@ function displayRoles($userId = '')
         ?>
     </div>
 <?php
-    return ob_get_clean();
 }

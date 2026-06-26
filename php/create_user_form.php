@@ -8,10 +8,14 @@ use TSJIPPY;
 add_action('tsjippy-user-management-after-user-create-form', __NAMESPACE__ . '\afterUserCreateForm');
 function afterUserCreateForm()
 {
-    echo "<label>";
-    echo '<h4>User roles<span class="required">*</span></h4>';
-    echo "</label>";
-    echo displayRoles();
+    ?>
+    <label>
+        <h4>
+            User roles<span class="required">*</span>
+        </h4>
+    </label>
+    <?php
+    displayRoles();
 }
 
 // store the results of the form above

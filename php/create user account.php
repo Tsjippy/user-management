@@ -83,7 +83,11 @@ function pendingUsers()
             $result = wp_delete_user($UserId);
             if ($result) {
                 //show succesmessage
-                echo '<div class="success">User succesfully removed</div>';
+                ?>
+                <div class="success">
+                    User succesfully removed
+                </div>
+                <?php
             }
         }
     }
@@ -103,7 +107,11 @@ function pendingUsers()
             // run account update hook
             do_action('tsjippy-user-management-approved-user', $userId);
 
-            echo '<div class="success">Useraccount succesfully activated</div>';
+            ?>
+            <div class="success">
+                Useraccount succesfully activated
+            </div>
+            <?php
         }
     }
 

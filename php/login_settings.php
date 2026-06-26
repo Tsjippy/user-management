@@ -48,12 +48,20 @@ function changePasswordForm($userId = null)
     ) {
         if ($_REQUEST['action'] == 'Reset 2FA' && function_exists('TSJIPPY\LOGIN\reset2fa')) {
             TSJIPPY\LOGIN\reset2fa($userId);
-            echo "<div class='success'>Succesfully turned off 2fa for $name</div>";
+            ?>
+            <div class='success'>
+                Succesfully turned off 2fa for <?php echo esc_html($name);?>
+            </div>
+            <?php
         } elseif ($_REQUEST['action'] == 'Change to e-mail') {
             TSJIPPY\LOGIN\addMethod('email', $user->ID);
 
             delete_user_meta($user->ID, "tsjippy_2fa_methods", 'authenticator');
-            echo "<div class='success'>Succesfully changed the 2fa factor for $name to e-mail</div>";
+            ?>
+            <div class='success'>
+                Succesfully changed the 2fa factor for <?php echo esc_html($name);?> to e-mail
+            </div>
+            <?php
         }
 
         do_action('tsjippy-user-management-login-settings-save', $userId, $name);

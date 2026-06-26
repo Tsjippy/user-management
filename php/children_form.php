@@ -15,28 +15,38 @@ function showChildrenFields($childId)
     $active    = 'active';
     $hidden    = '';
     if (in_array('generic', $availableForms)) {
-        echo "<button class=' button tablink $active' id='show-generic-child-info-$childId' data-target='generic-child-info-$childId'>Generic info</button>";
+        ?>
+        <button class=' button tablink active' id='show-generic-child-info-<?php esc_attr($childId);?>' data-target='generic-child-info-<?php esc_attr($childId);?>'>
+            Generic info
+        </button>
+        <?php
         $active = '';
     }
 
     if (in_array('profile picture', $availableForms)) {
-        echo "<button class='button tablink $active' id='show-profile-picture-child-info-$childId' data-target='profile-picture-child-info-$childId'>Profile picture</button>";
+        ?>
+        <button class='button tablink <?php esc_attr($active);?>' id='show-profile-picture-child-info-<?php esc_attr($childId);?>' data-target='profile-picture-child-info-<?php esc_attr($childId);?>'>
+            Profile picture
+        </button>
+        <?php
     }
 
     if (in_array('generic', $availableForms)) {
-?>
+        ?>
         <div id='generic-child-info-<?php echo esc_attr($childId); ?>' class='tabcontent'>
             <?php echo do_shortcode("[tsjippy_formbuilder slug=child_generic user-id=$childId]"); ?>
         </div>
-<?php
+        <?php
 
         $hidden    = 'hidden';
     }
 
     if (in_array('profile picture', $availableForms)) {
-        echo    "<div id='profile-picture-child-info-$childId' class='tabcontent $hidden'>";
-        echo do_shortcode("[tsjippy_formbuilder slug=profile_picture user-id='$childId']");
-        echo    "</div>";
+        ?>
+        <div id='profile-picture-child-info-<?php esc_attr($childId);?>' class='tabcontent <?php esc_attr($hidden);?>'>
+            <?php echo wp_kses_post(do_shortcode("[tsjippy_formbuilder slug=profile_picture user-id='$childId']"));?>
+        </div>
+        <?php
     }
 
     return ob_get_clean();
