@@ -67,7 +67,7 @@ function beforeForm($html, $formSlug)
 ?>
     <div id='add-account-modal' class="modal hidden">
         <div class="modal-content">
-            <?php echo TSJIPPY\addCloseButtton();?>
+            <?php  TSJIPPY\addCloseButtton();?>
             <form action="" method="post" id="add-member-form">
                 <p>Please fill in the form to create a user profile for a family member</p>
 
