@@ -60,11 +60,11 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
 
             $attributes = [
                 'type'    => 'checkbox',
-                'name'    => 'enabled-forms[]',
+                'name'    => "enabled-forms[$form]",
                 'value'   => $form
             ];
 
-            if (in_array($form, $this->settings['enabled-forms'] ?? [])) {
+            if (isset($this->settings['enabled-forms'][$form])) {
                 $attributes['checked'] = 'checked';
             }
 

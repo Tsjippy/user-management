@@ -94,8 +94,8 @@ function changePasswordForm($userId = null)
             echo TSJIPPY\LOGIN\passwordResetForm($user);
         }
 
-        $methods    = get_user_meta($userId, 'tsjippy_2fa_methods');
-        $nonce        = wp_create_nonce("wp-2fa-reset-nonce_$userId");
+        $methods = get_user_meta($userId, 'tsjippy_2fa_methods');
+        $nonce   = wp_create_nonce("wp-2fa-reset-nonce_$userId");
         if (is_array($methods)) {
 
         ?>

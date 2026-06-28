@@ -47,14 +47,14 @@ function birthdayCheck()
             $childTitle = TSJIPPY\getChildTitle($user->ID);
 
             $message = "Congratulations with the birthday of your $childTitle " . get_userdata($user->ID)->first_name;
-        }
 
-        foreach ($family->getParents($userId) as $parent) {
-            add_action(
-                'tsjippy-user-management-birthday-message',
-                "Hi " . get_userdata($parent)->first_name . ",\n$message",
-                $parent
-            );
+            foreach ($family->getParents($userId) as $parent) {
+                add_action(
+                    'tsjippy-user-management-birthday-message',
+                    "Hi " . get_userdata($parent)->first_name . ",\n$message",
+                    $parent
+                );
+            }
         }
     }
 }

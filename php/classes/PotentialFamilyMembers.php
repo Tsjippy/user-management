@@ -19,16 +19,16 @@ class PotentialFamilyMembers
 
     public function __construct($userId)
     {
-        $this->userId               = $userId;
-        $this->birthday                = get_user_meta($userId, 'tsjippy_birthday', true);
-        $this->gender                = get_user_meta($userId, 'tsjippy_gender', true);
-        $family                     = new TSJIPPY\FAMILY\Family();
-        $this->partner              = $family->getPartner($userId);
-        $this->family                = $family->getFamily($userId, true);
-        $this->potentialSpouses        = [];
-        $this->potentialFathers        = [];
-        $this->potentialMothers        = [];
-        $this->potentialChildren    = [];
+        $this->userId            = $userId;
+        $this->birthday          = get_user_meta($userId, 'tsjippy_birthday', true);
+        $this->gender            = get_user_meta($userId, 'tsjippy_gender', true);
+        $family                  = new TSJIPPY\FAMILY\Family();
+        $this->partner           = $family->getPartner($userId);
+        $this->family            = $family->getFamily($userId, true);
+        $this->potentialSpouses  = [];
+        $this->potentialFathers  = [];
+        $this->potentialMothers  = [];
+        $this->potentialChildren = [];
 
         $this->getUsers();
     }
@@ -146,17 +146,17 @@ class PotentialFamilyMembers
         $family                     = new TSJIPPY\FAMILY\Family();
 
         foreach ($this->users as $user) {
-            $parents         = $family->getParents($user->ID, true);
+            $parents         = $family->getParents($user->ID);
 
             if (
-                in_array($this->userId, $parents)       || // is the current users child
-                in_array($this->partner, $parents)       || // is the current user partner child
+                isset($parents[$this->userId])  || // is the current users child
+                isset($parents[$this->partner]) || // is the current user partner child
                 (
                     empty($parents)                        &&  // is not a child
-                    !in_array($user->ID, $this->family) &&  // is not family already
+                    !in_array($user->ID, $this->family)    &&  // is not family already
                     (
-                        $user->ageDifference == null    ||  // there is no age diff
-                        $user->ageDifference > 16           // the age diff is at least 16 years
+                        $user->ageDifference == null       ||  // there is no age diff
+                        $user->ageDifference > 16              // the age diff is at least 16 years
                     )
                 )
             ) {

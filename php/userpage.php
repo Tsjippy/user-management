@@ -79,11 +79,11 @@ function userInfoPage($atts)
     $family             = new TSJIPPY\FAMILY\Family();
     $genericInfoRoles   = array_merge(['usermanagement'], ['administrator']);
     $user               = wp_get_current_user();
-    $userRoles          = $user->roles;
+    $userRoles          = array_combine($user->roles, $user->roles);
     $tabs               = [];
     $html               = '';
     $userAge            = 19;
-    $availableForms     = (array)SETTINGS['enabled-forms'] ?? [];
+    $availableForms     = SETTINGS['enabled-forms'] ?? [];
     $userSelectRoles    = apply_filters('tsjippy-user-management-page-dropdown', $genericInfoRoles);
 
     //Showing data for current user
@@ -122,7 +122,7 @@ function userInfoPage($atts)
     /*
         Dashboard
     */
-    if (in_array('usermanagement', $userRoles) || $showCurrentUserData) {
+    if (isset($userRoles['usermanagement']) || $showCurrentUserData) {
         if ($showCurrentUserData) {
             $admin         = false;
         } else {
@@ -148,7 +148,7 @@ function userInfoPage($atts)
             array_intersect($genericInfoRoles, $userRoles) ||        // we do  have permission to view others data
             $showCurrentUserData                                    // or its our own data
         ) &&
-        in_array('family', $availableForms)                            // and the family form is enabled
+        isset($availableForms['family'])                            // and the family form is enabled
     ) {
         $shouldShow    = apply_filters('tsjippy-user-management-should-show-family-form', true, $userId);
 
@@ -172,7 +172,7 @@ function userInfoPage($atts)
     /*
         GENERIC Info
     */
-    if ((array_intersect($genericInfoRoles, $userRoles) || $showCurrentUserData) && in_array('generic', $availableForms)) {
+    if ((array_intersect($genericInfoRoles, $userRoles) || $showCurrentUserData) && isset($availableForms['generic'])) {
         //Add a tab button
         $tabs[]    = '<li class="tablink" id="show-generic-info" data-target="generic-info">Generic info</li>';
 
@@ -195,7 +195,7 @@ function userInfoPage($atts)
             array_intersect($genericInfoRoles, $userRoles) ||
             $showCurrentUserData
         ) &&
-        in_array('location', $availableForms)
+        isset($availableForms['location'])
     ) {
         $shouldShow    = apply_filters('tsjippy-user-management-should-show-location-form', true, $userId);
 
@@ -219,7 +219,7 @@ function userInfoPage($atts)
     /*
         LOGIN Info
     */
-    if (in_array('usermanagement', $userRoles)) {
+    if (isset($userRoles['usermanagement'])) {
         //Add a tab button
         $tabs[]    = '<li class="tablink" id="show-login-info" data-target="login-info">Login info</li>';
 
@@ -229,7 +229,7 @@ function userInfoPage($atts)
     /*
         PROFILE PICTURE Info
     */
-    if ((in_array('usermanagement', $userRoles) || $showCurrentUserData) && in_array('profile picture', $availableForms)) {
+    if ((isset($userRoles['usermanagement']) || $showCurrentUserData) && isset($availableForms['profile picture'])) {
         $shouldShow    = apply_filters('tsjippy-user-management-should-show-picture-form', true, $userId);
 
         if ($shouldShow) {
@@ -256,7 +256,7 @@ function userInfoPage($atts)
     /*
         Roles
     */
-    if (in_array('rolemanagement', $userRoles) || in_array('administrator', $userRoles)) {
+    if (isset($userRoles['rolemanagement']) || isset($userRoles['administrator'])) {
         //Add a tab button
         $tabs[]    = '<li class="tablink" id="show-roles" data-target="role-info">Roles</li>';
 
@@ -291,7 +291,7 @@ function userInfoPage($atts)
             array_intersect($genericInfoRoles, $userRoles) ||
             $showCurrentUserData
         ) &&
-        in_array('security', $availableForms)
+        isset($availableForms['security'])
     ) {
         $shouldShow    = apply_filters('tsjippy-user-management-should-show-security-form', true, $userId);
 

@@ -26,11 +26,17 @@ function displayRoles($userId = '')
     asort($userRoles);
 
     if (is_numeric($userId)) {
+        $user   = get_userdata($userId);
+
+        if(!$user){
+            return;
+        }
+
         //Get the roles this user currently has
-        $roles         = get_userdata($userId)->roles;
+        $roles         = array_flip($user->roles);
 
         //Remove these roles from the roles array
-        if (!in_array('administrator', (array)$roles)) {
+        if (!isset($roles['administrator'])) {
             unset($userRoles['administrator']);
         }
     }
@@ -46,7 +52,7 @@ function displayRoles($userId = '')
             foreach ($userRoles as $key => $roleName) {
                 $checked = '';
                 if (
-                    in_array($key, (array)$roles) ||
+                    isset($roles[$key]) ||
                     (
                         empty($userId)    &&
                         $key    == 'revisor'
@@ -83,7 +89,7 @@ function displayRoles($userId = '')
                 foreach ($userRoles as $key => $roleName) {
                     $checked = '';
                     if (
-                        in_array($key, (array)$roles) ||
+                        isset($roles[$key]) ||
                         (
                             empty($userId)    &&
                             $key    == 'revisor'

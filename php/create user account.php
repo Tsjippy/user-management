@@ -13,7 +13,7 @@ function createUserAccountForm()
     $user = wp_get_current_user();
     if (in_array('usermanagement', $user->roles)) {
         ob_start();
-?>
+        ?>
         <div class="tabcontent">
             <form class='tsjippy-form' data-reset="true">
                 <input type="hidden" class="no-reset" name="nonce"  value="<?php echo wp_create_nonce('account-creation'); ?>">
