@@ -20,7 +20,7 @@ function beforeSavingLocationFormData($request, $object)
 
     //Only update when needed and if valid coordinates
     if ($location != $oldLocation && !empty($location['latitude']) && !empty($location['longitude'])) {
-        $latitude = $location['latitude'] = filter_var(
+        $location['latitude'] = filter_var(
             $location['latitude'],
             FILTER_SANITIZE_NUMBER_FLOAT,
             FILTER_FLAG_ALLOW_FRACTION
