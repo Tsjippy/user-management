@@ -262,9 +262,11 @@ function userInfoPage($atts)
 
         //Content
         ob_start();
-?>
+        ?>
         <div id="role-info" class="tabcontent hidden">
-            <h3>Select user roles</h3>
+            <h3>
+                Select user roles
+            </h3>
             <p>
                 Select the roles this user should have.<br>
                 If you want to disable a user go to the login info tab.
@@ -279,7 +281,7 @@ function userInfoPage($atts)
             </form>
         </div>
 
-<?php
+        <?php
         $html    .= ob_get_clean();
     }
 
