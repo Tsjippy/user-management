@@ -9,7 +9,7 @@ use TSJIPPY;
  */
 function showChildrenFields($childId)
 {
-    $availableForms        = (array)SETTINGS['enabled-forms'] ?? [];
+    $availableForms        = SETTINGS['enabled-forms'] ?? [];
 
     ob_start();
     $active    = 'active';
