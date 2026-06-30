@@ -16,7 +16,7 @@ function showChildrenFields($childId)
     $hidden    = '';
     if (isset($availableForms['generic'])) {
         ?>
-        <button class=' button tablink active' id='show-generic-child-info-<?php esc_attr($childId);?>' data-target='generic-child-info-<?php esc_attr($childId);?>'>
+        <button class=' button tablink active' id='show-generic-child-info-<?php echo esc_attr($childId);?>' data-target='generic-child-info-<?php echo esc_attr($childId);?>'>
             Generic info
         </button>
         <?php
@@ -25,7 +25,7 @@ function showChildrenFields($childId)
 
     if (isset($availableForms['profile picture'])) {
         ?>
-        <button class='button tablink <?php esc_attr($active);?>' id='show-profile-picture-child-info-<?php esc_attr($childId);?>' data-target='profile-picture-child-info-<?php esc_attr($childId);?>'>
+        <button class='button tablink <?php echo esc_attr($active);?>' id='show-profile-picture-child-info-<?php echo esc_attr($childId);?>' data-target='profile-picture-child-info-<?php echo esc_attr($childId);?>'>
             Profile picture
         </button>
         <?php
@@ -43,7 +43,7 @@ function showChildrenFields($childId)
 
     if (isset($availableForms['profile picture'])) {
         ?>
-        <div id='profile-picture-child-info-<?php esc_attr($childId);?>' class='tabcontent <?php esc_attr($hidden);?>'>
+        <div id='profile-picture-child-info-<?php echo esc_attr($childId);?>' class='tabcontent <?php echo esc_attr($hidden);?>'>
             <?php echo wp_kses_post(do_shortcode("[tsjippy_formbuilder slug=profile_picture user-id='$childId']"));?>
         </div>
         <?php

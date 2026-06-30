@@ -21,15 +21,15 @@ function userDescription($user)
 
         ?>
         <div class='flex edit-useraccounts'>
-            <a href='<?php esc_url($url.$user->ID);?>' class='button'>
-                Edit useraccount for <?php esc_html($user->first_name);?>
+            <a href='<?php echo esc_url($url.$user->ID);?>' class='button'>
+                Edit useraccount for <?php echo esc_html($user->first_name);?>
             </a>
             <?php
             $partner    = $family->getPartner($user->ID, true);
             if ($partner) {
                 ?>
-                <a  href='<?php esc_url($url.$partner->ID);?>' class='button'>
-                    Edit useraccount for <?php esc_html($partner->first_name);?>
+                <a  href='<?php echo esc_url($url.$partner->ID);?>' class='button'>
+                    Edit useraccount for <?php echo esc_html($partner->first_name);?>
                 </a>
                 <?php
             }
@@ -38,8 +38,8 @@ function userDescription($user)
         if ($children) {
             foreach ($children as $child) {
                 ?>
-                <a href='<?php esc_url($url.$child);?>' class='button'>
-                    Edit useraccount for <?php esc_html(get_userdata($child)->first_name);?>
+                <a href='<?php echo esc_url($url.$child);?>' class='button'>
+                    Edit useraccount for <?php echo esc_html(get_userdata($child)->first_name);?>
                 </a>
                 <?php
             }
