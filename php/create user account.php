@@ -13,30 +13,38 @@ function createUserAccountForm()
     $user = wp_get_current_user();
     if (in_array('usermanagement', $user->roles)) {
         ob_start();
-        ?>
+?>
         <div class="tabcontent">
             <form class='tsjippy-form' data-reset="true">
-                <input type="hidden" class="no-reset" name="nonce"  value="<?php echo wp_create_nonce('account-creation'); ?>">
-                
+                <input type="hidden" class="no-reset" name="nonce" value="<?php echo wp_create_nonce('account-creation'); ?>">
+
                 <p>Please fill in the form to create an user account</p>
 
                 <label>
-                    <h4>First name<span class="required">*</span></h4>
+                    <h4>
+                        First name<span class="required">*</span>
+                    </h4>
                     <input type="text" class='wide' name="first-name" value="" required>
                 </label>
 
                 <label>
-                    <h4>Last name<span class="required">*</span></h4>
+                    <h4>
+                        Last name<span class="required">*</span>
+                    </h4>
                     <input type="text" class='wide' name="last-name" required>
                 </label>
 
                 <label>
-                    <h4>E-mail<span class="required">*</span></h4>
+                    <h4>
+                        E-mail<span class="required">*</span>
+                    </h4>
                     <input class='wide' type="email" name="email" required>
                 </label>
 
                 <label>
-                    <h4>Valid for<span class="required">*</span></h4>
+                    <h4>
+                        Valid for<span class="required">*</span>
+                    </h4>
                 </label>
                 <select name="validity" class="form-control relation" required>
                     <option value="">---</option>
@@ -54,7 +62,7 @@ function createUserAccountForm()
                 ?>
             </form>
         </div>
-<?php
+        <?php
 
         return ob_get_clean();
     } else {
@@ -83,11 +91,11 @@ function pendingUsers()
             $result = wp_delete_user($UserId);
             if ($result) {
                 //show succesmessage
-                ?>
+        ?>
                 <div class="success">
                     User succesfully removed
                 </div>
-                <?php
+            <?php
             }
         }
     }
@@ -111,7 +119,7 @@ function pendingUsers()
             <div class="success">
                 Useraccount succesfully activated
             </div>
-            <?php
+<?php
         }
     }
 

@@ -67,22 +67,28 @@ function beforeForm($html, $formSlug)
 ?>
     <div id='add-account-modal' class="modal hidden">
         <div class="modal-content">
-            <?php  TSJIPPY\addCloseButtton();?>
+            <?php TSJIPPY\addCloseButtton(); ?>
             <form action="" method="post" id="add-member-form">
                 <p>Please fill in the form to create a user profile for a family member</p>
 
                 <label>
-                    <h4>First name</h4>
+                    <h4>
+                        First name
+                    </h4>
                     <input type="text" class='wide' name="first-name">
                 </label>
 
                 <label>
-                    <h4>Last name</h4>
+                    <h4>
+                        Last name
+                    </h4>
                     <input type="text" name="last-name" class='wide' value="<?php echo esc_attr($lastname); ?>">
                 </label>
 
                 <label>
-                    <h4>E-mail</h4>
+                    <h4>
+                        E-mail
+                    </h4>
                     <input type="email" class='wide' name="email">
                 </label>
 

@@ -109,7 +109,9 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         ob_start();
 ?>
         <div id="account-approved-email" class="tabcontent <?php echo $tab != 'account-approved-email' ? 'hidden' : ''; ?>">
-            <h4>E-mail to people who's account is just approved</h4>
+            <h4>
+                E-mail to people who's account is just approved
+            </h4>
             <label>Define the e-mail people get when they are added to the website</label>
             <?php
             $accountApproveddMail    = new AccountApproveddMail(wp_get_current_user());
@@ -119,7 +121,9 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         </div>
 
         <div id="account-created-email" class="tabcontent <?php echo $tab != 'account-created-email' ? 'hidden' : ''; ?>">
-            <h4>E-mail to people who's account is just created</h4>
+            <h4>
+                E-mail to people who's account is just created
+            </h4>
             <label>Define the e-mail people get when they are added to the website</label>
             <?php
             $accountCreatedMail    = new AccountCreatedMail(wp_get_current_user());
@@ -129,7 +133,9 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         </div>
 
         <div id="account-will-expired-email" class="tabcontent <?php echo $tab != 'account-will-expired-email' ? 'hidden' : ''; ?>">
-            <h4>E-mail to people who's account is about to expire</h4>
+            <h4>
+                E-mail to people who's account is about to expire
+            </h4>
             <label>Define the e-mail people get when they are about to be removed from the website</label>
             <?php
             $accountExpiryMail    = new AccountExpiryMail(wp_get_current_user());
@@ -139,7 +145,9 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         </div>
 
         <div id="account-deleted-email" class="tabcontent <?php echo $tab != 'account-deleted-email' ? 'hidden' : ''; ?>">
-            <h4>E-mail to people who's account is deleted</h4>
+            <h4>
+                E-mail to people who's account is deleted
+            </h4>
             <label>Define the e-mail people get when they are removed from the website</label>
             <?php
             $accountRemoveMail    = new AccountRemoveMail(wp_get_current_user());
@@ -149,7 +157,9 @@ class AdminMenu extends TSJIPPY\ADMIN\SubAdminMenu
         </div>
 
         <div id="not-seen-email" class="tabcontent <?php echo $tab != 'not-seen-email' ? 'hidden' : ''; ?>">
-            <h4>E-mail to people who have not logged in for more than a year</h4>
+            <h4>
+                E-mail to people who have not logged in for more than a year
+            </h4>
             <label>Define the e-mail people get when they have not logged into the website for more than a year</label>
             <?php
             $weMissYouMail    = new WeMissYouMail(wp_get_current_user());
