@@ -84,7 +84,7 @@ function displayRoles($userId = '')
             }
         } else {
             ?>
-            <table style='border: none; width: max-content;'>
+            <table class="no-border" style='width: max-content;'>
                 <?php
                 foreach ($userRoles as $key => $roleName) {
                     $checked = '';
@@ -98,8 +98,8 @@ function displayRoles($userId = '')
                         $checked = 'checked';
                     }
                 ?>
-                    <tr style='border: none;'>
-                        <td style='border: none;'>
+                    <tr>
+                        <td>
                             <label>
                                 <input type='checkbox' name='roles[<?php echo esc_attr($key); ?>]' value='<?php echo esc_attr($roleName); ?>' <?php echo esc_attr($checked); ?>>
                                 <?php
@@ -107,7 +107,7 @@ function displayRoles($userId = '')
                                 ?>
                             </label>
                         </td>
-                        <td style='border: none;'>
+                        <td>
                             <i>
                                 <?php
                                 echo wp_kses_post(apply_filters('tsjippy-user-management-role-description', '', $key));
