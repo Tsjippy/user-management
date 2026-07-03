@@ -4,13 +4,20 @@
 ### Added
 
 ### Changed
+
+### Fixed
+
+### Updated
+
+## [10.4.2] - 2026-07-03
+
+
+### Changed
 - removed unnecesary filter
 - add default pages when not present
 
 ### Fixed
 - plugin settings key
-
-### Updated
 
 ## [10.4.1] - 2026-07-02
 
