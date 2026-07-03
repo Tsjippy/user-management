@@ -425,7 +425,8 @@ function checkLastLoginDate()
                 return $key;
             }
 
-            $pageUrl     = get_permalink(TSJIPPY\LOGIN\SETTINGS['password-reset-page'][0]);
+            //TO DO
+            $pageUrl     = get_permalink(TSJIPPY\LOGIN\SETTINGS['password-reset-page']);
             $url         = "$pageUrl?key=$key&login=$user->user_login";
 
             $mail = new AccountCreatedMail($user, $url);

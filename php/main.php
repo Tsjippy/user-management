@@ -33,14 +33,11 @@ function roleDescription($description, $role)
     return $description;
 }
 
-
 add_filter('edit_profile_url', function($url){
-    if (!empty(SETTINGS['account_page'])) {
-        $permalink  = get_permalink(SETTINGS['account_page']);
+    $permalink  = get_permalink(SETTINGS['account_page'] ?? createDefaultPages('account_page'));
 
-        if($permalink){
-            return $permalink.'/?section=generic';
-        }
+    if($permalink){
+        return $permalink.'/?section=generic';
     }
 
     return $url;

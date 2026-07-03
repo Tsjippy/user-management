@@ -45,24 +45,7 @@ register_activation_hook(__FILE__, function () {
         require_once(__DIR__  . '/shared-functionality/loader.php');
     }
     
-    /**
-     *  Default pages
-     */
-    $settings    = SETTINGS;
-
-    // Create account page
-    $settings['account_page']           = TSJIPPY\ADMIN\createDefaultPage('Account', '[tsjippy_user-info currentuser=true]');
-
-    // Create user edit page
-    $settings['user-edit-page']         = TSJIPPY\ADMIN\createDefaultPage('Edit users', '[tsjippy_user-info]');
-
-    // Create user create page
-    $settings['account-create-page']    = TSJIPPY\ADMIN\createDefaultPage('Add user account', '[tsjippy_create_user_account]');
-
-    // Create pending users page
-    $settings['pending-users-page']     = TSJIPPY\ADMIN\createDefaultPage('Pending user accounts', '[tsjippy_pending_user]');
-
-    update_option('tsjippy_' . PLUGINSLUG . '_settings', $settings);
+    createDefaultPages();
 
     /**
      * Import the forms
