@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- removed unnecesary filter
 
 ### Fixed
 
