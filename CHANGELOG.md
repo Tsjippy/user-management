@@ -5,6 +5,7 @@
 
 ### Changed
 - removed unnecesary filter
+- add default pages when not present
 
 ### Fixed
 
