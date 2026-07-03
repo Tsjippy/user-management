@@ -4,20 +4,6 @@ namespace TSJIPPY\USERMANAGEMENT;
 
 use TSJIPPY;
 
-
-// Adds userdata to the user metadata
-add_filter('tsjippy-forms-load-userdata', __NAMESPACE__ . '\loadUserData', 10, 2);
-function loadUserData($usermeta, $userId)
-{
-    $userdata    = (array)get_userdata($userId)->data;
-
-    //Change ID to user-id because its a confusing name
-    $userdata['user_id']    = $userdata['ID'];
-    unset($userdata['ID']);
-
-    return array_merge($usermeta, $userdata);
-}
-
 // phonenumbers and more
 add_filter('tsjippy-forms-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingData', 10, 2);
 function beforeSavingData($request, $object)
@@ -49,22 +35,22 @@ function beforeSavingData($request, $object)
         // Make sure the phonenumber is in the right format
         # = should be +
         if ($changedNumber[0] == '=') {
-            $changedNumber = $submission->phonenumbers[$key]    = str_replace('=', '+', $changedNumber);
+            $changedNumber = $request->phonenumbers[$key]    = str_replace('=', '+', $changedNumber);
         }
 
         # 00 should be +
         if (substr($changedNumber, 0, 2) == '00') {
-            $changedNumber = $submission->phonenumbers[$key]    = '+' . substr($changedNumber, 2);
+            $changedNumber = $request->phonenumbers[$key]    = '+' . substr($changedNumber, 2);
         }
 
         # 0 should be +234
         if ($changedNumber[0] == '0') {
-            $changedNumber = $submission->phonenumbers[$key]    = '+234' . substr($changedNumber, 1);
+            $changedNumber = $request->phonenumbers[$key]    = '+234' . substr($changedNumber, 1);
         }
 
         # Should start with + by now
         if ($changedNumber[0] != '+') {
-            $changedNumber = $submission->phonenumbers[$key]    = '+234' . $changedNumber;
+            $changedNumber = $request->phonenumbers[$key]    = '+234' . $changedNumber;
         }
 
         do_action('tsjippy-user-management-phonenumber-updated', $changedNumber, $object->userId);
@@ -75,5 +61,5 @@ function beforeSavingData($request, $object)
         update_user_meta($object->userId, 'tsjippy_phone-last-changed', time());
     }
 
-    return $submission;
+    return $request;
 }

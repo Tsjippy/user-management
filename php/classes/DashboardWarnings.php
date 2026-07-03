@@ -6,9 +6,9 @@ use TSJIPPY;
 
 class DashboardWarnings
 {
-    public $reminderCount;
-    public $reminderHtml;
-    public $userId;
+    public int $reminderCount;
+    public string $reminderHtml;
+    public int $userId;
 
     public function __construct($userId)
     {
