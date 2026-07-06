@@ -70,7 +70,7 @@ function createUserAccountForm()
     }
 }
 
-//Shortcode to display the pending user accounts
+//Shortcode the pending user accounts
 add_shortcode('tsjippy_pending_user', __NAMESPACE__ . '\pendingUsers');
 function pendingUsers()
 {
@@ -119,7 +119,7 @@ function pendingUsers()
             <div class="success">
                 Useraccount succesfully activated
             </div>
-<?php
+    <?php
         }
     }
 
@@ -154,10 +154,17 @@ function pendingUsers()
     }
 }
 
-//Shortcode to display number of pending user accounts
-add_shortcode('tsjippy_pending_user_icon', __NAMESPACE__ . '\pendingUsersIcon');
-function pendingUsersIcon()
-{
+/**
+ * Adds an indicator to the menu item for the pending users page
+ */
+add_filter( 'nav_menu_item_title', function($title, $menu){
+    
+    $targetId   = get_post_meta( $menu->ID, '_menu_item_object_id', true );
+
+    if($targetId != SETTINGS['pending-users-page']){
+        return $title;
+    }
+
     $pendingUsers = get_users(array(
         'meta_key'     => 'tsjippy_disabled',
         'meta_value'   => 'pending',
@@ -165,6 +172,8 @@ function pendingUsersIcon()
     ));
 
     if (count($pendingUsers) > 0) {
-        return '<span class="numberCircle">' . count($pendingUsers) . '</span>';
+        return "$title <span class='numberCircle'>" . count($pendingUsers) . '</span>';
     }
-}
+
+    return $title;
+}, 10, 2 );

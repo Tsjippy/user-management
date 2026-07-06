@@ -20,7 +20,7 @@ function dashboardWarnings($userId)
             //$dashboardWarnings->reminderHtml = str_replace(['</li>','<li>'], '', $dashboardWarnings->reminderHtml);
         }
 
-?>
+    ?>
         <div id=reminders>
             <h3 class='frontpage'><?php echo esc_attr($text); ?></h3>
             <p>
