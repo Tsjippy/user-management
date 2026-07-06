@@ -155,25 +155,22 @@ function pendingUsers()
 }
 
 /**
- * Adds an indicator to the menu item for the pending users page
+ * Adds an indicator to the menu item for the amount of pending user accounts
  */
-add_filter( 'nav_menu_item_title', function($title, $menu){
-    
-    $targetId   = get_post_meta( $menu->ID, '_menu_item_object_id', true );
-
-    if($targetId != SETTINGS['pending-users-page']){
-        return $title;
-    }
-
+add_filter( 'wp_nav_menu_objects', function($items, $args ){
+    //Get all the user accounts that are disabled
     $pendingUsers = get_users(array(
         'meta_key'     => 'tsjippy_disabled',
         'meta_value'   => 'pending',
         'meta_compare' => '=',
     ));
 
-    if (count($pendingUsers) > 0) {
-        return "$title <span class='numberCircle'>" . count($pendingUsers) . '</span>';
+    // No Pending Posts
+    if (empty($pendingUsers)) {
+        return $items;
     }
 
-    return $title;
-}, 10, 2 );
+    TSJIPPY\addMenuIcon(count($pendingUsers), SETTINGS['pending-users-page'], $items);
+
+    return $items;
+}, 10, 2);
