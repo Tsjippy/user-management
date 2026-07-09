@@ -5,6 +5,7 @@
 
 ### Changed
 - removed vaccination reminders block
+- render form directly without do_shortcode call
 
 ### Fixed
 
