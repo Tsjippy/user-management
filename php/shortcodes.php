@@ -31,41 +31,9 @@ function dashboardWarnings($userId)
     }
 }
 
-//Shortcode for expiry warnings
-add_shortcode("tsjippy_expiry_warnings", __NAMESPACE__ . '\expiryWarnings');
-function expiryWarnings()
-{
-    if (is_numeric($_GET["user-id"] ?? '') && in_array('usermanagement', wp_get_current_user()->roles)) {
-        $userId    = $_GET["user-id"];
-    } else {
-        $userId = get_current_user_id();
-    }
-
-    $dashboardWarnings    = new DashboardWarnings($userId);
-
-    if (empty($dashboardWarnings->reminderHtml)) {
-        if (str_contains($_SERVER['REQUEST_URI'], 'wp-admin/post.php') || str_contains($_SERVER['REQUEST_URI'], 'wp-json')) {
-            return 'Reminder block<br>This will show empty as you have no reminders';
-        }
-
-        return '';
-    }
-
-    $html = '<h3 class="frontpage">';
-    if ($dashboardWarnings->reminderCount > 1) {
-        $html             .= 'Reminders</h3><p>' . $dashboardWarnings->reminderHtml;
-    } else {
-        $dashboardWarnings->reminderHtml     = str_replace(['</li>', '<li>'], '', $dashboardWarnings->reminderHtml);
-        $html             .= 'Reminder</h3><p>' . $dashboardWarnings->reminderHtml;
-    }
-
-    return  "<div id=reminders>$html</p></div>";
-}
-
-add_shortcode("tsjippy_userstatistics", __NAMESPACE__ . '\userStatistics');
+//add_shortcode("tsjippy_userstatistics", __NAMESPACE__ . '\userStatistics');
 function userStatistics()
 {
-
     add_filter('tsjippy-frontend-content-post-edit-button', function ($buttonHtml, $post, $content) {
         return $buttonHtml . "<form style='display: inline-block;' action='' method='post'><button class='button small' name='getlist' value=1>Get Contact List</button></form>";
     }, 10, 3);

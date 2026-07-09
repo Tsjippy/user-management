@@ -157,16 +157,32 @@ function getUserPageTab($wpRestRequest)
             $html    = showDashboard($userId, $admin);
             break;
         case 'family':
-            $html    = do_shortcode("[tsjippy_formbuilder slug=user_family user-id='$userId']");
+            $forms  = new TSJIPPY\FORMS\DisplayForm( [
+                'slug'    => 'user_family',
+                'user-id' => $userId
+            ] );
+            $html    = $forms->showForm();
             break;
         case 'location':
-            $html    = do_shortcode("[tsjippy_formbuilder slug=user_location user-id='$userId']");
+            $forms  = new TSJIPPY\FORMS\DisplayForm( [
+                'slug'    => 'user_location',
+                'user-id' => $userId
+            ] );
+            $html    = $forms->showForm();
             break;
         case 'profile-picture':
-            $html    = do_shortcode("[tsjippy_formbuilder slug=profile_picture user-id='$userId']");
+            $forms  = new TSJIPPY\FORMS\DisplayForm( [
+                'slug'    => 'profile_picture',
+                'user-id' => $userId
+            ] );
+            $html    = $forms->showForm();
             break;
         case 'security':
-            $html    = do_shortcode("[tsjippy_formbuilder slug=security_questions user-id='$userId']");
+            $forms  = new TSJIPPY\FORMS\DisplayForm( [
+                'slug'    => 'security_questions',
+                'user-id' => $userId
+            ] );
+            $html    = $forms->showForm();
             break;
         default:
             // check if tabname has a number

@@ -34,7 +34,13 @@ function showChildrenFields($childId)
     if (isset($availableForms['generic'])) {
         ?>
         <div id='generic-child-info-<?php echo esc_attr($childId); ?>' class='tabcontent'>
-            <?php echo do_shortcode("[tsjippy_formbuilder slug=child_generic user-id=$childId]"); ?>
+            <?php 
+            $forms  = new TSJIPPY\FORMS\DisplayForm( [
+                'slug'    => 'child_generic',
+                'user-id' => $childId
+            ] );
+            $forms->showForm(true);
+            ?>
         </div>
         <?php
 
@@ -44,7 +50,13 @@ function showChildrenFields($childId)
     if (isset($availableForms['profile picture'])) {
         ?>
         <div id='profile-picture-child-info-<?php echo esc_attr($childId);?>' class='tabcontent <?php echo esc_attr($hidden);?>'>
-            <?php echo wp_kses_post(do_shortcode("[tsjippy_formbuilder slug=profile_picture user-id='$childId']"));?>
+            <?php 
+            $forms  = new TSJIPPY\FORMS\DisplayForm( [
+                'slug'    => 'profile_picture',
+                'user-id' => $childId
+            ] );
+            $forms->showForm(true);
+            ?>
         </div>
         <?php
     }

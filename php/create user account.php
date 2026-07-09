@@ -13,7 +13,7 @@ function createUserAccountForm()
     $user = wp_get_current_user();
     if (in_array('usermanagement', $user->roles)) {
         ob_start();
-?>
+        ?>
         <div class="tabcontent">
             <form class='tsjippy-form' data-reset="true">
                 <input type="hidden" class="no-reset" name="nonce" value="<?php echo wp_create_nonce('account-creation'); ?>">
@@ -71,7 +71,7 @@ function createUserAccountForm()
 }
 
 //Shortcode the pending user accounts
-add_shortcode('tsjippy_pending_user', __NAMESPACE__ . '\pendingUsers');
+//add_shortcode('tsjippy_pending_user', __NAMESPACE__ . '\pendingUsers');
 function pendingUsers()
 {
     if (!current_user_can('edit_others_pages')) {
