@@ -15,7 +15,7 @@ function createDefaultPages($returnKey=''){
 
     // Create account page
     if(!isset($settings['account_page'])){
-        $settings['account_page']           = TSJIPPY\ADMIN\createDefaultPage('Account', '[tsjippy_user-info currentuser=true]');
+        $settings['account_page']           = TSJIPPY\ADMIN\createDefaultPage('Account', 'tsjippy_user-info currentuser=true]');
     }
 
     if(!isset($settings['user-edit-page'])){
@@ -30,7 +30,7 @@ function createDefaultPages($returnKey=''){
 
     if(!isset($settings['pending-users-page'])){
         // Create pending users page
-        $settings['pending-users-page']     = TSJIPPY\ADMIN\createDefaultPage('Pending user accounts', '[tsjippy_pending_user]');
+        $settings['pending-users-page']     = TSJIPPY\ADMIN\createDefaultPage('Pending user accounts', '<!-- wp:tsjippy-user-management/pending-user-accounts /-->');
     }
 
     update_option('tsjippy_' . PLUGINSLUG . '_settings', $settings);
