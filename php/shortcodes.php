@@ -57,7 +57,7 @@ function userStatistics()
     ?>
     <br>
     <div class='table-wrapper'>
-        <table class='tsjippy table' style='max-height:500px;'>
+        <table class='tsjippy table no-border' style='max-height:500px;'>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -89,8 +89,10 @@ function userStatistics()
                     ?>
 
                     <tr class='table-row'>
+                        
                         <td>
-                            <?php TSJIPPY\displayProfilePicture(userId: $user->ID, echo: true);?> <a href='<?php echo esc_url($baseUrl);?>/?user-id=$user->ID'>
+                            <?php TSJIPPY\displayProfilePicture(userId: $user->ID, echo: true);?> 
+                            <a href='<?php echo esc_url($baseUrl);?>/?user-id=<?php echo esc_attr($user->ID);?>'>
                                 <?php echo esc_html($user->display_name);?>
                             </a>
                         </td>
@@ -112,7 +114,7 @@ function userStatistics()
                         <td>
                             <?php
                                 foreach ($user->roles as $role) {
-                                    echo esc_attr($role . '<br>');
+                                    echo esc_attr($role) . '<br>';
                                 }
                                 ?>
                         </td>

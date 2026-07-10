@@ -17,6 +17,7 @@ function initBlocks()
             'supports'        => array(
                 'autoRegister' => true,
             ),
+            'icon'  => 'users'
         )
     );
 
@@ -28,6 +29,7 @@ function initBlocks()
             'supports'        => array(
                 'autoRegister' => true,
             ),
+            'icon'  => 'users'
         )
     );
 
@@ -39,6 +41,7 @@ function initBlocks()
             'supports'        => array(
                 'autoRegister' => true,
             ),
+            'icon'  => 'users'
         )
     );
 }
