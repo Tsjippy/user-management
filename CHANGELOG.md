@@ -2,6 +2,7 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+- block icon
 
 ### Changed
 - removed vaccination reminders block
