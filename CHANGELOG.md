@@ -2,15 +2,22 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+
+### Changed
+
+### Fixed
+
+### Updated
+
+## [10.4.4] - 2026-07-10
+
+
+### Added
 - block icon
 
 ### Changed
 - removed vaccination reminders block
 - render form directly without do_shortcode call
-
-### Fixed
-
-### Updated
 
 ## [10.4.3] - 2026-07-06
 
