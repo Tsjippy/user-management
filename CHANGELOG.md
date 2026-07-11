@@ -6,9 +6,14 @@
 ### Changed
 
 ### Fixed
-- block definition
 
 ### Updated
+
+## [10.4.8] - 2026-07-11
+
+
+### Fixed
+- block definition
 
 ## [10.4.7] - 2026-07-11
 
