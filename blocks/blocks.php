@@ -34,7 +34,7 @@ function initBlocks()
     );
 
     register_block_type(
-        'tsjippy-user-management/pending-user-accounts',
+        'tsjippy-user-management/request-user-accounts',
         array(
             'title'           => __( 'Request User Account Form', 'tsjippy' ),
             'render_callback' => __NAMESPACE__.'\requestAccount',
