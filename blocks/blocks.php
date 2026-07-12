@@ -12,7 +12,7 @@ function initBlocks()
     register_block_type(
         'tsjippy-user-management/pending-user-accounts',
         array(
-            'title'           => __( 'Pending User Accounts', 'tsjippy' ),
+            'title'           => __( 'Pending User Accounts', '%TEXTDOMAIN%' ),
             'render_callback' => __NAMESPACE__.'\pendingUsers',
             'supports'        => array(
                 'autoRegister' => true,
@@ -24,7 +24,7 @@ function initBlocks()
     register_block_type(
         'tsjippy-user-management/user-statistics',
         array(
-            'title'           => __( 'User Statistics', 'tsjippy' ),
+            'title'           => __( 'User Statistics', '%TEXTDOMAIN%' ),
             'render_callback' => __NAMESPACE__.'\userStatistics',
             'supports'        => array(
                 'autoRegister' => true,
@@ -36,7 +36,7 @@ function initBlocks()
     register_block_type(
         'tsjippy-user-management/request-user-accounts',
         array(
-            'title'           => __( 'Request User Account Form', 'tsjippy' ),
+            'title'           => __( 'Request User Account Form', '%TEXTDOMAIN%' ),
             'render_callback' => __NAMESPACE__.'\requestAccount',
             'supports'        => array(
                 'autoRegister' => true,
