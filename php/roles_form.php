@@ -74,6 +74,12 @@ function displayRoles($userId = '')
                         </div>
                         <span class="info-text">
                             <?php
+                            /**
+                             * Filters the role description
+                             * 
+                             * @param string $description  The description of a user role
+                             * @param string $role         The role slug
+                             */
                             echo esc_attr($roleName) . ' - <i>' . esc_html(apply_filters('tsjippy-user-management-role-description', '', $key)) . '</i>';
                             ?>
                         </span>
@@ -110,6 +116,12 @@ function displayRoles($userId = '')
                         <td>
                             <i>
                                 <?php
+                                /**
+                                 * Filters the role description
+                                 * 
+                                 * @param string $description  The description of a user role
+                                 * @param string $role         The role slug
+                                 */
                                 echo wp_kses_post(apply_filters('tsjippy-user-management-role-description', '', $key));
                                 ?>
                             </i>
