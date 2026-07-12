@@ -20,6 +20,9 @@ function scheduleTasks()
     }
 }
 
+/**
+ * Finds all users that have their birthday today
+ */
 function birthdayCheck()
 {
     //Current date time
@@ -258,6 +261,7 @@ function checkDetailsMail()
             $weddingDate    = $family->getWeddingDate($user->ID);
             if (!$partner) {
                 $partner         = 'You have no spouse';
+                $weddingDateHtml = '';
             } else {
                 $partner = $partner->display_name;
 
