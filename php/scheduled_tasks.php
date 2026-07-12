@@ -5,6 +5,9 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 add_action('init', __NAMESPACE__ . '\scheduleTasks');
+/**
+ * Schedule all tasks for this plugin
+ */
 function scheduleTasks()
 {
     TSJIPPY\scheduleTask('tsjippy-birthday-check', 'daily', __NAMESPACE__, 'birthdayCheck');
