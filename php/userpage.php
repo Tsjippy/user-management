@@ -34,17 +34,17 @@ function userDescription($user)
                 <?php
             }
 
-        $children    = $family->getChildren($user);
-        if ($children) {
-            foreach ($children as $child) {
-                ?>
-                <a href='<?php echo esc_url($url.$child);?>' class='button'>
-                    Edit useraccount for <?php echo esc_html(get_userdata($child)->first_name);?>
-                </a>
-                <?php
+            $children    = $family->getChildren($user);
+            if ($children) {
+                foreach ($children as $child) {
+                    ?>
+                    <a href='<?php echo esc_url($url.$child);?>' class='button'>
+                        Edit useraccount for <?php echo esc_html(get_userdata($child)->first_name);?>
+                    </a>
+                    <?php
+                }
             }
-        }
-        ?>
+            ?>
         </div>
         <?php
     }
