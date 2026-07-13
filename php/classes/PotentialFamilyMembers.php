@@ -6,17 +6,22 @@ use TSJIPPY;
 
 class PotentialFamilyMembers
 {
-    public $userId;
-    public $partner;
-    public $birthday;
-    public $gender;
-    public $family;
-    public $potentialSpouses;
-    public $potentialFathers;
-    public $potentialMothers;
-    public $potentialChildren;
-    public $users;
+    public int $userId;
+    public int|\WP_User|null $partner;
+    public string $birthday;
+    public string $gender;
+    public array $family;
+    public array $potentialSpouses;
+    public array $potentialFathers;
+    public array $potentialMothers;
+    public array $potentialChildren;
+    public array $users;
 
+    /**
+     * Constructor.
+     *
+     * @param int   $userId     WP User ID
+     */
     public function __construct($userId)
     {
         $this->userId            = $userId;
@@ -72,9 +77,9 @@ class PotentialFamilyMembers
 
             //Get the current gender
             $user->gender        = get_user_meta($user->ID, 'tsjippy_gender', true);
-            $user->birthday    = get_user_meta($user->ID, "tsjippy_birthday", true);
-            $user->ageDifference         = null;
-            $user->age         = null;
+            $user->birthday      = get_user_meta($user->ID, "tsjippy_birthday", true);
+            $user->ageDifference = null;
+            $user->age           = null;
             if (!empty($user->birthday)) {
                 $user->age = date_diff(date_create(gmdate("Y-m-d")), date_create($user->birthday))->y;
                 if (!empty($this->birthday)) {
@@ -91,7 +96,7 @@ class PotentialFamilyMembers
     {
         foreach ($this->users as $user) {
             //Add the displayname as potential father if not younger then 18 and not part of the family
-            if (($user->age == null || $user->age > 18) && !in_array($user->ID, $this->family)) {
+            if ((($user->age ?? null) == null || $user->age > 18) && !in_array($user->ID, $this->family)) {
                 if (empty($user->gender) || $user->gender == 'male') {
                     $this->potentialFathers[$user->ID] = $user->display_name;
                 }
@@ -155,7 +160,7 @@ class PotentialFamilyMembers
                     empty($parents)                        &&  // is not a child
                     !in_array($user->ID, $this->family)    &&  // is not family already
                     (
-                        $user->ageDifference == null       ||  // there is no age diff
+                        ($user->ageDifference ?? null) == null       ||  // there is no age diff
                         $user->ageDifference > 16              // the age diff is at least 16 years
                     )
                 )
