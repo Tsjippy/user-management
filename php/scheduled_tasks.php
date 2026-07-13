@@ -10,13 +10,13 @@ add_action('init', __NAMESPACE__ . '\scheduleTasks');
  */
 function scheduleTasks()
 {
-    TSJIPPY\scheduleTask('tsjippy-birthday-check', 'daily', __NAMESPACE__, 'birthdayCheck');
-    TSJIPPY\scheduleTask('tsjippy-account-expiry-check', 'daily', __NAMESPACE__, 'accountExpiryCheck');
-    TSJIPPY\scheduleTask('tsjippy-check-last-login-date', 'monthly', __NAMESPACE__, 'checkLastLoginDate');
+    TSJIPPY\scheduleTask('tsjippy-user-management-birthday-check', 'daily', __NAMESPACE__, 'birthdayCheck');
+    TSJIPPY\scheduleTask('tsjippy-user-management-account-expiry-check', 'daily', __NAMESPACE__, 'accountExpiryCheck');
+    TSJIPPY\scheduleTask('tsjippy-user-management-check-last-login-date', 'monthly', __NAMESPACE__, 'checkLastLoginDate');
 
     $freq    = SETTINGS['check-details-mail-freq'] ?? false;
     if ($freq) {
-        TSJIPPY\scheduleTask('tsjippy-check-details-mail', $freq, __NAMESPACE__, 'checkDetailsMail');
+        TSJIPPY\scheduleTask('tsjippy-user-management-check-details-mail', $freq, __NAMESPACE__, 'checkDetailsMail');
     }
 }
 

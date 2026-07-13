@@ -6,6 +6,13 @@ use TSJIPPY;
 
 //Add availbale partners as default
 add_filter('tsjippy-forms-add-form-multi-defaults', __NAMESPACE__ . '\addMultiDefault', 10, 3);
+/**
+ * Filters the default array values array
+ * 
+ * @param   array   $defaultArrayValues Array defaults
+ * @param   int     $userID             User Id
+ * @param   string  $formSlug           The form slug
+ */
 function addMultiDefault($defaultArrayValues, $userId, $formSlug)
 {
     if ($formSlug != 'user_family') {
