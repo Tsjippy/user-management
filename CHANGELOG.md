@@ -4,11 +4,16 @@
 ### Added
 
 ### Changed
-- details mail html
 
 ### Fixed
 
 ### Updated
+
+## [10.5.5] - 2026-07-14
+
+
+### Changed
+- details mail html
 
 ## [10.5.4] - 2026-07-14
 
