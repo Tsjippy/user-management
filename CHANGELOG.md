@@ -4,6 +4,7 @@
 ### Added
 
 ### Changed
+- details mail html
 
 ### Fixed
 
