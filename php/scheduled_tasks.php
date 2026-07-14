@@ -78,248 +78,335 @@ function checkDetailsMail()
     //Retrieve all users
     $users             = TSJIPPY\getUserAccounts(false, true);
 
-    $accountPageUrl    = get_permalink(SETTINGS['account_page'] ?? '');
+    $accountPageUrl    = get_permalink(SETTINGS['account_page'] ?? createDefaultPages('account_page'));
 
-    if (!$accountPageUrl) {
-        TSJIPPY\printArray('No account page defined');
-        return;
-    }
-    $baseUrl        = "$accountPageUrl?main-tab=";
-
-    $styleString    = "style='text-decoration:none; color:#444;'";
+    $baseUrl           = "$accountPageUrl?main-tab=";
 
     //Loop over the users
     foreach ($users as $user) {
+        ob_start();
+        
         //Send e-mail
-        $message  = "Hi {$user->first_name},<br><br>";
-        $message .= 'Once a year we would like to remind you to keep your information on the website up to date.<br>';
-        $message .= 'Please check the information below to see if it is still valid, if not update it.<br><br>';
+        ?>
+        <style>
+            .colored{
+                text-decoration: none; 
+                color: #444;
+            }
+        </style>
+        Hi <?php echo esc_attr($user->first_name);?>,<br>
+        <br>        
+        Once a year we would like to remind you to keep your information on the website up to date.<br>
+        Please check the information below to see if it is still valid, if not update it.<br>
+        <br>
 
-        /*
-        ** PROFILE PICTURE
-         */
-        $message .= "<a href='{$baseUrl}profilePicture' $styleString><b>Profile picture</b></a><br>";
+        <!-- PROFILE PICTURE -->
+        <a href='<?php echo esc_url($baseUrl);?>profilePicture' class='colored'>
+            <b>
+                Profile picture
+            </b>
+        </a>
+        <br>
+
+        <?php
         $profilePicture    = getProfilePictureUrl($user->ID);
         if ($profilePicture) {
-            $message         .= "This is your profile picture:<br>";
-            $message         .= "<img src='$profilePicture' alt='$profilePicture' width='100px' height='100px'";
-            $message         .= "<br><br>";
+            ?>
+            This is your profile picture:<br>
+            <img src='<?php echo esc_url($profilePicture);?>' alt='<?php echo esc_url($profilePicture);?>' width='100px' height='100px'>
+            <br>
+            <br>
+            <?php
         } else {
-            $message .= "<table>";
-            $message .= "<tr>";
-            $message .= "<td>";
-            $message .= "<a href='{$baseUrl}profilePicture' $styleString>You have not uploaded a picture</a>";
-            $message .= "</td>";
-            $message .= "</tr>";
-            $message .= "</table>";
+            ?>
+            <table>
+                <tr>
+                    <td>
+                        <a href='<?php echo esc_url($baseUrl);?>profilePicture' class='colored'>
+                            You have not uploaded a picture
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <?php
         }
-        $message .= "<br>";
+        ?>
+        <br>
 
-        /*
-        ** PERSONAL DETAILS
-         */
-        $message .= "<a href='{$baseUrl}generic-info' $styleString><b>Personal details</b></a><br>";
-        $message .= "<table>";
-        $message .= "<tr>";
-        $message .= "<td>";
-        $message .= "Name:";
-        $message .= "</td>";
-        $message .= "<td>";
-        $message .= "$user->display_name";
-        $message .= "</td>";
-        $message .= "</tr>";
+        <!-- PERSONAL DETAILS /-->
+        <a href='<?php echo esc_url($baseUrl);?>generic-info' class='colored'>
+            <b>
+                Personal details
+            </b>
+        </a>
+        <br>
 
-        $birthday = get_user_meta($user->ID, 'tsjippy_birthday', true);
-        if (empty($birthday)) {
-            $birthday = 'No birthday specified. ';
-        } else {
-            $birthday = gmdate('d  F Y', strtotime($birthday));
-        }
-        $message .= "<tr>";
-        $message .= "<td>";
-        $message .= "Birthday:";
-        $message .= "</td>";
-        $message .= "<td>";
-        $message .= "<a href='{$baseUrl}generic-info#birthday' $styleString>$birthday</a>";
-        $message .= "</td>";
-        $message .= "</tr>";
+        <table>
+            <tr>
+                <td>
+                    Name:
+                </td>
+                <td>
+                    <?php echo esc_attr($user->display_name);?>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Birthday:
+                </td>
+                <td>
+                    <a href='<?php echo esc_url($baseUrl);?>generic-info#birthday' class='colored'>
+                        <?php
+                        $birthday = get_user_meta($user->ID, 'tsjippy_birthday', true);
+                        if (empty($birthday)) {
+                            ?>
+                            No birthday specified.
+                            <?php
+                        } else {
+                            echo gmdate('d  F Y', strtotime($birthday));
+                        }
+                        ?>
+                    </a>
+                </td>
+            </tr>
 
-        $message    = apply_filters('tsjippy-user-management-details-reminder-html', $message, $user, $baseUrl, $styleString);
-        $message .= "</table>";
-        $message .= "<br>";
+            <?php
+            do_action('tsjippy-user-management-inside-personal-details-table', $user, $baseUrl);
+            ?>
+        </table>
+        <br>
 
-        /*
-        ** PHONENUMBERS
-         */
+        <!-- PHONENUMBERS -->
+
+        <?php
         $phonenumbers = get_user_meta($user->ID, 'tsjippy_phonenumbers');
         array_filter($phonenumbers);
-        $title    = 'Phonenumber';
-        if (count($phonenumbers) > 1) {
-            $title .= 's';
-        }
 
-        $message .= "<a href='{$baseUrl}generic-info' $styleString><b>$title</b></a><br>";
-        $message .= "<table>";
-        if (empty($phonenumbers)) {
-            $message .= "<tr>";
-            $message .= "<td>";
-            $message .= "<a href='{$baseUrl}generic-info#phonenumbers[0]' $styleString>No phonenumbers provided</a>";
-            $message .= "</td>";
-            $message .= "</tr>";
-        } elseif (count($phonenumbers) == 1) {
-            $message .= "<tr>";
-            $message .= "<td>";
-            $message .= "<a href='{$baseUrl}generic-info#phonenumbers[0]' $styleString>" . array_values($phonenumbers)[0] . '</a>';
-            $message .= "</td>";
-            $message .= "</tr>";
-        } else {
-            foreach ($phonenumbers as $key => $number) {
-                $nr    = $key + 1;
-                $message .= "<tr>";
-                $message .= "<td>";
-                $message .= "Phonenumber $nr:";
-                $message .= "</td>";
-                $message .= "<td>";
-                $message .= "<a href='{$baseUrl}generic-info#phonenumbers[$key]' $styleString>$number</a>";
-                $message .= "</td>";
-                $message .= "</tr>";
+        ?>
+        <a href='<?php echo esc_url($baseUrl);?>generic-info' class='colored'>
+            <b>
+                Phonenumber<?php if (count($phonenumbers) > 1) echo( 's'); ?>
+            </b>
+        </a>
+        <br>
+        <table>
+            <?php
+            if (empty($phonenumbers)) {
+                ?>
+                <tr>
+                    <td>
+                        <a href='<?php echo esc_url($baseUrl);?>generic-info#phonenumbers[0]' class='colored'>
+                            No phonenumbers provided
+                        </a>
+                    </td>
+                </tr>
+                <?php
+            } elseif (count($phonenumbers) == 1) {
+                ?>
+                <tr>
+                    <td>
+                        <a href='<?php echo esc_url($baseUrl);?>generic-info#phonenumbers[0]' class='colored'>
+                            <?php echo wp_kses_post(array_values($phonenumbers)[0]);?>
+                        </a>
+                    </td>
+                </tr>
+                <?php
+            } else {
+                foreach ($phonenumbers as $key => $number) {
+                    $nr    = $key + 1;
+                    ?>
+                    <tr>
+                        <td>
+                            Phonenumber <?php echo esc_attr($nr);?>:
+                        </td>
+                        <td>
+                            <a href='<?php echo esc_url($baseUrl);?>generic-info#phonenumbers[<?php echo esc_attr($key);?>]' class='colored'>
+                                <?php echo esc_attr($number);?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
+                }
             }
-        }
-        $message .= "</table>";
-        $message .= "<br>";
+            ?>
+        </table>
+        <br>
 
-        /*
-        ** MINISTRIES
-         */
-        $userMinistries = (array)get_user_meta($user->ID, 'tsjippy_jobs', true);
-        if (count($userMinistries) > 1) {
-            $title    = 'Ministries';
-        } else {
-            $title    = 'Ministry';
-        }
-        $message .= "<a href='{$baseUrl}generic-info' $styleString><b>$title</b></a><br>";
+        <!-- MINISTRIES -->
+        <a href='<?php echo esc_url($baseUrl);?>generic-info' class='colored'>
+            <b>
+                <?php
+                $userMinistries = (array)get_user_meta($user->ID, 'tsjippy_jobs', true);
+                array_filter($userMinistries);
+                if (count($userMinistries) > 1) {
+                    ?>Ministries<?php
+                } else {
+                    ?>Ministry<?php
+                }
+                ?>
+            </b>
+        </a>
+        <br>
 
-        $message .= "<table>";
-        array_filter($userMinistries);
-        if (empty($userMinistries)) {
-            $message .= "<tr>";
-            $message .= "<td>";
-            $message .= "<a href='{$baseUrl}generic-info#ministries[]' $styleString>No ministry provided</a>";
-            $message .= "</td>";
-            $message .= "</tr>";
-        } else {
-            foreach ($userMinistries as $ministry => $job) {
-                $message .= "<tr>";
-                $message .= "<td>";
-                $message .= get_the_title($ministry) . ":";
-                $message .= "</td>";
-                $message .= "<td>";
-                $message .= "<a href='{$baseUrl}generic-info#ministries[]' $styleString>$job</a>";
-                $message .= "</td>";
-                $message .= "</tr>";
+        <table>
+            <?php
+            if (empty($userMinistries)) {
+                ?>
+                <tr>
+                    <td>
+                        <a href='<?php echo esc_url($baseUrl);?>generic-info#ministries[]' class='colored'>
+                            No ministry provided
+                        </a>
+                    </td>
+                </tr>
+                <?php
+            } else {
+                foreach ($userMinistries as $ministry => $job) {
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo get_the_title($ministry)?>:
+                        </td>
+                        <td>
+                            <a href='<?php echo esc_url($baseUrl);?>generic-info#ministries[]' class='colored'>
+                                <?php echo esc_html($job);?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
+                }
             }
-        }
-        $message .= "</table>";
-        $message .= "<br>";
+            ?>
+        </table>
+        <br>
 
-        /*
-        ** LOCATION
-         */
-        $message    .= "<a href='{$baseUrl}location' $styleString><b>Location</b></a><br>";
-        $location    = (array)get_user_meta($user->ID, 'tsjippy_location', true);
-        array_filter($location);
-        if (empty($location['address'])) {
-            $location = "No location provided";
-        } else {
-            $location = $location['address'];
-        }
+        <!-- LOCATION -->
+        <a href='<?php echo esc_url($baseUrl);?>location' class='colored'>
+            <b>
+                Location
+            </b>
+        </a>
+        <br>
 
-        $message .= "<table>";
-        $message .= "<tr>";
-        $message .= "<td>";
-        $message .= "<a href='{$baseUrl}location#location[compound]' $styleString>$location</a>";
-        $message .= "</td>";
-        $message .= "</tr>";
-        $message .= "</table>";
-        $message .= "<br>";
-
+        <table>
+            <tr>
+                <td>
+                    <a href='<?php echo esc_url($baseUrl);?>location#location[compound]' class='colored'>
+                        <?php
+                        $location    = (array)get_user_meta($user->ID, 'tsjippy_location', true);
+                        array_filter($location);
+                        if (empty($location['address'])) {
+                            ?>No location provided<?php
+                        } else {
+                            echo esc_attr($location['address']);
+                        }
+                        ?>
+                    </a>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <?php
         /*
         ** FAMILY
          */
-        $partner    = $family->getPartner($user->ID, true);
-        $children    = $family->getChildren($user->ID);
-        $siblings    = $family->getSiblings($user->ID);
+        $partner   = $family->getPartner($user->ID, true);
+        $children  = $family->getChildren($user->ID);
+        $siblings  = $family->getSiblings($user->ID);
         if ($partner || $children || $siblings) {
             $picture    = $family->getFamilyMeta($partner, 'family_picture', true);
             if ($picture) {
                 $url        = wp_get_attachment_url($picture);
-                $picture    = "<img src='$url' width=100 height=100>";
+                ?><img src='<?php echo esc_url($url);?>' width=100 height=100><?php
             } else {
-                $picture    = "You have not uploaded a picture";
+                ?>You have not uploaded a picture<?php
             }
+            ?>
 
-            $weddingDate    = $family->getWeddingDate($user->ID);
-            if (!$partner) {
-                $partner         = 'You have no spouse';
-                $weddingDateHtml = '';
-            } else {
-                $partner = $partner->display_name;
+            <a href='<?php echo esc_url($baseUrl);?>family' class='colored'>
+                <b>
+                    Family details
+                </b>
+            </a>
+            <br>
+            <table>
+                <tr>
+                    <td>
+                        Family picture:
+                    </td>
+                    <td>
+                        <a href='<?php echo esc_url($baseUrl);?>family#family_picture' class='colored'>
+                            <?php echo esc_attr($picture);?>
+                        </a>
+                    </td>
+                </tr>
 
-                if ($weddingDate) {
-                    $text    = gmdate('d F Y', strtotime($weddingDate));
-                } else {
-                    $text    = "No weddingdate provided";
+                <tr>
+                    <td>
+                        Spouse:
+                    </td>
+                    <td>
+                        <a href='<?php echo esc_url($baseUrl);?>family#partner' class='colored'>
+                            <?php 
+                            if ($partner) {
+                                echo esc_attr($partner->display_name);
+                            }else{
+                                ?>You have no spouse<?php
+                            }
+                            ?>
+                        </a>
+                    </td>
+                </tr>
+                <?php
+                if ($partner) {
+                    ?>
+                    <tr>
+                        <td>
+                            Wedding date:
+                        </td>
+                        <td>
+                            <a href='<?php echo esc_url($baseUrl);?>family#weddingdate' class='colored'>
+                                <?php
+                                $weddingDate = $family->getWeddingDate($user->ID);
+
+                                if ($weddingDate) {
+                                    echo esc_attr(gmdate('d F Y', strtotime($weddingDate)));
+                                } else {
+                                    ?>No weddingdate provided<?php
+                                }
+                                ?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
                 }
 
-                $weddingDateHtml = "<tr>";
-                $weddingDateHtml .= "<td>";
-                $weddingDateHtml .= "Wedding date:";
-                $weddingDateHtml .= "</td>";
-                $weddingDateHtml .= "<td>";
-                $weddingDateHtml .= "<a href='{$baseUrl}family#weddingdate' $styleString>$text</a>";
-                $weddingDateHtml .= "</td>";
-                $weddingDateHtml .= "</tr>";
-            }
-
-            $message .= "<a href='{$baseUrl}family' $styleString><b>Family details</b></a><br>";
-            $message .= "<table>";
-            $message .= "<tr>";
-            $message .= "<td>";
-            $message .= "Family picture:";
-            $message .= "</td>";
-            $message .= "<td>";
-            $message .= "<a href='{$baseUrl}family#family_picture' $styleString>$picture</a>";
-            $message .= "</td>";
-            $message .= "</tr>";
-
-            $message .= "<tr>";
-            $message .= "<td>";
-            $message .= "Spouse:";
-            $message .= "</td>";
-            $message .= "<td>";
-            $message .= "<a href='{$baseUrl}family#partner' $styleString>$partner</a>";
-            $message .= "</td>";
-            $message .= "</tr>";
-
-            $message .= $weddingDateHtml;
-
-            foreach ($children as $key => $child) {
-                $nr    = $key + 1;
-                $message .= "<tr>";
-                $message .= "<td>";
-                $message .= "Child $nr:";
-                $message .= "</td>";
-                $message .= "<td>";
-                $message .= "<a href='{$baseUrl}family#children[$key]' $styleString>" . get_userdata($child)->display_name . "</a>";
-                $message .= "</td>";
-                $message .= "</tr>";
-            }
-            $message .= "</table>";
+                foreach ($children as $key => $child) {
+                    $nr    = $key + 1;
+                    ?>
+                    <tr>
+                        <td>
+                            Child $nr:
+                        </td>
+                        <td>
+                            <a href='<?php echo esc_url($baseUrl);?>family#children[$key]' class='colored'>
+                                <?php echo esc_html(get_userdata($child)->display_name);?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </table>
+            <?php
         }
+        ?>
+        <br>
+        If any information is not correct, please correct it on <a href='<?php echo esc_url($accountPageUrl);?>'><?php echo str_replace(['https://www. ', 'https://'], '', $accountPageUrl)?></a>.
+        <br>
+        Or just click on any details listed above.<?php 
 
-        $message .= '<br>';
-        $message .= "If any information is not correct, please correct it on <a href='$accountPageUrl'>" . str_replace(['https://www. ', 'https://'], '', $accountPageUrl) . "</a>.<br>Or just click on any details listed above. ";
-        wp_mail($user->user_email, $subject, $message);
+        wp_mail($user->user_email, $subject, ob_get_clean());
     }
 }
 
