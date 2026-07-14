@@ -32,19 +32,26 @@ function addMultiDefault($defaultArrayValues, $userId, $formSlug)
 
 //Save family picture
 add_filter('tsjippy-forms-before-inserting-formdata', __NAMESPACE__ . '\beforeSavingFormData', 10, 2);
+/**
+ * Saves family picture
+ * 
+ * @param   array   $request    sanitized request data
+ * @param   object  $object
+ */
 function beforeSavingFormData($request, $object)
 {
     if ($object->formData->slug != 'user_family') {
         return $request;
     }
 
-    $userId    = $object->userId;
+    $userId  = $object->userId;
 
-    $family = new TSJIPPY\FAMILY\Family();
+    $family  = new TSJIPPY\FAMILY\Family();
 
     // Family Picture
     $newPicture    = $request['family_picture'];
     $oldPicture    = $family->getFamilyMeta($userId, 'family_picture', true);
+    
     if ($newPicture != $oldPicture) {
         // Do not show in picture gallery
         update_post_meta($newPicture, 'tsjippy_gallery_visibility', 'hide');
