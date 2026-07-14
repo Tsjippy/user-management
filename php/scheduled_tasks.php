@@ -412,10 +412,9 @@ function accountExpiryCheck()
  */
 function checkLastLoginDate()
 {
-
     $users = TSJIPPY\getUserAccounts();
     foreach ($users as $user) {
-        $lastLogin                = get_user_meta($user->ID, 'tsjippy_last_login_date', true);
+        $lastLogin = get_user_meta($user->ID, 'tsjippy_last_login_date', true);
 
         //user has never logged in
         if (empty($lastLogin)) {
@@ -441,9 +440,9 @@ function checkLastLoginDate()
 
             wp_mail($to, $mail->subject, $mail->message);
         } else {
-            $lastLoginDate            = date_create($lastLogin);
-            $now                     = new \DateTime();
-            $yearsSinceLastLogin     = date_diff($lastLoginDate, $now)->format("%y");
+            $lastLoginDate       = date_create($lastLogin);
+            $now                 = new \DateTime();
+            $yearsSinceLastLogin = date_diff($lastLoginDate, $now)->format("%y");
 
             //User has not logged in in the last year
             if ($yearsSinceLastLogin > 0) {
