@@ -26,7 +26,10 @@ class PotentialFamilyMembers
     {
         $this->userId            = $userId;
         $this->birthday          = get_user_meta($userId, 'tsjippy_birthday', true);
-        $this->gender            = get_user_meta($userId, 'tsjippy_gender', true);
+        $gender                  = get_user_meta($userId, 'tsjippy_gender', true);
+        if(is_array($gender)){
+            $this->gender       = array_values($gender)[0];
+        }
         $family                  = new TSJIPPY\FAMILY\Family();
         $this->partner           = $family->getPartner($userId);
         $this->family            = $family->getFamily($userId, true);
