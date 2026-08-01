@@ -10,15 +10,10 @@ add_filter('tsjippy-forms-add-form-multi-defaults', __NAMESPACE__ . '\addMultiDe
  * Filters the default array values array
  * 
  * @param   array   $defaultArrayValues Array defaults
- * @param   int     $userID             User Id
- * @param   string  $formSlug           The form slug
+ * @param   int     $userId             User Id
  */
-function addMultiDefault($defaultArrayValues, $userId, $formSlug)
+function addMultiDefault($defaultArrayValues, $userId)
 {
-    if ($formSlug != 'user_family') {
-        return $defaultArrayValues;
-    }
-
     $potentials    = new PotentialFamilyMembers($userId);
 
     $potentials->potentialParents();
