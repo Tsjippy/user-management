@@ -47,16 +47,6 @@ register_activation_hook(__FILE__, function () {
     
     createDefaultPages();
 
-    /**
-     * Import the forms
-     */
-    $formBuilder    = new \TSJIPPY\FORMS\FormExport();
-
-    $files = glob(PLUGINPATH  . "imports/*.sform");
-    foreach ($files as $file) {
-        $formBuilder->importForm($file);
-    }
-
     // add the last logindate for existing users
     foreach (get_users(['meta_key' => 'tsjippy_last_login_date', 'meta_compare'  => 'NOT EXISTS']) as $user) {
         update_user_meta($user->ID, 'tsjippy_last_login_date', gmdate('Y-m-d'));
@@ -136,6 +126,17 @@ function createDefaultPages($returnKey=''){
     if(!isset($settings['pending-users-page'])){
         // Create pending users page
         $settings['pending-users-page']     = TSJIPPY\ADMIN\createDefaultPage('Pending user accounts', '<!-- wp:tsjippy-user-management/pending-user-accounts /-->');
+    }
+
+    /**
+     * Default forms
+     */
+    $formBuilder    = new \TSJIPPY\FORMS\FormExport();
+
+    $files = glob(PLUGINPATH  . "imports/*.sform");
+    foreach ($files as $file) {
+        $formName            = basename($file, '.sform');
+        $settings[$formName] = $formBuilder->importForm($file);
     }
 
     update_option('tsjippy_' . PLUGINSLUG . '_settings', $settings);

@@ -52,6 +52,9 @@ function userDescription($user)
 
 //Shortcode for userdata forms
 add_shortcode("tsjippy_user-info", __NAMESPACE__ . '\userInfoPage');
+/**
+ * @param   array   $atts
+ */
 function userInfoPage($atts)
 {
     if (!is_user_logged_in()) {
@@ -160,10 +163,10 @@ function userInfoPage($atts)
             $html    .= '<div id="family-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'family-info') {
-                $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                    'slug'    => 'user_family',
-                ] );
-                $html    .= $forms->showForm();
+                $forms  = new TSJIPPY\FORMS\Forms();
+
+                $postId = SETTINGS['user_family'];
+                $html    .= $forms->showForm($postId);
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -210,10 +213,10 @@ function userInfoPage($atts)
             $html .= '<div id="location-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'location-info') {
-                $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                    'slug'    => 'user_location',
-                ] );
-                $html    .= $forms->showForm();
+                $forms  = new TSJIPPY\FORMS\Forms();
+
+                $postId = SETTINGS['user_location'];
+                $html    .= $forms->showForm($postId);
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -247,16 +250,15 @@ function userInfoPage($atts)
 
             if (($_GET['main-tab'] ?? '') == 'profile-picture-info') {
                 if ($family->isChild($userId)) {
-                    $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                        'slug'    => 'profile_picture',
-                        'user-id' => $userId
-                    ] );
-                    $html    .= $forms->showForm();
+                    $forms  = new TSJIPPY\FORMS\Forms();
+
+                    $postId = SETTINGS['profile_picture'];
+                    $html    .= $forms->showForm($postId);
                 } else {
-                    $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                        'slug'    => 'profile_picture',
-                    ] );
-                    $html    .= $forms->showForm();
+                    $forms  = new TSJIPPY\FORMS\Forms();
+
+                    $postId = SETTINGS['profile_picture'];
+                    $html    .= $forms->showForm($postId);
                 }
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
@@ -318,10 +320,10 @@ function userInfoPage($atts)
             $html    .= "<div id='security-info' class='tabcontent hidden'>";
 
             if (($_GET['main-tab'] ?? '') == "security-info") {
-                $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                    'slug'    => 'security_questions',
-                ] );
-                $html    .= $forms->showForm();
+                $forms  = new TSJIPPY\FORMS\Forms();
+
+                $postId = SETTINGS['security_questions'];
+                $html    .= $forms->showForm($postId);
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -426,11 +428,11 @@ function getGenericsTab($userId)
         } else {
             $slug   = 'user_generics';
         }
-        $forms  = new TSJIPPY\FORMS\DisplayForm( [
-            'slug'    => $slug,
-            'user-id' => $userId
-        ] );
-        $html    .= $forms->showForm();
+        
+        $forms  = new TSJIPPY\FORMS\Forms();
+
+        $postId = SETTINGS[$slug];
+        $html    .= $forms->showForm($postId);
     } else {
         $html    .= $form;
     }
