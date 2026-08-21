@@ -5,6 +5,7 @@
 
 ### Changed
 - prepared for new forms version
+- implemented new forms
 
 ### Fixed
 
