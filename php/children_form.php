@@ -6,8 +6,11 @@ use TSJIPPY;
 
 /**
  * Displays the forms for children
+ * 
+ * @param   int $postId
+ * @param   int $childId
  */
-function showChildrenFields($childId)
+function showChildrenFields($postId, $childId)
 {
     $availableForms        = SETTINGS['enabled-forms'] ?? [];
 
@@ -34,12 +37,9 @@ function showChildrenFields($childId)
     if (isset($availableForms['generic'])) {
         ?>
         <div id='generic-child-info-<?php echo esc_attr($childId); ?>' class='tabcontent'>
-            <?php 
-            $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                'slug'    => 'child_generic',
-                'user-id' => $childId
-            ] );
-            $forms->showForm(true);
+            <?php
+            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
+            $forms->showForm();
             ?>
         </div>
         <?php
@@ -51,11 +51,8 @@ function showChildrenFields($childId)
         ?>
         <div id='profile-picture-child-info-<?php echo esc_attr($childId);?>' class='tabcontent <?php echo esc_attr($hidden);?>'>
             <?php 
-            $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                'slug'    => 'profile_picture',
-                'user-id' => $childId
-            ] );
-            $forms->showForm(true);
+            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
+            $forms->showForm();
             ?>
         </div>
         <?php

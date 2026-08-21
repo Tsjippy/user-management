@@ -149,6 +149,8 @@ function getUserPageTab($wpRestRequest)
         $admin    = false;
     }
 
+    $postId    = SETTINGS[$params['tabname']];
+
     switch ($params['tabname']) {
         case 'generic':
             $html    = getGenericsTab($userId);
@@ -157,38 +159,26 @@ function getUserPageTab($wpRestRequest)
             $html    = showDashboard($userId, $admin);
             break;
         case 'family':
-            $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                'slug'    => 'user_family',
-                'user-id' => $userId
-            ] );
+            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
             $html    = $forms->showForm();
             break;
         case 'location':
-            $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                'slug'    => 'user_location',
-                'user-id' => $userId
-            ] );
+            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
             $html    = $forms->showForm();
             break;
         case 'profile-picture':
-            $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                'slug'    => 'profile_picture',
-                'user-id' => $userId
-            ] );
+            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
             $html    = $forms->showForm();
             break;
         case 'security':
-            $forms  = new TSJIPPY\FORMS\DisplayForm( [
-                'slug'    => 'security_questions',
-                'user-id' => $userId
-            ] );
+            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
             $html    = $forms->showForm();
             break;
         default:
             // check if tabname has a number
             $childId    = explode('-', $params['tabname']);
             if ($childId[0] == 'child' && isset($childId[1]) && is_numeric($childId[1])) {
-                $html    = showChildrenFields($childId[1]);
+                $html    = showChildrenFields($postId, $childId[1]);
             } else {
                 $html    = "<div class='error'>Something went wrong, you should never see this</div>";
             }
