@@ -4,12 +4,17 @@
 ### Added
 
 ### Changed
-- prepared for new forms version
-- implemented new forms
 
 ### Fixed
 
 ### Updated
+
+## [10.5.8] - 2026-08-22
+
+
+### Changed
+- prepared for new forms version
+- implemented new forms
 
 ## [10.5.7] - 2026-07-15
 
