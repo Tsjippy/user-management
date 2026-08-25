@@ -163,10 +163,10 @@ function userInfoPage($atts)
             $html    .= '<div id="family-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'family-info') {
-                $forms  = new TSJIPPY\FORMS\Forms();
 
                 $postId = SETTINGS['user_family'];
-                $html    .= $forms->showForm($postId);
+                $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
+                $html    .= $forms->showForm();
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -213,10 +213,9 @@ function userInfoPage($atts)
             $html .= '<div id="location-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'location-info') {
-                $forms  = new TSJIPPY\FORMS\Forms();
-
                 $postId = SETTINGS['user_location'];
-                $html    .= $forms->showForm($postId);
+                $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
+                $html    .= $forms->showForm();
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -250,15 +249,15 @@ function userInfoPage($atts)
 
             if (($_GET['main-tab'] ?? '') == 'profile-picture-info') {
                 if ($family->isChild($userId)) {
-                    $forms  = new TSJIPPY\FORMS\Forms();
-
                     $postId = SETTINGS['profile_picture'];
-                    $html    .= $forms->showForm($postId);
+                    $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
+                    $html    .= $forms->showForm();
                 } else {
                     $forms  = new TSJIPPY\FORMS\Forms();
 
                     $postId = SETTINGS['profile_picture'];
-                    $html    .= $forms->showForm($postId);
+                    $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
+                    $html    .= $forms->showForm();
                 }
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
@@ -320,10 +319,10 @@ function userInfoPage($atts)
             $html    .= "<div id='security-info' class='tabcontent hidden'>";
 
             if (($_GET['main-tab'] ?? '') == "security-info") {
-                $forms  = new TSJIPPY\FORMS\Forms();
 
                 $postId = SETTINGS['security_questions'];
-                $html    .= $forms->showForm($postId);
+                $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
+                $html    .= $forms->showForm();
             } else {
                 $html    .= "<div class='loader-wrapper loading hidden'></div>";
             }
@@ -383,14 +382,14 @@ function userInfoPage($atts)
  */
 function getGenericsTab($userId)
 {
-    $family    = new TSJIPPY\FAMILY\Family();
+    $family           = new TSJIPPY\FAMILY\Family();
 
-    $accountValidity     = get_user_meta($userId, 'tsjippy_account_validity', true);
+    $accountValidity  = get_user_meta($userId, 'tsjippy_account_validity', true);
 
-    $genericInfoRoles     = array_merge(['usermanagement'], ['administrator']);
+    $genericInfoRoles = array_merge(['usermanagement'], ['administrator']);
 
-    $user                 = wp_get_current_user();
-    $userRoles             = $user->roles;
+    $user             = wp_get_current_user();
+    $userRoles        = $user->roles;
 
     $html    = '';
     if (!empty($accountValidity) && $accountValidity != 'unlimited' && !is_numeric($accountValidity)) {
@@ -428,11 +427,11 @@ function getGenericsTab($userId)
         } else {
             $slug   = 'user_generics';
         }
-        
-        $forms  = new TSJIPPY\FORMS\Forms();
 
         $postId = SETTINGS[$slug];
-        $html    .= $forms->showForm($postId);
+        
+        $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
+        $html    .= $forms->showForm();
     } else {
         $html    .= $form;
     }

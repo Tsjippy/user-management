@@ -139,7 +139,7 @@ function createDefaultPages($returnKey=''){
         $settings[$formName] = $formBuilder->importForm($file);
     }
 
-    update_option('tsjippy_' . PLUGINSLUG . '_settings', $settings);
+    update_option('tsjippy_user-management_settings', $settings);
 
     if(!empty($returnKey) && isset($settings[$returnKey])){
         return $settings[$returnKey];
