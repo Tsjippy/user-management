@@ -2,6 +2,7 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+- tsjippy-forms-reminder-link filter
 
 ### Changed
 - implemented new forms structure
