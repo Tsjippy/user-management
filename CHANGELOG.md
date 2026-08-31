@@ -2,14 +2,21 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
-- tsjippy-forms-reminder-link filter
 
 ### Changed
-- implemented new forms structure
 
 ### Fixed
 
 ### Updated
+
+## [10.6.1] - 2026-08-31
+
+
+### Added
+- tsjippy-forms-reminder-link filter
+
+### Changed
+- implemented new forms structure
 
 ## [10.6.0] - 2026-08-23
 
