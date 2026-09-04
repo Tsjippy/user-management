@@ -7,16 +7,19 @@ use TSJIPPY;
 /**
  * Displays the forms for children
  * 
- * @param   int $postId
  * @param   int $childId
  */
-function showChildrenFields($postId, $childId)
+function showChildrenFields($childId)
 {
     $availableForms        = SETTINGS['enabled-forms'] ?? [];
 
     ob_start();
     $active    = 'active';
     $hidden    = '';
+
+    /**
+     * Tabbuttons
+     */
     if (isset($availableForms['generic'])) {
         ?>
         <button class=' button tablink active' id='show-generic-child-info-<?php echo esc_attr($childId);?>' data-target='generic-child-info-<?php echo esc_attr($childId);?>'>
@@ -34,12 +37,16 @@ function showChildrenFields($postId, $childId)
         <?php
     }
 
+    /**
+     * Tabcontents
+     */
     if (isset($availableForms['generic'])) {
         ?>
         <div id='generic-child-info-<?php echo esc_attr($childId); ?>' class='tabcontent'>
             <?php
-            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
-            $forms->showForm();
+            $postId    = SETTINGS['child_generic'];
+            $forms     = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
+            echo $forms->showForm();
             ?>
         </div>
         <?php
@@ -51,8 +58,9 @@ function showChildrenFields($postId, $childId)
         ?>
         <div id='profile-picture-child-info-<?php echo esc_attr($childId);?>' class='tabcontent <?php echo esc_attr($hidden);?>'>
             <?php 
-            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
-            $forms->showForm();
+            $postId    = SETTINGS['profile_picture'];
+            $forms     = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
+            echo $forms->showForm();
             ?>
         </div>
         <?php

@@ -149,39 +149,42 @@ function getUserPageTab($wpRestRequest)
         $admin    = false;
     }
 
-    $postId    = SETTINGS[$params['tabname']];
+    $postId    = SETTINGS[$params['tabname']] ?? SETTINGS[str_replace('-', '_', $params['tabname'])] ?? SETTINGS['user_' . $params['tabname']] ?? 0;
 
-    switch ($params['tabname']) {
-        case 'generic':
-            $html    = getGenericsTab($userId);
-            break;
-        case 'dashboard':
-            $html    = showDashboard($userId, $admin);
-            break;
-        case 'family':
-            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
-            $html    = $forms->showForm();
-            break;
-        case 'location':
-            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
-            $html    = $forms->showForm();
-            break;
-        case 'profile-picture':
-            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
-            $html    = $forms->showForm();
-            break;
-        case 'security':
-            $forms  = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
-            $html    = $forms->showForm();
-            break;
-        default:
-            // check if tabname has a number
-            $childId    = explode('-', $params['tabname']);
-            if ($childId[0] == 'child' && isset($childId[1]) && is_numeric($childId[1])) {
-                $html    = showChildrenFields($postId, $childId[1]);
-            } else {
-                $html    = "<div class='error'>Something went wrong, you should never see this</div>";
-            }
+    $html      = '';
+
+    if(empty($postId)){
+        $html    = handleEmptyPostId($params['tabname']);
+
+        if(is_numeric($html)){
+            $postId = $html;
+        }
+    }
+
+    if(!empty($postId) || str_contains($params['tabname'], 'child-')){
+        switch ($params['tabname']) {
+            case 'generics':
+                $html    = getGenericsTab($userId);
+                break;
+            case 'dashboard':
+                $html    = showDashboard($userId, $admin);
+                break;
+            case 'family':
+            case 'location':
+            case 'profile-picture':
+            case 'security':
+                $forms = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $userId);
+                $html  = $forms->showForm(false);
+                break;
+            default:
+                // check if tabname has a number
+                $childId    = explode('-', $params['tabname']);
+                if ($childId[0] == 'child' && isset($childId[1]) && is_numeric($childId[1])) {
+                    $html    = showChildrenFields($childId[1]);
+                } else {
+                    $html    = "<div class='error'>Something went wrong, you should never see this</div>";
+                }
+        }
     }
 
     do_action('wp_enqueue_scripts');
@@ -195,9 +198,9 @@ function getUserPageTab($wpRestRequest)
     $css    = ob_get_clean();
 
     return [
-        'html'    => $html,
-        'js'    => $js,
-        'css'    => $css
+        'html' => $html,
+        'js'   => $js,
+        'css'  => $css
     ];
 }
 
