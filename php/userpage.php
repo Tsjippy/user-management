@@ -56,7 +56,7 @@ function userDescription($user)
  * @param   string  $tabName
  */
 function handleEmptyPostId($tabName){
-    if(str_contains($tabName, 'child-') || in_array($tabName, ['dashboard', 'login-info', 'roles', 'visa-info'])){
+    if(empty($tabName) || str_contains($tabName, 'child-') || in_array($tabName, ['dashboard', 'login-info', 'roles', 'visa-info'])){
         return 0;
     }
 
