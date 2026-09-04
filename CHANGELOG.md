@@ -6,9 +6,14 @@
 ### Changed
 
 ### Fixed
-- display of forms
 
 ### Updated
+
+## [10.6.6] - 2026-09-04
+
+
+### Fixed
+- display of forms
 
 ## [10.6.5] - 2026-09-03
 
