@@ -6,6 +6,7 @@
 ### Changed
 
 ### Fixed
+- display of forms
 
 ### Updated
 
