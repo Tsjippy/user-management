@@ -56,7 +56,18 @@ function userDescription($user)
  * @param   string  $tabName
  */
 function handleEmptyPostId($tabName){
-    if(empty($tabName) || str_contains($tabName, 'child-') || in_array($tabName, ['dashboard', 'login-info', 'roles', 'visa-info'])){
+    /**
+     * Filters the list off userpage tabnames we do not try to find a form for
+     * 
+     * @param   array   $tabnames
+     */
+    $tabsWithoutForms   = apply_filters('tsjippy-user-management-tabs-wthout-filters', ['dashboard', 'login-info', 'roles']);
+    
+    if(
+        empty($tabName) || 
+        str_contains($tabName, 'child-') || 
+        in_array($tabName, $tabsWithoutForms)
+    ){
         return 0;
     }
 
