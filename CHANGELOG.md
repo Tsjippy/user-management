@@ -2,6 +2,7 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
+- 'tsjippy-user-management-tabs-wthout-filters' filter
 
 ### Changed
 
