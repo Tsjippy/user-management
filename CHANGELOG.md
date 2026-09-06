@@ -2,13 +2,18 @@
 ## [Unreleased] - yyyy-mm-dd
 
 ### Added
-- edit and change form buttons
 
 ### Changed
 
 ### Fixed
 
 ### Updated
+
+## [10.6.8] - 2026-09-06
+
+
+### Added
+- edit and change form buttons
 
 ## [10.6.7] - 2026-09-05
 
