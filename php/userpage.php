@@ -51,6 +51,41 @@ function userDescription($user)
 }
 
 /**
+ * Renders the post select drop down
+ * 
+ * @param   string  $tabName
+ * @param   string  $class
+ */
+function printFormSelector($tabName, $class=''){
+    $forms    = new TSJIPPY\FORMS\Forms();
+    $forms->getForms();
+
+    if (empty($forms->forms)) {
+        return false;
+    }
+
+    ?>
+    <form method="post" class="<?php echo esc_attr($class);?>">
+        <input type='hidden' name='tabname' value='<?php echo esc_attr($tabName);?>'>
+
+        <select name='postid'>
+            <?php
+            foreach($forms->forms as $form){
+                ?>
+                <option value='<?php echo esc_attr($form['formData']->postId);?>'><?php echo esc_attr($form['formData']->name);?></option>
+                <?php
+            }
+            ?>
+        </select>
+        <br>
+        <input type='submit' class="button small">
+        <br>
+        <br>
+    </form>
+    <?php
+}
+
+/**
  * Shows a slector when there is no form found for a specific section
  * 
  * @param   string  $tabName
@@ -72,16 +107,9 @@ function handleEmptyPostId($tabName){
     }
 
     /**
-     * Check if needed
-     */
-    if(!empty(SETTINGS[$tabName])){
-        return SETTINGS[$tabName];
-    }
-
-    /**
      * Store choosen post id
      */
-    if(!empty($_POST['postid'])){
+    if(!empty($_POST['postid']) && ($_POST['tabname'] ?? '') == $tabName){
         $postId     = (int) $_POST['postid'];
         $settings   = SETTINGS;
 
@@ -91,12 +119,12 @@ function handleEmptyPostId($tabName){
 
         return $postId;
     }
-    
-    $forms    = new TSJIPPY\FORMS\Forms();
-    $forms->getForms();
 
-    if (empty($forms->forms)) {
-        return false;
+    /**
+     * Check if needed
+     */
+    if(!empty(SETTINGS[$tabName])){
+        return SETTINGS[$tabName];
     }
 
     ob_start();
@@ -105,26 +133,41 @@ function handleEmptyPostId($tabName){
     <div class='warning'>
         No form found for <?php echo esc_attr($tabName);?><br>
         Please select one.
-        <form method="post">
-            <input type='hidden' name='tabname' value='<?php echo esc_attr($tabName);?>'>
-
-            <select name='postid'>
-                <?php
-                foreach($forms->forms as $form){
-                    ?>
-                    <option value='<?php echo esc_attr($form['formData']->postId);?>'><?php echo esc_attr($form['formData']->name);?></option>
-                    <?php
-                }
-                ?>
-            </select>
-            <br>
-            <input type='submit'>
-        </form>
+        <?php printFormSelector($tabName);?>
     </div>
     <?php
 
     return ob_get_clean();
     
+}
+
+/**
+ * Adds buttons to change the form or to edit the current form
+ * if the current user has enough permissions
+ * 
+ * @param   int     $postId
+ * @param   string  $tabName
+ * @param   boolean $echo
+ */
+function addFormControls($postId, $tabName, $echo=false){
+    if(!current_user_can('edit_others_posts')){
+        return '';
+    }
+
+    if(!$echo){
+        ob_start();
+    }
+
+    ?>
+    <button type='button' class='tsjippy button small' onclick="this.parentElement.querySelector('.change-form-wrapper').classList.toggle('hidden')">Change Form</button>
+    <?php
+    printFormSelector($tabName, 'hidden change-form-wrapper');
+
+    edit_post_link('Edit Form', '', '', $postId, 'tsjippy button');
+
+    if(!$echo){
+        return ob_get_clean();
+    }
 }
 
 //Shortcode for userdata forms
@@ -166,9 +209,9 @@ function userInfoPage($atts)
     $availableForms     = SETTINGS['enabled-forms'] ?? [];
     $userSelectRoles    = apply_filters('tsjippy-user-management-page-dropdown', $genericInfoRoles);
 
-    $tab                = TSJIPPY\sanitize($_GET['main-tab']); 
+    $tab                = str_replace('-info', '', TSJIPPY\sanitize($_GET['main-tab'])); 
 
-    $postId    = SETTINGS[$tab] ?? SETTINGS[str_replace('-', '_', $tab)] ?? SETTINGS['user_' . $tab] ?? 0;
+    $postId             = SETTINGS[$tab] ?? SETTINGS[str_replace('-', '_', $tab)] ?? SETTINGS['user_' . $tab] ?? 0;
 
     if(empty($postId)){
         $html    = handleEmptyPostId($tab);
@@ -234,6 +277,24 @@ function userInfoPage($atts)
     }
 
     /*
+        GENERIC Info
+    */
+    if ((array_intersect($genericInfoRoles, $userRoles) || $showCurrentUserData) && isset($availableForms['generic'])) {
+        //Add a tab button
+        $tabs[]    = '<li class="tablink" id="show-generic-info" data-target="generics-info">Generic info</li>';
+
+        $html    .= "<div id='generics-info' class='tabcontent hidden'>";
+
+        if (($_GET['main-tab'] ?? '') == 'generics-info') {
+            $html    .= getGenericsTab($userId);
+        } else {
+            $html    .= "<div class='loader-wrapper loading hidden'></div>";
+        }
+
+        $html    .= "</div>";
+    }
+
+    /*
         Family Info
     */
     if (
@@ -253,6 +314,8 @@ function userInfoPage($atts)
             $html    .= '<div id="family-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'family-info') {
+                $html    .= addFormControls($postId, 'family');
+
                 $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
                 $html    .= $forms->showForm(false);
             } else {
@@ -261,24 +324,6 @@ function userInfoPage($atts)
 
             $html .= '</div>';
         }
-    }
-
-    /*
-        GENERIC Info
-    */
-    if ((array_intersect($genericInfoRoles, $userRoles) || $showCurrentUserData) && isset($availableForms['generic'])) {
-        //Add a tab button
-        $tabs[]    = '<li class="tablink" id="show-generic-info" data-target="generics-info">Generic info</li>';
-
-        $html    .= "<div id='generics-info' class='tabcontent hidden'>";
-
-        if (($_GET['main-tab'] ?? '') == 'generic-info') {
-            $html    .= getGenericsTab($userId);
-        } else {
-            $html    .= "<div class='loader-wrapper loading hidden'></div>";
-        }
-
-        $html    .= "</div>";
     }
 
     /*
@@ -301,6 +346,8 @@ function userInfoPage($atts)
             $html .= '<div id="location-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'location-info') {
+                $html    .= addFormControls($postId, 'location');
+
                 $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
                 $html    .= $forms->showForm(false);
             } else {
@@ -335,6 +382,8 @@ function userInfoPage($atts)
             $html    .= '<div id="profile-picture-info" class="tabcontent hidden">';
 
             if (($_GET['main-tab'] ?? '') == 'profile-picture-info') {
+                $html    .= addFormControls($postId, 'profile_picture');
+
                 if ($family->isChild($userId)) {
                     $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
                     $html    .= $forms->showForm(false);
@@ -402,6 +451,8 @@ function userInfoPage($atts)
             $html    .= "<div id='security-info' class='tabcontent hidden'>";
 
             if (($_GET['main-tab'] ?? '') == "security-info") {
+                $html    .= addFormControls($postId, 'security');
+
                 $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
                 $html    .= $forms->showForm(false);
             } else {
@@ -510,6 +561,8 @@ function getGenericsTab($userId)
         }
 
         $postId = SETTINGS[$slug];
+
+        $html    .= addFormControls($postId, 'generics');
         
         $forms  = new TSJIPPY\FORMS\Forms(postId: $postId);
         $html    .= $forms->showForm(false);

@@ -45,8 +45,11 @@ function showChildrenFields($childId)
         <div id='generic-child-info-<?php echo esc_attr($childId); ?>' class='tabcontent'>
             <?php
             $postId    = SETTINGS['child_generic'];
+
+            addFormControls($postId, 'chid_generic', true);
+
             $forms     = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
-            echo $forms->showForm();
+            $forms->showForm();
             ?>
         </div>
         <?php
@@ -59,8 +62,11 @@ function showChildrenFields($childId)
         <div id='profile-picture-child-info-<?php echo esc_attr($childId);?>' class='tabcontent <?php echo esc_attr($hidden);?>'>
             <?php 
             $postId    = SETTINGS['profile_picture'];
+
+            addFormControls($postId, 'profile_picture', true);
+
             $forms     = new TSJIPPY\FORMS\Forms( postId: $postId, userId: $childId);
-            echo $forms->showForm();
+            $forms->showForm();
             ?>
         </div>
         <?php
