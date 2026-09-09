@@ -6,6 +6,12 @@ use TSJIPPY;
 
 // edit users dropdown
 add_action('tsjippy-user-pages-description', __NAMESPACE__ . '\userDescription');
+
+/**
+ * Add a user edit button
+ * 
+ * @param   \WP_User    $user
+ */
 function userDescription($user)
 {
     $family    = new TSJIPPY\FAMILY\Family();

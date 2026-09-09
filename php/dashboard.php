@@ -16,17 +16,15 @@ function showDashboard($userId, $admin = false)
 {
     if (!is_numeric($userId)) {
         return "<p>Invalid user id $userId</p>";
-    }
-
-    global $MinistrieIconID;
+    };
 
     ob_start();
-    $userdata    = get_userdata($userId);
-    $firstName    = $userdata->first_name;
+    $userdata  = get_userdata($userId);
+    $firstName = $userdata->first_name ?? $userdata->display_name;
 
     if ($admin) {
         $loginCount = get_user_meta($userId, 'tsjippy_login_count', true);
-        $lastLogin    = get_user_meta($userId, 'tsjippy_last_login_date', true);
+        $lastLogin  = get_user_meta($userId, 'tsjippy_last_login_date', true);
 
         //show last login date
         ?>
@@ -53,68 +51,36 @@ function showDashboard($userId, $admin = false)
     <p>
         Hello <?php echo esc_html($firstName);?>
     </p>
-    <div id="warnings">
+    <div id="warnings" style="padding: 20px 0;">
         <?php
+        $dashboardWarnings    = new DashboardWarnings($userId);
+
+        if (!empty($dashboardWarnings->reminderHtml)) {
+            $text    = 'Reminders';
+
+            if ($dashboardWarnings->reminderCount < 2) {
+                $dashboardWarnings->reminderHtml = str_replace(['</li>', '<li>'], '', $dashboardWarnings->reminderHtml);
+                $text    = 'Reminder';
+            } else {
+                $dashboardWarnings->reminderHtml = str_replace(['</li>','<li>'], '', $dashboardWarnings->reminderHtml);
+            }
+
+            ?>
+            <div id=reminders>
+                <h5 class='frontpage'><?php echo esc_attr($text); ?></h5>
+                <p>
+                    <?php echo $dashboardWarnings->reminderHtml; ?>
+                </p>
+            </div>
+            <?php
+        }
+        
         do_action('tsjippy-user-management-dashboard-warnings', $userId, $admin);
         ?>
     </div>
 
     <?php
     do_action('tsjippy-user-management-dashboard', $userId, $admin);
-    ?>
-
-    <div id="ministrywarnings">
-        <?php
-        //Show warning about out of date ministry pages
-        $ministryPages = get_pages([
-            'meta_key'         => 'tsjippy_icon_id',
-            'meta_value'       => $MinistrieIconID
-        ]);
-
-        $warningHtml    = '';
-        //Loop over all the pages
-        foreach ($ministryPages as $ministryPage) {
-            //Get the ID of the current page
-            $postId        = $ministryPage->ID;
-            $postTitle    = $ministryPage->post_title;
-
-            //Get the last modified date
-            $date1        = date_create($ministryPage->post_modified);
-            $today        = date_create('now');
-
-            //days since last modified
-            $pageAge    = date_diff($date1, $today);
-            $pageAge     = $pageAge->format("%a");
-
-            //Get the first warning parameter and convert to days
-            $days         = TSJIPPY\FRONTENDPOSTING\SETTINGS['max-page-age'] ?? 1 * 30;
-
-            //If the page is not modified since the parameter
-            if ($pageAge > $days) {
-                //Get the edit page url
-                $url            = get_permalink(TSJIPPY\FRONTENDPOSTING\SETTINGS['front-end-post-page'], TSJIPPY\FRONTENDPOSTING\createDefaultPages('front-end-post-page'));
-                if (!$url) {
-                    $url     = '';
-                }
-                $url            = add_query_arg(['post-id' => $postId], $url);
-
-                $warningHtml     .= "<li><a href='$url'>$postTitle</a></li>";
-            }
-        }
-        if (!empty($warningHtml)) {
-            ?>
-            <h3>Notice</h3>
-            <p>
-                Please update these pages:<br>
-                <ul>
-                    echo <?php wp_kses_post($warningHtml);?>
-                </ul>
-            </p>
-            <?php
-        }
-        ?>
-    </div>
-    <?php
 
     return ob_get_clean();
 }

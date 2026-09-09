@@ -4,7 +4,7 @@ namespace TSJIPPY\USERMANAGEMENT;
 
 use TSJIPPY;
 
-add_filter('tsjippy-forms-reminder-link', function($link, $object, $element, $formUrl, $type, $childId){
+add_filter('tsjippy-forms-reminder-link', function($link, $object, $element, $formUrl, $onlyEmail, $childId){
         /**
          * Do nothing if not on account page
          */

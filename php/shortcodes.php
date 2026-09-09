@@ -4,33 +4,6 @@ namespace TSJIPPY\USERMANAGEMENT;
 
 use TSJIPPY;
 
-//Shortcode for the dashboard
-add_action('tsjippy-user-management-dashboard-warnings', __NAMESPACE__ . '\dashboardWarnings', 20);
-function dashboardWarnings($userId)
-{
-    $dashboardWarnings    = new DashboardWarnings($userId);
-
-    if (!empty($dashboardWarnings->reminderHtml)) {
-        $text    = 'Reminders';
-
-        if ($dashboardWarnings->reminderCount < 2) {
-            $dashboardWarnings->reminderHtml = str_replace(['</li>', '<li>'], '', $dashboardWarnings->reminderHtml);
-            $text    = 'Reminder';
-        } else {
-            //$dashboardWarnings->reminderHtml = str_replace(['</li>','<li>'], '', $dashboardWarnings->reminderHtml);
-        }
-
-    ?>
-        <div id=reminders>
-            <h3 class='frontpage'><?php echo esc_attr($text); ?></h3>
-            <p>
-                <?php echo $dashboardWarnings->reminderHtml; ?>
-            </p>
-        </div>
-    <?php
-    }
-}
-
 //add_shortcode("tsjippy_userstatistics", __NAMESPACE__ . '\userStatistics');
 function userStatistics()
 {

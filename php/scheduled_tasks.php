@@ -232,16 +232,16 @@ function checkDetailsMail()
         </table>
         <br>
 
-        <!-- MINISTRIES -->
+        <!-- JOBS -->
         <a href='<?php echo esc_url($baseUrl);?>generic-info' class='colored'>
             <b>
                 <?php
-                $userMinistries = (array)get_user_meta($user->ID, 'tsjippy_jobs', true);
-                array_filter($userMinistries);
-                if (count($userMinistries) > 1) {
-                    ?>Ministries<?php
+                $jobs = (array)get_user_meta($user->ID, 'tsjippy_jobs', true);
+                array_filter($jobs);
+                if (count($jobs) > 1) {
+                    ?>Jobs<?php
                 } else {
-                    ?>Ministry<?php
+                    ?>Job<?php
                 }
                 ?>
             </b>
@@ -250,25 +250,25 @@ function checkDetailsMail()
 
         <table>
             <?php
-            if (empty($userMinistries)) {
+            if (empty($jobs)) {
                 ?>
                 <tr>
                     <td>
-                        <a href='<?php echo esc_url($baseUrl);?>generic-info#ministries[]' class='colored'>
-                            No ministry provided
+                        <a href='<?php echo esc_url($baseUrl);?>generic-info#jobs[]' class='colored'>
+                            No job provided
                         </a>
                     </td>
                 </tr>
                 <?php
             } else {
-                foreach ($userMinistries as $ministry => $job) {
+                foreach ($jobs as $postId => $job) {
                     ?>
                     <tr>
                         <td>
-                            <?php echo get_the_title($ministry)?>:
+                            <?php echo get_the_title($postId)?>:
                         </td>
                         <td>
-                            <a href='<?php echo esc_url($baseUrl);?>generic-info#ministries[]' class='colored'>
+                            <a href='<?php echo esc_url($baseUrl);?>generic-info#jobs[]' class='colored'>
                                 <?php echo esc_html($job);?>
                             </a>
                         </td>
