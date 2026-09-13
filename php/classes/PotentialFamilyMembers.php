@@ -133,7 +133,7 @@ class PotentialFamilyMembers
                         $user->gender != $this->gender            // Or the genders differ
                     )                                        &&
                     (
-                        !is_numeric($user->age)             ||    // The age is not filled in
+                        empty($user->age)             ||    // The age is not filled in
                         $user->age > 18                            // Older than 18
                     )
                 )
