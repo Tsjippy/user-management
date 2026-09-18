@@ -1,10 +1,14 @@
+import{
+  submitForm
+} from "../../tsjippy-forms/js/form_submit_functions.js";
+
 async function submitAddAccountForm(event) {
   ev.preventDefault();
   ev.stopPropagation();
 
   var target = event.target;
 
-  var response = await FormSubmit.submitForm(
+  var response = await submitForm(
     target,
     "user_management/add_useraccount",
   );

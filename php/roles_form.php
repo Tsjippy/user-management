@@ -15,7 +15,7 @@ function displayRoles($userId = '')
 {
     global $wp_roles;
 
-    wp_enqueue_script('tsjippy_user_management');
+    wp_enqueue_script_module('@tsjippy/user_management');
 
     $roles    = [];
 

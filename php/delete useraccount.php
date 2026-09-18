@@ -17,7 +17,7 @@ function deleteUser()
     }
 
     //Load js
-    wp_enqueue_script('user_select_script');
+    wp_enqueue_script_module('tsjippy/user_select_script');
 
     $html = "";
 

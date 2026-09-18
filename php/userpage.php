@@ -195,7 +195,7 @@ function userInfoPage($atts)
     wp_enqueue_style('tsjippy_forms_style');
     wp_enqueue_style('tsjippy_useraccount');
 
-    wp_enqueue_script('tsjippy_userpage');
+    wp_enqueue_script_module('@tsjippy/userpage');
 
     $a = shortcode_atts(array(
         'currentuser' => false,
@@ -535,7 +535,7 @@ function getGenericsTab($userId)
 
         $html    .= "<div id='validity-warning' style='border: 3px solid #bd2919; padding: 10px;'>";
         if (array_intersect($genericInfoRoles, $userRoles)) {
-            wp_enqueue_script('tsjippy_user_management');
+            wp_enqueue_script_module('@tsjippy/user_management');
 
             $html    .= "<form>";
             $html    .= "<input type='hidden' class='no-reset' name='user-id' value='$userId'>";

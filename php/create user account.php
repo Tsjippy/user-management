@@ -8,7 +8,7 @@ use TSJIPPY;
 add_shortcode('tsjippy_create_user_account', __NAMESPACE__ . '\createUserAccountForm');
 function createUserAccountForm()
 {
-    wp_enqueue_script('tsjippy_user_management');
+    wp_enqueue_script_module('@tsjippy/user_management');
 
     $user = wp_get_current_user();
     if (in_array('usermanagement', $user->roles)) {

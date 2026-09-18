@@ -74,7 +74,7 @@ function changePasswordForm($userId = null)
 
         <?php
         if (in_array('usermanagement', wp_get_current_user()->roles)) {
-            wp_enqueue_script('tsjippy_user_management');
+            wp_enqueue_script_module('@tsjippy/user_management');
         ?>
             <form data-reset=1 class='tsjippy-form'>
                 <input type="hidden" class="no-reset" name="disable-user-account" value="<?php echo wp_create_nonce("disable-user-account"); ?>">

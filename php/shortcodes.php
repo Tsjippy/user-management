@@ -16,7 +16,7 @@ function userStatistics()
         return;
     }
 
-    wp_enqueue_script('tsjippy_table_script');
+    wp_enqueue_script_module('@tsjippy/table_script');
 
     ob_start();
 

@@ -1,5 +1,10 @@
 import { addStyles } from "../../tsjippy-shared-functionality/js/partials/load_assets.js";
 
+import{
+  fetchRestApi
+} from "../../tsjippy-forms/js/form_submit_functions.js";
+
+
 async function loadTab(tab) {
   let formData = new FormData();
 
@@ -12,7 +17,7 @@ async function loadTab(tab) {
 
   formData.append("tabname", tab.id.replace("-info", ""));
 
-  let response = await FormSubmit.fetchRestApi(
+  let response = await fetchRestApi(
     "user_management/get_userpage_tab",
     formData,
   );
