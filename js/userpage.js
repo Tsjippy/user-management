@@ -4,15 +4,12 @@ import{
   fetchRestApi
 } from "../../tsjippy-forms/js/form_submit_functions.js";
 
-
 async function loadTab(tab) {
   let formData = new FormData();
 
   let params = new URLSearchParams(window.location.search);
   if (params.get("user-id") != null) {
     formData.append("user-id", params.get("user-id"));
-  } else {
-    formData.append("user-id", tsjippy.userId);
   }
 
   formData.append("tabname", tab.id.replace("-info", ""));
