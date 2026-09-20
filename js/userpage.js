@@ -4,6 +4,10 @@ import{
   fetchRestApi
 } from "../../tsjippy-forms/js/form_submit_functions.js";
 
+import { 
+  showLoader 
+} from "../../tsjippy-shared-functionality/js/partials/show_loader.js";
+
 async function loadTab(tab) {
   let formData = new FormData();
 
@@ -31,7 +35,7 @@ async function loadTab(tab) {
 document.addEventListener("DOMContentLoaded", function () {
   // only load when the loader image is still there
   document.querySelectorAll(`.loader-wrapper.loading`).forEach((loader) => {
-    loader = Main.showLoader(loader, true, 100, "Loading Contents...");
+    loader = showLoader(loader, true, 100, "Loading Contents...");
 
     loader.classList.remove("loading");
 

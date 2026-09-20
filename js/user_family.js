@@ -2,6 +2,16 @@ import{
   submitForm
 } from "../../tsjippy-forms/js/form_submit_functions.js";
 
+
+import { 
+  displayMessage 
+} from "../../tsjippy-shared-functionality/js/partials/display_message.js";
+
+import { 
+  showModal,
+  hideModals
+} from "../../tsjippy-shared-functionality/js/partials/modals.js";
+
 async function submitAddAccountForm(event) {
   ev.preventDefault();
   ev.stopPropagation();
@@ -49,14 +59,14 @@ async function submitAddAccountForm(event) {
       }
     });
 
-    Main.displayMessage(response.message);
+    displayMessage(response.message);
   }
 
-  Main.hideModals();
+  hideModals();
 }
 
 function showAddAccountModal() {
-  Main.showModal("add_account");
+  showModal("add_account");
 }
 
 document.addEventListener("DOMContentLoaded", function () {

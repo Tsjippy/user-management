@@ -2,6 +2,9 @@ import{
   submitForm
 } from "../../tsjippy-forms/js/form_submit_functions.js";
 
+import { 
+  displayMessage 
+} from "../../tsjippy-shared-functionality/js/partials/display_message.js";
 
 async function disableUserAccount(target) {
   var response = await submitForm(
@@ -15,7 +18,7 @@ async function disableUserAccount(target) {
     } else {
       target.textContent = target.textContent.replace("Enable", "Disable");
     }
-    Main.displayMessage(response);
+    displayMessage(response);
   }
 }
 
@@ -26,7 +29,7 @@ async function updateUserRoles(target) {
   );
 
   if (response) {
-    Main.displayMessage(response);
+    displayMessage(response);
   }
 }
 
@@ -37,7 +40,7 @@ async function extendValidity(target) {
   );
 
   if (response) {
-    Main.displayMessage(response);
+    displayMessage(response);
   }
 }
 
@@ -48,7 +51,7 @@ async function createUserAccount(target) {
   );
 
   if (response) {
-    Main.displayMessage(response.message);
+    displayMessage(response.message);
   }
 }
 
