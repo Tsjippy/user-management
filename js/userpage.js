@@ -1,12 +1,12 @@
-import { addStyles } from "../../tsjippy-shared-functionality/js/partials/load_assets.js";
+import { addStyles } from "@tsjippy/load_assets";
 
 import{
   fetchRestApi
-} from "../../tsjippy-forms/js/form_submit_functions.js";
+} from "@tsjippy/form_submit_functions";
 
 import { 
   showLoader 
-} from "../../tsjippy-shared-functionality/js/partials/show_loader.js";
+} from "@tsjippy/show_loader";
 
 async function loadTab(tab) {
   let formData = new FormData();
