@@ -6,6 +6,9 @@ use TSJIPPY;
 use WP_User;
 
 add_action('rest_api_init', __NAMESPACE__ . '\restApiInit');
+/**
+ * Registers restapi end points
+ */
 function restApiInit()
 {
     // disable or enable useraccount
@@ -203,6 +206,9 @@ function getUserPageTab($wpRestRequest)
     ];
 }
 
+/**
+ * Disable a user account
+ */
 function disableUserAccount()
 {
     if (empty(get_user_meta((int) $_POST['user-id'], 'tsjippy_disabled', true))) {

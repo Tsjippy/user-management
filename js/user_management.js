@@ -74,7 +74,7 @@ document.addEventListener("click", (ev) => {
     return;
   }
 
-  ev.stopImmediatePropagation();
+  ev.stopPropagation();
 });
 
 console.log("user management js loaded");

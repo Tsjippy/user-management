@@ -5,6 +5,9 @@ namespace TSJIPPY\USERMANAGEMENT;
 use TSJIPPY;
 
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\loadAssets', 99);
+/**
+ * Registeres the CSS and JS
+ */
 function loadAssets()
 {
     /**
@@ -20,6 +23,8 @@ function loadAssets()
         "@tsjippy/display_message"
     ] :
     [];
+
+    $deps[] = "@tsjippy/nonce_script";
     wp_register_script_module('@tsjippy/user_management', TSJIPPY\pathToUrl(PLUGINPATH . 'js/user_management' . TSJIPPY\JSEXTENSION), $deps, PLUGINVERSION);
 
     $deps   = SCRIPT_DEBUG ? [  
@@ -28,5 +33,7 @@ function loadAssets()
         "@tsjippy/show_loader"
     ] :
     [];
+
+    $deps[] = "@tsjippy/nonce_script";
     wp_register_script_module('@tsjippy/userpage', TSJIPPY\pathToUrl(PLUGINPATH . 'js/userpage' . TSJIPPY\JSEXTENSION), $deps, PLUGINVERSION);
 }

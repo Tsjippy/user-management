@@ -470,9 +470,16 @@ function userInfoPage($atts)
     }
 
     //  Add filter to add extra pages, children tabs should always be last
-    $filteredHtml    = apply_filters('tsjippy-user-management-user-info-page', ['tabs' => $tabs, 'html' => $html], $showCurrentUserData, $user, $userAge);
-    $tabs             = $filteredHtml['tabs'];
-    $html             = $filteredHtml['html'];
+    /**
+     * Filters the tab content of the profile page
+     * @param   array       $content                contains index 'tabs' for the tab buttons html and 'html' for the content of each tab
+     * @param   bool        $showCurrentUserData    Current or another user
+     * @param   \WP_User    $user                   The user data
+     * @param   int         $userAge                THe age of the user
+     */
+    $filteredHtml = apply_filters('tsjippy-user-management-user-info-page', ['tabs' => $tabs, 'html' => $html], $showCurrentUserData, $user, $userAge);
+    $tabs         = $filteredHtml['tabs'];
+    $html         = $filteredHtml['html'];
 
     /*
         CHILDREN TABS
